@@ -1,0 +1,73 @@
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx,html}",
+  ],
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        "outline-variant": "#bfc9c1",
+        "primary-container": "#2d6a4f",
+        "on-tertiary-container": "#ffd0b5",
+        "error-container": "#ffdad6",
+        "surface-tint": "#2c694e",
+        "outline": "#707973",
+        "secondary-fixed": "#a4f792",
+        "on-error-container": "#93000a",
+        "on-secondary-fixed": "#002201",
+        "on-tertiary-fixed": "#321300",
+        "on-secondary-fixed-variant": "#005303",
+        "on-error": "#ffffff",
+        "surface": "#f8f9fa",
+        "error": "#ba1a1a",
+        "background": "#f8f9fa",
+        "on-primary-fixed-variant": "#0e5138",
+        "on-surface-variant": "#404943",
+        "primary-fixed": "#b1f0ce",
+        "on-secondary-container": "#267320",
+        "surface-container-low": "#f3f4f5",
+        "primary": "#0f5238",
+        "on-tertiary": "#ffffff",
+        "surface-variant": "#e1e3e4",
+        "surface-container": "#edeeef",
+        "secondary-container": "#a4f792",
+        "tertiary": "#693c1d",
+        "secondary": "#1f6d1a",
+        "tertiary-fixed-dim": "#fab890",
+        "surface-dim": "#d9dadb",
+        "on-secondary": "#ffffff",
+        "on-primary-container": "#a8e7c5",
+        "inverse-on-surface": "#f0f1f2",
+        "primary-fixed-dim": "#95d4b3",
+        "on-primary": "#ffffff",
+        "surface-container-highest": "#e1e3e4",
+        "surface-container-lowest": "#ffffff",
+        "inverse-primary": "#95d4b3",
+        "secondary-fixed-dim": "#89da79",
+        "tertiary-container": "#855332",
+        "on-surface": "#191c1d",
+        "tertiary-fixed": "#ffdbc8",
+        "on-primary-fixed": "#002114",
+        "on-background": "#191c1d",
+        "surface-bright": "#f8f9fa",
+        "inverse-surface": "#2e3132",
+        "surface-container-high": "#e7e8e9",
+        "on-tertiary-fixed-variant": "#693b1d"
+      },
+      borderRadius: {
+        "DEFAULT": "0.25rem",
+        "lg": "0.5rem",
+        "xl": "0.75rem",
+        "full": "9999px"
+      },
+      fontFamily: {
+        "headline": ["Plus Jakarta Sans"],
+        "body": ["Manrope"],
+        "label": ["Manrope"]
+      }
+    },
+  },
+  plugins: [],
+}

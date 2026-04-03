@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Beli Sampah - The Organic Breath</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&amp;family=Manrope:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "outline-variant": "#bfc9c1",
+                      "primary-container": "#2d6a4f",
+                      "on-tertiary-container": "#ffd0b5",
+                      "error-container": "#ffdad6",
+                      "surface-tint": "#2c694e",
+                      "outline": "#707973",
+                      "secondary-fixed": "#a4f792",
+                      "on-error-container": "#93000a",
+                      "on-secondary-fixed": "#002201",
+                      "on-tertiary-fixed": "#321300",
+                      "on-secondary-fixed-variant": "#005303",
+                      "on-error": "#ffffff",
+                      "surface": "#f8f9fa",
+                      "error": "#ba1a1a",
+                      "background": "#f8f9fa",
+                      "on-primary-fixed-variant": "#0e5138",
+                      "on-surface-variant": "#404943",
+                      "primary-fixed": "#b1f0ce",
+                      "on-secondary-container": "#267320",
+                      "surface-container-low": "#f3f4f5",
+                      "primary": "#0f5238",
+                      "on-tertiary": "#ffffff",
+                      "surface-variant": "#e1e3e4",
+                      "surface-container": "#edeeef",
+                      "secondary-container": "#a4f792",
+                      "tertiary": "#693c1d",
+                      "secondary": "#1f6d1a",
+                      "tertiary-fixed-dim": "#fab890",
+                      "surface-dim": "#d9dadb",
+                      "on-secondary": "#ffffff",
+                      "on-primary-container": "#a8e7c5",
+                      "inverse-on-surface": "#f0f1f2",
+                      "primary-fixed-dim": "#95d4b3",
+                      "on-primary": "#ffffff",
+                      "surface-container-highest": "#e1e3e4",
+                      "surface-container-lowest": "#ffffff",
+                      "inverse-primary": "#95d4b3",
+                      "secondary-fixed-dim": "#89da79",
+                      "tertiary-container": "#855332",
+                      "on-surface": "#191c1d",
+                      "tertiary-fixed": "#ffdbc8",
+                      "on-primary-fixed": "#002114",
+                      "on-background": "#191c1d",
+                      "surface-bright": "#f8f9fa",
+                      "inverse-surface": "#2e3132",
+                      "surface-container-high": "#e7e8e9",
+                      "on-tertiary-fixed-variant": "#693b1d"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "fontFamily": {
+                      "headline": ["Plus Jakarta Sans"],
+                      "body": ["Manrope"],
+                      "label": ["Manrope"]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        body { font-family: 'Manrope', sans-serif; background-color: #f8f9fa; color: #191c1d; }
+        .headline-font { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .glass-effect { backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-surface pb-32">
+<!-- Top Navigation Anchor (Shared Component) -->
+<header class="fixed top-0 w-full z-50 bg-slate-50/80 backdrop-blur-xl flex justify-between items-center px-6 py-4 w-full">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#0f5238]" data-icon="menu" style="">menu</span>
+</div>
+<h1 class="text-[#0f5238] font-black tracking-tighter text-lg font-['Plus_Jakarta_Sans']" style="">The Organic Breath</h1>
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="professional portrait of a user with a clean minimalist background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBNcipV8nqO__jzManTGZRXhFjFpG_3P8R_aoYkS-2f9eCEU_alm-JzDAKmqBt-3rWJNJHL3ESQiUwgsLkOwMj4xifANK6RJ2NTpeht0hpAIt7384VOSImuw3dC4eGFDLsi2TAtD9pxDRlL2UACGhkaWkN9z0PSYnomHGs1do_gbZueHhnokzOC_3MRqHXwpjKm2RwA6CQrkvBHFoCARgOBabDBSmaMIgTEOiS6R-kkjrSYfmJ2YEv25lsGZkZlNHgQnRdBh2NSYw" style=""/>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="pt-24 px-6 max-w-5xl mx-auto">
+<!-- Search and Filter (Asymmetric Layout) -->
+<section class="mb-10">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div class="max-w-md">
+<span class="text-secondary font-bold text-xs uppercase tracking-[0.2em] mb-2 block" style="">Katalog Marketplace</span>
+<h2 class="headline-font text-4xl font-extrabold tracking-tight text-on-surface" style="">Beli Sampah</h2>
+<p class="text-on-surface-variant mt-2 text-sm md:text-base" style="">Tukarkan sampah anorganik Anda menjadi saldo digital dengan nilai ekonomi tinggi.</p>
+</div>
+<div class="w-full md:w-72">
+<div class="bg-surface-container-low rounded-xl px-4 py-3 flex items-center gap-3">
+<span class="material-symbols-outlined text-outline" data-icon="search" style="">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm w-full p-0" placeholder="Cari jenis sampah..." type="text"/>
+</div>
+</div>
+</div>
+</section>
+<!-- Category Horizontal Filmstrip -->
+<section class="mb-12">
+<div class="flex gap-4 overflow-x-auto pb-4 no-scrollbar">
+<button class="flex-none bg-gradient-to-br from-[#0f5238] to-[#2d6a4f] text-white px-6 py-3 rounded-xl font-bold text-sm" style="">Semua</button>
+<button class="flex-none bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high transition-colors px-6 py-3 rounded-xl font-medium text-sm" style="">Plastik</button>
+<button class="flex-none bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high transition-colors px-6 py-3 rounded-xl font-medium text-sm" style="">Kertas</button>
+<button class="flex-none bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high transition-colors px-6 py-3 rounded-xl font-medium text-sm" style="">Logam</button>
+<button class="flex-none bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high transition-colors px-6 py-3 rounded-xl font-medium text-sm" style="">Elektronik</button>
+<button class="flex-none bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high transition-colors px-6 py-3 rounded-xl font-medium text-sm" style="">Kaca</button>
+</div>
+</section>
+<!-- Product Bento Grid -->
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Item 1: Plastic -->
+<div class="bg-surface-container-lowest rounded-[1.5rem] overflow-hidden group transition-all duration-300 hover:shadow-2xl hover:shadow-primary/5">
+<div class="h-48 overflow-hidden relative">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="clean sorted plastic bottles in a bright minimalist storage container with soft natural lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCgOSoNEbrwQHF6aZFgXQavrIhXlPX4AZocCIwL18wwbUBDofyC3zrNn8W7-iXlDXwM6LknMdq5jDeYDlJo1akraDTEnDrf-IVrXDOI1_psDIra4t6dyG95fwV6GjrVB7vyCcDvJw1v2MHCJsp1T3NLnNV6kpXSIjyLNPuZH8EHenOVtpecvpbuVHcduDAjGO5sRlA8fn7FD2PlfdqG_3lKE7vjFm5de2zCX-gSZfi2i68ab9ErSMEl5FfXiIiNXDwSe1GUcm_WWw" style=""/>
+<div class="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-bold text-primary uppercase tracking-wider" style="">Populer</div>
+</div>
+<div class="p-6">
+<div class="flex justify-between items-start mb-4">
+<div>
+<h3 class="font-bold text-lg text-on-surface" style="">Botol PET Bening</h3>
+<span class="text-xs text-outline font-medium" style="">Kategori: Plastik</span>
+</div>
+<div class="text-right">
+<p class="text-primary font-extrabold text-lg" style="">IDR 4.500</p>
+<p class="text-[10px] text-outline font-bold uppercase tracking-widest" style="">Per Kilogram</p>
+</div>
+</div>
+<button class="w-full bg-surface-container-high text-primary font-bold py-3 rounded-xl flex items-center justify-center gap-2 hover:bg-primary hover:text-white transition-all duration-300" style=""><span class="material-symbols-outlined text-[18px]" data-icon="add_shopping_cart">add_shopping_cart</span> Jual</button>
+</div>
+</div>
+<!-- Item 2: Paper -->
+<div class="bg-surface-container-lowest rounded-[1.5rem] overflow-hidden group transition-all duration-300 hover:shadow-2xl hover:shadow-primary/5">
+<div class="h-48 overflow-hidden relative">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="neatly stacked recycled cardboard boxes in a high-end warehouse setting with warm ambient lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAAe3RwswuFS77RF9vF5CsCdFY1few5YJbj47u0-nbYlGOLxkakXWy_-oumKleKQka1MjKduWSBhCkFeCknfB94TuAZPb5mywxgAg_c4EF7NR9GZASdBAsArgYd1a70X1AWPCLPgSX5iQPYrmPHUQImTtR93Yyzsm8Sq9RmG6YbVWfYbzBgsZzcnSoEaZ33VgDoa3ePghRZz8IxYpW3Ly-H1N9uSdSquW5zVyfVMwLthyRcnFn3nBJoNdZSUxLkMHSHcydxHzG2cA" style=""/>
+</div>
+<div class="p-6">
+<div class="flex justify-between items-start mb-4">
+<div>
+<h3 class="font-bold text-lg text-on-surface" style="">Kardus Bekas</h3>
+<span class="text-xs text-outline font-medium" style="">Kategori: Kertas</span>
+</div>
+<div class="text-right">
+<p class="text-primary font-extrabold text-lg" style="">IDR 2.800</p>
+<p class="text-[10px] text-outline font-bold uppercase tracking-widest" style="">Per Kilogram</p>
+</div>
+</div>
+<button class="w-full bg-surface-container-high text-primary font-bold py-3 rounded-xl flex items-center justify-center gap-2 hover:bg-primary hover:text-white transition-all duration-300" style=""><span class="material-symbols-outlined text-[18px]" data-icon="add_shopping_cart">add_shopping_cart</span> Jual</button>
+</div>
+</div>
+<!-- Item 3: Metal -->
+<div class="bg-surface-container-lowest rounded-[1.5rem] overflow-hidden group transition-all duration-300 hover:shadow-2xl hover:shadow-primary/5">
+<div class="h-48 overflow-hidden relative">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="clean crushed aluminum soda cans organized in a geometric pattern with dramatic lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBxbPF-qDYec2oPR4ZsbKovZqcYbwSOgL6VfO3vBx_Y7v8FU9nr_hZL_HN3UF9Esh1jleE0ai54NLahg3YrIPyy6Z8QIplTleBRPo-MwdQp4GRHr21KUPlHKRzGhJeabN2sSaVjfTuybLCbF09hSrbnRmWmBaFDf5CS4raOP9mzqVwDebtaiKs-gzl-XKicdig_vI70qtoNhW-AEDpZn8QoMoWar4QkZpjQeDGyzNXprK2tIP4lSvplWClr72UDioCDkEFgyOpXjw" style=""/>
+</div>
+<div class="p-6">
+<div class="flex justify-between items-start mb-4">
+<div>
+<h3 class="font-bold text-lg text-on-surface" style="">Aluminium Can</h3>
+<span class="text-xs text-outline font-medium" style="">Kategori: Logam</span>
+</div>
+<div class="text-right">
+<p class="text-primary font-extrabold text-lg" style="">IDR 12.000</p>
+<p class="text-[10px] text-outline font-bold uppercase tracking-widest" style="">Per Kilogram</p>
+</div>
+</div>
+<button class="w-full bg-surface-container-high text-primary font-bold py-3 rounded-xl flex items-center justify-center gap-2 hover:bg-primary hover:text-white transition-all duration-300" style=""><span class="material-symbols-outlined text-[18px]" data-icon="add_shopping_cart">add_shopping_cart</span> Jual</button>
+</div>
+</div>
+<!-- Item 4: Paper Variant -->
+<div class="bg-surface-container-lowest rounded-[1.5rem] overflow-hidden group transition-all duration-300 hover:shadow-2xl hover:shadow-primary/5">
+<div class="h-48 overflow-hidden relative">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="neat stacks of old newspapers and white paper on a clean oak wooden table" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD6UOo55dfe_4lxRDKH8lEQlzndGGzVuTrWvIoTAuAYfidtAV0wgZcvmpdtLCRxwGPMQ7NG__6whuzthkKk9ZPTsiotMRUp5Lr9AHbqm4fkQAFhpYncL5stYacUysq9jc3mwQlGOjDwE9tj0CUa5Uob9UEWipWCtacYZJCFq3eW8Yjmq3tka4ZplxrjfkR4-z_wQsV1CCEMH3ojb4Y1B3z43em8l8AxTf0OfnQFYiIuZEBNL0mlh1UrN2uGWGopaLkQSiKNQGkJOA" style=""/>
+</div>
+<div class="p-6">
+<div class="flex justify-between items-start mb-4">
+<div>
+<h3 class="font-bold text-lg text-on-surface" style="">Kertas HVS/A4</h3>
+<span class="text-xs text-outline font-medium" style="">Kategori: Kertas</span>
+</div>
+<div class="text-right">
+<p class="text-primary font-extrabold text-lg" style="">IDR 3.200</p>
+<p class="text-[10px] text-outline font-bold uppercase tracking-widest" style="">Per Kilogram</p>
+</div>
+</div>
+<button class="w-full bg-surface-container-high text-primary font-bold py-3 rounded-xl flex items-center justify-center gap-2 hover:bg-primary hover:text-white transition-all duration-300" style=""><span class="material-symbols-outlined text-[18px]" data-icon="add_shopping_cart">add_shopping_cart</span> Jual</button>
+</div>
+</div>
+<!-- Item 5: Metal Variant -->
+<div class="bg-surface-container-lowest rounded-[1.5rem] overflow-hidden group transition-all duration-300 hover:shadow-2xl hover:shadow-primary/5">
+<div class="h-48 overflow-hidden relative">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="gleaming scrap metal pipes and iron rods arranged professionally in a studio shot" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCg54KhtjO5LwkdLGxF-8StnDdSkn0B65gc5FWV59yU0_Wgv6LW_3aKJg8CsWsyWk2YBhPvTQAjcBkBOUeWeqRsXccI9kgGuOcTjp4yo-7hHoikKa-yoXgSoIBUENI6vbe3jn9euA9EGw_999CNPfROPu8EKPc-s8XasD0L3cf4B97F7_m1PY6SO7T1M9Ea-_USlGTJ3Ek0QVrM4rXHXsseh0PkwGv-VHonBaxDYeIZmIoSCzy5dpw1O7pEatwJtAY2FLF1HgyiNg" style=""/>
+</div>
+<div class="p-6">
+<div class="flex justify-between items-start mb-4">
+<div>
+<h3 class="font-bold text-lg text-on-surface" style="">Besi Tebal</h3>
+<span class="text-xs text-outline font-medium" style="">Kategori: Logam</span>
+</div>
+<div class="text-right">
+<p class="text-primary font-extrabold text-lg" style="">IDR 6.500</p>
+<p class="text-[10px] text-outline font-bold uppercase tracking-widest" style="">Per Kilogram</p>
+</div>
+</div>
+<button class="w-full bg-surface-container-high text-primary font-bold py-3 rounded-xl flex items-center justify-center gap-2 hover:bg-primary hover:text-white transition-all duration-300" style=""><span class="material-symbols-outlined text-[18px]" data-icon="add_shopping_cart">add_shopping_cart</span> Jual</button>
+</div>
+</div>
+<!-- Banner Card (Asymmetric Element) -->
+<div class="lg:col-span-1 bg-tertiary rounded-[1.5rem] p-8 text-white relative overflow-hidden flex flex-col justify-end min-h-[300px]">
+<div class="absolute top-0 right-0 p-4">
+<span class="material-symbols-outlined text-white/20 text-8xl" data-icon="eco" style="">eco</span>
+</div>
+<h4 class="headline-font text-2xl font-bold mb-2" style="">Ingin Setoran Skala Besar?</h4>
+<p class="text-white/80 text-sm mb-6" style="">Hubungi tim kurir khusus kami untuk penjemputan limbah industri di atas 100kg.</p>
+<button class="bg-white text-tertiary font-bold px-6 py-3 rounded-xl text-sm self-start hover:scale-105 transition-transform" style="">Hubungi Admin</button>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Shell (Shared Component) -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pt-3 pb-6 bg-white/80 backdrop-blur-2xl z-50 rounded-t-[1.5rem] shadow-[0_-8px_30px_rgba(0,0,0,0.04)]">
+<!-- Home -->
+<div class="flex flex-col items-center justify-center text-[#191c1d]/50 px-5 py-2">
+<span class="material-symbols-outlined" data-icon="home" style="">home</span>
+<span class="font-['Manrope'] font-medium text-[11px] uppercase tracking-wider mt-1" style="">Home</span>
+</div>
+<!-- Beli Sampah (Active State) -->
+<div class="flex flex-col items-center justify-center bg-gradient-to-br from-[#0f5238] to-[#2d6a4f] text-white rounded-[1.5rem] px-5 py-2">
+<span class="material-symbols-outlined" data-icon="shopping_bag" style='font-variation-settings: "FILL" 1;'>shopping_bag</span>
+<span class="font-['Manrope'] font-medium text-[11px] uppercase tracking-wider mt-1" style="">jual</span>
+</div>
+<!-- Layanan -->
+<div class="flex flex-col items-center justify-center text-[#191c1d]/50 px-5 py-2">
+<span class="material-symbols-outlined" data-icon="eco" style="">eco</span>
+<span class="font-['Manrope'] font-medium text-[11px] uppercase tracking-wider mt-1" style="">Layanan</span>
+</div>
+<!-- Profile -->
+<div class="flex flex-col items-center justify-center text-[#191c1d]/50 px-5 py-2">
+<span class="material-symbols-outlined" data-icon="person" style="">person</span>
+<span class="font-['Manrope'] font-medium text-[11px] uppercase tracking-wider mt-1" style="">Profile</span>
+</div>
+</nav>
+</body></html>

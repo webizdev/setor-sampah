@@ -1,0 +1,248 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Manrope:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "outline-variant": "#bfc9c1",
+                    "primary-container": "#2d6a4f",
+                    "on-tertiary-container": "#ffd0b5",
+                    "error-container": "#ffdad6",
+                    "surface-tint": "#2c694e",
+                    "outline": "#707973",
+                    "secondary-fixed": "#a4f792",
+                    "on-error-container": "#93000a",
+                    "on-secondary-fixed": "#002201",
+                    "on-tertiary-fixed": "#321300",
+                    "on-secondary-fixed-variant": "#005303",
+                    "on-error": "#ffffff",
+                    "surface": "#f8f9fa",
+                    "error": "#ba1a1a",
+                    "background": "#f8f9fa",
+                    "on-primary-fixed-variant": "#0e5138",
+                    "on-surface-variant": "#404943",
+                    "primary-fixed": "#b1f0ce",
+                    "on-secondary-container": "#267320",
+                    "surface-container-low": "#f3f4f5",
+                    "primary": "#0f5238",
+                    "on-tertiary": "#ffffff",
+                    "surface-variant": "#e1e3e4",
+                    "surface-container": "#edeeef",
+                    "secondary-container": "#a4f792",
+                    "tertiary": "#693c1d",
+                    "secondary": "#1f6d1a",
+                    "tertiary-fixed-dim": "#fab890",
+                    "surface-dim": "#d9dadb",
+                    "on-secondary": "#ffffff",
+                    "on-primary-container": "#a8e7c5",
+                    "inverse-on-surface": "#f0f1f2",
+                    "primary-fixed-dim": "#95d4b3",
+                    "on-primary": "#ffffff",
+                    "surface-container-highest": "#e1e3e4",
+                    "surface-container-lowest": "#ffffff",
+                    "inverse-primary": "#95d4b3",
+                    "secondary-fixed-dim": "#89da79",
+                    "tertiary-container": "#855332",
+                    "on-surface": "#191c1d",
+                    "tertiary-fixed": "#ffdbc8",
+                    "on-primary-fixed": "#002114",
+                    "on-background": "#191c1d",
+                    "surface-bright": "#f8f9fa",
+                    "inverse-surface": "#2e3132",
+                    "surface-container-high": "#e7e8e9",
+                    "on-tertiary-fixed-variant": "#693b1d"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Plus Jakarta Sans"],
+                    "body": ["Manrope"],
+                    "label": ["Manrope"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- Top App Bar -->
+<header class="fixed top-0 w-full z-50 bg-slate-50/80 dark:bg-slate-900/80 backdrop-blur-xl">
+<div class="flex justify-between items-center px-6 py-4 w-full">
+<button class="material-symbols-outlined text-[#0f5238] dark:text-[#f3f4f5] hover:bg-emerald-100/30 p-2 rounded-full transition-all" style="">menu</button>
+<h1 class="font-['Plus_Jakarta_Sans'] tracking-tight font-bold text-lg text-[#0f5238] dark:text-[#f3f4f5]" style="">The Organic Breath</h1>
+<div class="w-10 h-10 rounded-full overflow-hidden bg-surface-container-high ring-2 ring-primary/10">
+<img alt="Profile" class="w-full h-full object-cover" data-alt="Professional headshot of a smiling man in his 30s with a clean background, soft daylight illumination, and modern editorial style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBnUrMBO2JDN5uKdrJe9OvBMIMixTIgLh8vFuZyUWN4TgL1IcpXJbLg6ixd1HgA7ad3-BkhEzUnhlYpnJ9fFeP-pgkekuCAZBaaKz4256FVrCobsgCNHbpiT8tR_OC2H4hAQWDFq4x7I9NFI3vmJkxsNfcYslxvy1FOGxWFX0BWYC--T8oiWTtR-xcF8fdzYAzGChbIS5mqjBznRlYcMG92VjxbHOss4kyO7txqmszSQlvoGU4rvR17d4J1eflbIzhHFVpqtKSvSw" style="">
+</div>
+</div>
+</header>
+<main class="pt-24 pb-32 px-6 max-w-2xl mx-auto space-y-8">
+<!-- Profile Header Section -->
+<section class="flex flex-col items-center text-center space-y-6">
+<div class="relative">
+<div class="w-32 h-32 rounded-full overflow-hidden ring-4 ring-surface-container-lowest shadow-2xl">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="Close-up portrait of a male user with friendly expression, natural lighting, high-quality photography, neutral background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAR0dnHRCHihlSsCYfF1LLTOEr2Y2qpakDH9wmhXj1-Qzvab72cwmNm-k5CbJQCHMHE0AYRQlw4DsI5hBBQOC7EnVVTNmzsBzQRrafWVCedghl0qqS1unu791uwa7VIgLJ57dHaYRj_oJamhwbnoSknKBhfBMNH8zcOuKZaNjhzHcg_-sOT5gwuPSMc90QZaiHkwm9ZKdv7FJIH0vfmHm9xuqsAEB_zkdjOpLLuNUJ7bd4TIK7fHrE63jqxenT0EkKkVugr5LK2xA" style="">
+</div>
+<button class="absolute bottom-1 right-1 bg-primary text-on-primary p-2 rounded-full shadow-lg flex items-center justify-center hover:scale-105 transition-transform" style="">
+<span class="material-symbols-outlined text-sm" style="">edit</span>
+</button>
+</div>
+<div class="space-y-1">
+<h2 class="text-3xl font-headline font-extrabold tracking-tight text-on-surface" style="">Adrian Praja</h2>
+<p class="text-on-surface-variant font-medium" style="">Sustainability Enthusiast</p>
+</div>
+<!-- Action Cluster -->
+<div class="flex gap-4 w-full">
+<button class="flex-1 bg-gradient-to-br from-[#0f5238] to-[#2d6a4f] text-on-primary py-4 px-6 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-primary/10 active:scale-95 transition-all" style="">
+<span class="material-symbols-outlined" style="">chat</span>
+                    WhatsApp Contact
+                </button>
+<button class="bg-surface-container-high text-primary p-4 rounded-xl font-bold flex items-center justify-center active:scale-95 transition-all" style="">
+<span class="material-symbols-outlined" style="">settings</span>
+</button>
+</div>
+</section>
+<!-- Information Bento Grid -->
+<section class="grid grid-cols-1 gap-4">
+<!-- Personal Info Card -->
+<div class="bg-surface-container-lowest p-6 rounded-xl space-y-4">
+<div class="flex items-center justify-between">
+<h3 class="text-xs font-bold uppercase tracking-widest text-primary/60" style="">Account Details</h3>
+<span class="material-symbols-outlined text-primary/40" style="">verified_user</span>
+</div>
+<div class="space-y-4"><!-- Bank Name -->
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-surface-container-low flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" style="">account_balance</span>
+</div>
+<div>
+<p class="text-[10px] uppercase tracking-wider text-on-surface-variant font-bold" style="">Bank</p>
+<p class="font-semibold text-on-surface" style="">Bank Central Asia (BCA)</p>
+</div>
+</div>
+<!-- Account Number -->
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-surface-container-low flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" style="">payments</span>
+</div>
+<div>
+<p class="text-[10px] uppercase tracking-wider text-on-surface-variant font-bold" style="">No. Rekening</p>
+<p class="font-semibold text-on-surface" style="">8012345678</p>
+</div>
+</div>
+<!-- Account Holder -->
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-surface-container-low flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" style="">person</span>
+</div>
+<div>
+<p class="text-[10px] uppercase tracking-wider text-on-surface-variant font-bold" style="">Atas Nama</p>
+<p class="font-semibold text-on-surface" style="">Adrian Praja</p>
+</div>
+</div><!-- WhatsApp Number -->
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-surface-container-low flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" style="">chat</span>
+</div>
+<div>
+<p class="text-[10px] uppercase tracking-wider text-on-surface-variant font-bold" style="">WhatsApp</p>
+<p class="font-semibold text-on-surface" style="">+62 812 3456 7890</p>
+</div>
+</div></div>
+</div>
+<!-- Address & Map Section -->
+<div class="bg-surface-container-lowest p-6 rounded-xl space-y-6">
+<div class="flex items-center justify-between">
+<h3 class="text-xs font-bold uppercase tracking-widest text-primary/60" style="">Pickup Address</h3>
+<button class="text-primary text-sm font-bold flex items-center gap-1" style="">
+                        Edit <span class="material-symbols-outlined text-sm" style="">chevron_right</span>
+</button>
+</div>
+<div class="flex gap-4">
+<div class="w-10 h-10 rounded-lg bg-tertiary-fixed flex items-center justify-center text-on-tertiary-fixed-variant">
+<span class="material-symbols-outlined" style="">location_on</span>
+</div>
+<div class="flex-1">
+<p class="font-bold text-on-surface leading-tight" style="">Green Residence Block A, No. 42</p>
+<p class="text-sm text-on-surface-variant mt-1" style="">Kebon Jeruk, Jakarta Barat, 11530</p>
+</div>
+</div>
+<!-- Interactive-style Map Visualization -->
+<div class="relative w-full h-48 rounded-xl overflow-hidden bg-surface-container-low group">
+<div class="absolute inset-0 grayscale-[20%] opacity-90 group-hover:opacity-100 transition-opacity duration-500" data-alt="Simplified urban map view of a residential area in Jakarta with clean roads and minimal markings in soft natural tones" data-location="Jakarta" style="background-image: url(&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuBRXZCwJx-cMYXeOrdKE-gAdfyU1tvFvsh3f2DctLDHEmDukYyEQZcNaiXVGNGu2h4x2KHj6KsuM4r9xw0KButRh-W9a1wlDKhbzz-KTYo4aMX2yaclz2AIzRM057EEAlq7zRlh4T5s4r8o6nacp1jkVQ8M8eMRjrIOzujTuNalmLcvSINko_KL5OwrYhI2cdcVIZvjEo_h8tpKeOdsbtJDLFvYKeQyS0DtgCBGck-OtwfcLjKVvS2njA-1-aejq8cuh7anxJZZqw&quot;); background-size: cover; background-position: center center;">
+</div>
+<!-- Map Pin -->
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<div class="relative">
+<div class="w-12 h-12 bg-primary/20 rounded-full animate-ping absolute -inset-0"></div>
+<div class="w-8 h-8 bg-primary rounded-full border-2 border-white flex items-center justify-center shadow-lg relative z-10">
+<span class="material-symbols-outlined text-white text-sm" style="font-variation-settings: &quot;FILL&quot; 1;">eco</span>
+</div>
+</div>
+</div>
+<!-- Map UI Overlay -->
+<div class="absolute top-2 right-2 flex flex-col gap-2">
+<button class="w-8 h-8 bg-white/90 backdrop-blur-md rounded-lg shadow-md flex items-center justify-center text-on-surface" style="">
+<span class="material-symbols-outlined text-sm" style="">add</span>
+</button>
+<button class="w-8 h-8 bg-white/90 backdrop-blur-md rounded-lg shadow-md flex items-center justify-center text-on-surface" style="">
+<span class="material-symbols-outlined text-sm" style="">remove</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Stats Bar -->
+<div class="flex gap-4">
+<div class="flex-1 bg-secondary-container p-4 rounded-xl flex flex-col items-center justify-center text-center">
+<p class="text-3xl font-headline font-extrabold text-on-secondary-container" style="">124</p>
+<p class="text-[10px] uppercase font-bold text-on-secondary-container opacity-70" style="">Total Pickups</p>
+</div>
+<div class="flex-1 bg-tertiary-fixed p-4 rounded-xl flex flex-col items-center justify-center text-center">
+<p class="text-3xl font-headline font-extrabold text-on-tertiary-fixed-variant" style="">180.000</p>
+<p class="text-[10px] uppercase font-bold text-on-tertiary-fixed-variant opacity-70" style="">SALDO</p>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Nav Bar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pt-3 pb-8 bg-white/80 dark:bg-slate-900/80 backdrop-blur-2xl rounded-t-[1.5rem] shadow-[0_-8px_30px_rgba(0,0,0,0.04)] z-50">
+<a class="flex flex-col items-center justify-center text-[#191c1d]/50 dark:text-[#f3f4f5]/50 px-5 py-2 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 rounded-2xl transition-all" href="#" style="">
+<span class="material-symbols-outlined" style="">home</span>
+<span class="font-['Manrope'] font-medium text-[11px] uppercase tracking-wider mt-1" style="">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#191c1d]/50 dark:text-[#f3f4f5]/50 px-5 py-2 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 rounded-2xl transition-all" href="#" style="">
+<span class="material-symbols-outlined" style="">shopping_bag</span>
+<span class="font-['Manrope'] font-medium text-[11px] uppercase tracking-wider mt-1" style="">jual</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#191c1d]/50 dark:text-[#f3f4f5]/50 px-5 py-2 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 rounded-2xl transition-all" href="#" style="">
+<span class="material-symbols-outlined" style="">eco</span>
+<span class="font-['Manrope'] font-medium text-[11px] uppercase tracking-wider mt-1" style="">Layanan</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-gradient-to-br from-[#0f5238] to-[#2d6a4f] text-white rounded-[1.5rem] px-5 py-2 active:scale-90 transition-transform duration-200" href="#" style="">
+<span class="material-symbols-outlined" style="font-variation-settings: &quot;FILL&quot; 1;">person</span>
+<span class="font-['Manrope'] font-medium text-[11px] uppercase tracking-wider mt-1" style="">Profile</span>
+</a>
+</nav>
+</body></html>
