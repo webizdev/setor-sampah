@@ -37,6 +37,21 @@ export async function renderAdminCompany(container, currentPath) {
                             <input type="hidden" id="form-id" value="${profile?.id || ''}">
                             
                             <div class="grid grid-cols-1 gap-10">
+                                <!-- Logo Section -->
+                                <div class="group bg-slate-50 rounded-[2.5rem] p-8 border-2 border-dashed border-slate-200 hover:border-primary/30 transition-all text-center relative overflow-hidden group/logo">
+                                    <label class="flex flex-col items-center cursor-pointer">
+                                        <div id="logo-preview" class="w-24 h-24 rounded-2xl bg-white shadow-lg mb-4 flex items-center justify-center overflow-hidden border border-slate-100 group-hover/logo:scale-110 transition-transform duration-500">
+                                            ${profile?.logo_url 
+                                                ? `<img src="${profile.logo_url}" class="w-full h-full object-cover">` 
+                                                : `<span class="material-symbols-outlined text-4xl text-slate-300 font-variation-settings-fill">add_photo_alternate</span>`
+                                            }
+                                        </div>
+                                        <h4 class="font-black text-slate-800 text-sm uppercase tracking-widest">Logo <span class="text-primary">Aplikasi</span></h4>
+                                        <p class="text-[10px] text-slate-400 mt-2 font-medium">Klik untuk ganti (Rekomendasi: 512x512px)</p>
+                                        <input type="file" id="form-logo" class="hidden" accept="image/*">
+                                    </label>
+                                </div>
+
                                 <!-- Company Name -->
                                 <div class="group">
                                     <label class="flex items-center gap-2 text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-4 ml-2 group-focus-within:text-primary transition-colors">
@@ -145,6 +160,20 @@ export async function renderAdminCompany(container, currentPath) {
         `;
         container.innerHTML = html;
 
+        // Preview Listener
+        const logoInput = document.getElementById('form-logo');
+        const logoPreview = document.getElementById('logo-preview');
+        logoInput?.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (re) => {
+                    logoPreview.innerHTML = `<img src="${re.target.result}" class="w-full h-full object-cover">`;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
         // Form Submit Handler
         const form = document.getElementById('company-form');
         if(form) {
@@ -157,17 +186,39 @@ export async function renderAdminCompany(container, currentPath) {
                 btn.disabled = true;
                 btn.classList.add('opacity-50');
 
-                const id = document.getElementById('form-id').value;
-                const payload = {
-                    nama: document.getElementById('form-nama').value,
-                    alamat: document.getElementById('form-alamat').value,
-                    whatsapp: document.getElementById('form-whatsapp').value,
-                    tier_prioritas_threshold: document.getElementById('form-tier-prioritas').value,
-                    tier_gold_threshold: document.getElementById('form-tier-gold').value,
-                    tier_silver_threshold: document.getElementById('form-tier-silver').value
-                };
-
                 try {
+                    let logoUrl = profile?.logo_url || '';
+                    
+                    // Handle Logo Upload
+                    const logoFile = logoInput.files[0];
+                    if (logoFile) {
+                        const fileExt = logoFile.name.split('.').pop();
+                        const fileName = `logo-${Math.random().toString(36).substring(7)}.${fileExt}`;
+                        const filePath = `branding/${fileName}`;
+
+                        const { error: uploadError } = await supabase.storage
+                            .from('yari_assets')
+                            .upload(filePath, logoFile);
+
+                        if (uploadError) throw uploadError;
+
+                        const { data: { publicUrl } } = supabase.storage
+                            .from('yari_assets')
+                            .getPublicUrl(filePath);
+                            
+                        logoUrl = publicUrl;
+                    }
+
+                    const payload = {
+                        nama: document.getElementById('form-nama').value,
+                        alamat: document.getElementById('form-alamat').value,
+                        whatsapp: document.getElementById('form-whatsapp').value,
+                        tier_prioritas_threshold: document.getElementById('form-tier-prioritas').value,
+                        tier_gold_threshold: document.getElementById('form-tier-gold').value,
+                        tier_silver_threshold: document.getElementById('form-tier-silver').value,
+                        logo_url: logoUrl
+                    };
+
                     let res;
                     if (id) {
                         res = await supabase.from('yari_company_profile').update(payload).eq('id', id);

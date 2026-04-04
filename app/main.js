@@ -7,6 +7,10 @@ import { renderProfile } from './src/views/profile.js';
 import { renderOnboarding } from './src/views/onboarding.js';
 import { renderRegister } from './src/views/register.js';
 import './src/utils/pwa.js'; // Ensure PWA listener is active
+import { initDynamicBranding } from './src/utils/branding.js';
+
+// Init Branding (Logo, Favicon, naming)
+initDynamicBranding();
 
 // Global Session Check
 window.USER_ID = localStorage.getItem('yari_user_id') || null;

@@ -12,6 +12,16 @@ import { renderAdminMember } from './views/admin_member.js';
 import { renderAdminLayanan } from './views/admin_layanan.js';
 import { renderAdminCompany } from './views/admin_company.js';
 import { renderAdminOnboarding } from './views/admin_onboarding.js';
+import { initDynamicBranding } from './utils/branding.js';
+
+// Global Branding Store
+let adminBranding = null;
+
+// Init Branding on Start
+async function loadAdminBranding() {
+   adminBranding = await initDynamicBranding();
+}
+loadAdminBranding();
 
 // Simple Router for Admin Pages
 const adminRoutes = {
@@ -95,12 +105,17 @@ export function getAdminSidebar(currentPath) {
         
         <!-- Branding Desktop -->
         <div class="px-8 mb-10 hidden lg:flex items-center gap-3">
-            <div class="w-10 h-10 bg-primary/10 rounded-2xl flex items-center justify-center text-primary shadow-inner">
-                <span class="material-symbols-outlined font-fill text-2xl">shield_person</span>
+            <div class="w-10 h-10 ${adminBranding?.logo_url ? '' : 'bg-primary/10'} rounded-2xl flex items-center justify-center text-primary shadow-inner overflow-hidden">
+                ${adminBranding?.logo_url 
+                    ? `<img src="${adminBranding.logo_url}" class="w-full h-full object-cover">`
+                    : `<span class="material-symbols-outlined font-fill text-2xl">shield_person</span>`
+                }
             </div>
             <div>
-                <h1 class="headline font-black text-xl text-slate-800 tracking-tight leading-none mb-0.5 uppercase">Admin<span class="text-primary">Panel</span></h1>
-                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-0.5">Management Suite</p>
+                <h1 class="headline font-black text-xl text-slate-800 tracking-tight leading-none mb-0.5 uppercase">
+                    ${adminBranding?.nama ? adminBranding.nama.split(' ')[0] : 'Admin'}<span class="text-primary">${adminBranding?.nama ? adminBranding.nama.split(' ')[1] || 'Panel' : 'Panel'}</span>
+                </h1>
+                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-0.5">${adminBranding?.nama || 'Management Suite'}</p>
             </div>
         </div>
 
