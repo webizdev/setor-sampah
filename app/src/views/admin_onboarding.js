@@ -15,9 +15,19 @@ export async function renderAdminOnboarding(container, currentPath) {
             return order.indexOf(a.key) - order.indexOf(b.key);
         };
 
+        const sortLayanan = (a, b) => {
+            const order = [
+                'layanan_title', 'layanan_desc', 
+                'service_1_title', 'service_1_desc', 
+                'service_2_title', 'service_2_desc', 
+                'service_3_title', 'service_3_desc'
+            ];
+            return order.indexOf(a.key) - order.indexOf(b.key);
+        };
+
         const sections = {
             hero: (content?.filter(c => c.section === 'hero') || []).sort(sortHero),
-            layanan: content?.filter(c => c.section === 'layanan') || [],
+            layanan: (content?.filter(c => c.section === 'layanan') || []).sort(sortLayanan),
             fitur: content?.filter(c => c.section === 'fitur') || [],
             cta: content?.filter(c => c.section === 'cta') || []
         };
@@ -152,14 +162,14 @@ export async function renderAdminOnboarding(container, currentPath) {
                     { key: 'hero_image_3', value: 'images/layanan.png', type: 'image_url', section: 'hero', label: 'Tampilan Layanan' },
                     { key: 'hero_image_4', value: 'images/profile.png', type: 'image_url', section: 'hero', label: 'Tampilan Profil' },
                     { key: 'hero_image_5', value: 'images/maps.png', type: 'image_url', section: 'hero', label: 'Tampilan Peta' },
-                    { key: 'layanan_title', value: 'Layanan Kelola Sampah Cerdas', type: 'text', section: 'layanan', label: 'Judul Layanan' },
-                    { key: 'layanan_desc', value: 'Solusi lengkap dari penjemputan hingga penjualan daur ulang yang dirancang khusus untuk kenyamanan ekosistem Anda.', type: 'textarea', section: 'layanan', label: 'Deskripsi Layanan' },
-                    { key: 'service_1_title', value: 'Penjemputan Langsung', type: 'text', section: 'layanan', label: 'Layanan 1 (Judul)' },
-                    { key: 'service_1_desc', value: 'Pesan jadwal penjemputan dari rumah. Tim kurir tangkas kami akan mengambil sampah daur ulang Anda dengan timbangan transparan.', type: 'textarea', section: 'layanan', label: 'Layanan 1 (Deskripsi)' },
-                    { key: 'service_2_title', value: 'Drop-off Terdekat', type: 'text', section: 'layanan', label: 'Layanan 2 (Judul)' },
-                    { key: 'service_2_desc', value: 'Setorkan langsung komoditas Anda ke mitra pengepul terverifikasi dalam jaringan terdekat untuk proses penjualan instan dan mandiri.', type: 'textarea', section: 'layanan', label: 'Layanan 2 (Deskripsi)' },
-                    { key: 'service_3_title', value: 'Aksi Ekosistem & CSR', type: 'text', section: 'layanan', label: 'Layanan 3 (Judul)' },
-                    { key: 'service_3_desc', value: 'Terlibatlah dalam misi donasi, tukar poin dengan hadiah, pelatihan daur ulang mandiri, dan bangun gaya hidup ramah lingkungan sesungguhnya.', type: 'textarea', section: 'layanan', label: 'Layanan 3 (Deskripsi)' },
+                    { key: 'layanan_title', value: 'Layanan Kelola Sampah Cerdas', type: 'text', section: 'layanan', label: 'Judul Utama Section' },
+                    { key: 'layanan_desc', value: 'Solusi lengkap dari penjemputan hingga penjualan daur ulang yang dirancang khusus untuk kenyamanan ekosistem Anda.', type: 'textarea', section: 'layanan', label: 'Deskripsi Utama Section' },
+                    { key: 'service_1_title', value: 'Penjemputan Langsung', type: 'text', section: 'layanan', label: 'Layanan 1: Judul' },
+                    { key: 'service_1_desc', value: 'Pesan jadwal penjemputan dari rumah. Tim kurir tangkas kami akan mengambil sampah daur ulang Anda dengan timbangan transparan.', type: 'textarea', section: 'layanan', label: 'Layanan 1: Deskripsi' },
+                    { key: 'service_2_title', value: 'Drop-off Terdekat', type: 'text', section: 'layanan', label: 'Layanan 2: Judul' },
+                    { key: 'service_2_desc', value: 'Setorkan langsung komoditas Anda ke mitra pengepul terverifikasi dalam jaringan terdekat untuk proses penjualan instan dan mandiri.', type: 'textarea', section: 'layanan', label: 'Layanan 2: Deskripsi' },
+                    { key: 'service_3_title', value: 'Aksi Ekosistem & CSR', type: 'text', section: 'layanan', label: 'Layanan 3: Judul' },
+                    { key: 'service_3_desc', value: 'Terlibatlah dalam misi donasi, tukar poin dengan hadiah, pelatihan daur ulang mandiri, dan bangun gaya hidup ramah lingkungan sesungguhnya.', type: 'textarea', section: 'layanan', label: 'Layanan 3: Deskripsi' },
                     { key: 'fitur_title', value: 'Fitur Premium untuk Gaya Hidup Hijau.', type: 'text', section: 'fitur', label: 'Judul Fitur' },
                     { key: 'fitur_subtitle', value: 'Kami menyediakan ekosistem terpadu dari penjemputan hingga penjualan daur ulang.', type: 'textarea', section: 'fitur', label: 'Sub-judul Fitur' },
                     { key: 'cta_title', value: 'Mulai Perjalanan Hijau Anda', type: 'text', section: 'cta', label: 'Judul CTA' },
