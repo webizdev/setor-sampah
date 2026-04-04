@@ -107,7 +107,12 @@ export async function renderAdminArtikel(container, currentPath) {
                                     <input id="form-image" type="url" required class="w-full border border-slate-100 bg-slate-50/50 rounded-2xl px-5 py-4 text-sm font-bold focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/5 outline-none transition-all placeholder:text-slate-300" placeholder="https://...">
                                 </div>
 
-                                <div class="col-span-2 space-y-1.5 px-1 py-1">
+                                <div class="col-span-2 space-y-1.5">
+                                    <label class="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Link Website (Arahkan Target)</label>
+                                    <input id="form-link" type="url" required class="w-full border border-slate-100 bg-slate-50/50 rounded-2xl px-5 py-4 text-sm font-bold focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/5 outline-none transition-all placeholder:text-slate-300" placeholder="https://...">
+                                </div>
+
+                                <div class="col-span-2 mt-2 px-1 py-1">
                                     <label class="flex items-center gap-3 cursor-pointer group">
                                         <div class="relative flex items-center">
                                             <input id="form-is-notified" type="checkbox" class="peer h-6 w-6 cursor-pointer appearance-none rounded-lg bg-slate-100 border border-slate-200 checked:bg-primary checked:border-primary transition-all shadow-sm">
