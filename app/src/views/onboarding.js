@@ -27,6 +27,19 @@ export function renderOnboarding(container) {
                 nav .nav-link:hover, nav .nav-link.active {
                     color: var(--md-sys-color-primary, #0f5238) !important;
                 }
+
+                @keyframes marquee {
+                    0% { transform: translateX(0); }
+                    100% { transform: translateX(-50%); }
+                }
+                .animate-marquee {
+                    animation: marquee 50s linear infinite;
+                    display: flex;
+                    width: max-content;
+                }
+                .pause-on-hover:hover .animate-marquee {
+                    animation-play-state: paused;
+                }
             </style>
             <!-- TopNavBar -->
             <nav class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-surface-variant">
@@ -133,7 +146,7 @@ export function renderOnboarding(container) {
                 </style>
 
                 <!-- Katalog Section -->
-                <section id="katalog-section" class="py-16 md:py-24 px-0 max-w-7xl mx-auto overflow-hidden">
+                <section id="katalog-section" class="py-16 md:py-24 px-0 max-w-7xl mx-auto overflow-hidden pause-on-hover">
                     <div class="px-6 lg:px-12 text-center mb-12">
                         <h2 class="text-3xl md:text-5xl font-headline font-extrabold text-primary mb-6">Katalog Harga Real-time</h2>
                         <p class="text-on-surface-variant text-lg max-w-2xl mx-auto leading-relaxed">
@@ -141,17 +154,8 @@ export function renderOnboarding(container) {
                         </p>
                     </div>
                     
-                    <div class="relative w-full overflow-hidden">
-                        <!-- Horizontal Slider Container -->
-                        <div id="katalog-slider" class="flex overflow-x-hidden pb-10 no-scrollbar">
-                            <!-- Skeleton loaders -->
-                            <div class="flex gap-6 px-6">
-                                <div class="animate-pulse flex-none w-64 md:w-72 h-80 bg-surface-container rounded-[2rem]"></div>
-                                <div class="animate-pulse flex-none w-64 md:w-72 h-80 bg-surface-container rounded-[2rem]"></div>
-                                <div class="animate-pulse flex-none w-64 md:w-72 h-80 bg-surface-container rounded-[2rem]"></div>
-                                <div class="animate-pulse flex-none w-64 md:w-72 h-80 bg-surface-container rounded-[2rem]"></div>
-                            </div>
-                        </div>
+                    <div id="katalog-slider" class="flex h-80 items-center no-scrollbar">
+                        <!-- Dynamic Catalog Items -->
                     </div>
                 </section>
 
@@ -405,7 +409,7 @@ export function renderOnboarding(container) {
 
             if (data && data.length > 0) {
                 const cardHTML = data.map(item => `
-                    <div class="flex-none w-64 md:w-72 bg-white rounded-[2rem] border border-slate-100 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group">
+                    <div class="flex-none w-64 md:w-72 bg-white rounded-[2rem] border border-slate-100 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group mx-3">
                         <div class="h-40 overflow-hidden relative bg-slate-100">
                             <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" src="${item.image_url || 'https://via.placeholder.com/400x300?text=No+Image'}" />
                             ${item.is_popular ? `<div class="absolute top-3 left-3 bg-primary text-white px-3 py-1 rounded-full text-[10px] font-black shadow-lg uppercase tracking-widest">Populer</div>` : ''}
@@ -418,40 +422,18 @@ export function renderOnboarding(container) {
                     </div>
                 `).join('');
                 
-                // Wrap in a block with defined trailing gap to ensure mathematically perfect scroll widths
-                const blockHTML = `<div class="flex gap-6 pr-6">${cardHTML}</div>`;
+                // Simplified block for CSS marquee
+                const blockHTML = `<div class="flex">${cardHTML}</div>`;
                 
-                // Duplicate multiple times for seamless infinity
-                slider.innerHTML = blockHTML.repeat(10);
+                slider.innerHTML = `
+                    <div class="animate-marquee flex">
+                        ${blockHTML}
+                        ${blockHTML}
+                    </div>
+                `;
                 
-                // Continuous exact-pixel scroller logic
-                let scrollInterval;
-                const speed = 1.5; // pixels per frame
-                let exactScrollLeft = 0; // tracking floats to avoid pixel snapping stutters
-
-                const startScroll = () => {
-                    scrollInterval = setInterval(() => {
-                        exactScrollLeft += speed;
-                        
-                        // When scrolled exactly halfway through the duplicates, instantly reset to 0
-                        // Since padding and gaps are identical per block, this visual reset is invisible
-                        if (exactScrollLeft >= slider.scrollWidth / 2) {
-                            exactScrollLeft = 0;
-                        }
-                        slider.scrollLeft = exactScrollLeft;
-                    }, 20); // ~50 hz
-                };
-                
-                const stopScroll = () => clearInterval(scrollInterval);
-                
-                startScroll();
-                
-                // Pause when hovered intentionally by user, resume when leaving
-                slider.addEventListener('mouseenter', stopScroll);
-                slider.addEventListener('mouseleave', startScroll);
-
             } else {
-                slider.innerHTML = `<div class="w-full text-center py-10 text-slate-400 font-medium">Belum ada item rincian daur ulang.</div>`;
+                slider.innerHTML = `<div class="w-full text-center py-10 text-slate-400 font-medium h-80 flex items-center justify-center">Belum ada item rincian daur ulang.</div>`;
             }
         } catch (err) {
             console.error("Gagal memuat katalog", err);
