@@ -1,7 +1,9 @@
-import { supabase } from '../supabase.js';
+import { supabase, fetchBrandName } from '../supabase.js';
 
 export async function renderOnboarding(container) {
-    // 1. Fetch Dynamic Content with Fallbacks
+    const brandName = await fetchBrandName();
+
+    // 2. Fetch Dynamic Content with Fallbacks
     const { data: rawContent } = await supabase.from('yari_onboarding_content').select('key, value');
     
     // Map array to object for easy access
@@ -94,9 +96,9 @@ export async function renderOnboarding(container) {
             <!-- TopNavBar -->
             <nav class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-surface-variant">
                 <div class="flex justify-between items-center px-6 lg:px-12 py-4 lg:py-6 max-w-screen-2xl mx-auto">
-                    <div class="text-2xl font-black text-primary tracking-tighter font-headline flex items-center gap-2">
-                        <span class="material-symbols-outlined text-3xl">recycling</span>
-                        YARI
+                    <div class="text-xl md:text-2xl font-black text-primary tracking-tighter font-headline flex items-center gap-2 shrink truncate">
+                        <span class="material-symbols-outlined text-2xl md:text-3xl shrink-0">recycling</span>
+                        <span class="truncate">${brandName}</span>
                     </div>
                     <div class="hidden md:flex items-center gap-10">
                         <a class="nav-link font-headline uppercase tracking-widest text-sm font-bold" href="#home">Beranda</a>
@@ -104,9 +106,9 @@ export async function renderOnboarding(container) {
                         <a class="nav-link font-headline uppercase tracking-widest text-sm font-bold text-on-surface-variant hover:text-primary transition-all duration-300" href="#katalog-section">Katalog</a>
                         <a class="nav-link font-headline uppercase tracking-widest text-sm font-bold text-on-surface-variant hover:text-primary transition-all duration-300" href="#footer-section">Tentang Kami</a>
                     </div>
-                    <a href="#/home" class="bg-primary text-on-primary px-6 py-3 rounded-xl font-headline font-bold text-sm tracking-wide hover:brightness-110 transition-all active:scale-95 flex items-center gap-2">
-                        <span>Masuk Aplikasi</span>
-                        <span class="material-symbols-outlined text-sm">login</span>
+                    <a href="#/home" class="bg-primary text-on-primary px-4 md:px-6 py-2.5 md:py-3 rounded-xl font-headline font-bold text-xs md:text-sm tracking-wide hover:brightness-110 transition-all active:scale-95 flex items-center gap-2 shrink-0">
+                        <span class="hidden sm:inline">Masuk Aplikasi</span>
+                        <span class="material-symbols-outlined text-sm md:text-base">login</span>
                     </a>
                 </div>
             </nav>
@@ -315,7 +317,7 @@ export async function renderOnboarding(container) {
                         <div class="lg:col-span-1">
                             <div class="text-2xl font-black text-primary tracking-tighter font-headline mb-8 flex items-center gap-2">
                                 <span class="material-symbols-outlined text-4xl">recycling</span>
-                                YARI
+                                ${brandName}
                             </div>
                             <p class="text-on-surface-variant leading-relaxed mb-8 font-medium opacity-80">
                                 ${d.footer_about}

@@ -1,6 +1,8 @@
-import { supabase } from '../supabase.js';
+import { supabase, fetchBrandName } from '../supabase.js';
 
 export async function renderHome(container) {
+  const brandName = await fetchBrandName();
+
   // Fetch user data
   const { data: user } = await supabase
     .from('yari_users')
@@ -73,7 +75,7 @@ export async function renderHome(container) {
     <div class="flex justify-between items-center px-6 py-4 w-full">
     <div class="flex items-center gap-4">
     <span class="material-symbols-outlined text-[#0f5238] dark:text-[#f3f4f5]">menu</span>
-    <span class="text-[#0f5238] dark:text-[#f3f4f5] font-black tracking-tighter text-xl headline">Setor Sampah</span>
+    <span class="text-[#0f5238] dark:text-[#f3f4f5] font-black tracking-tighter text-xl headline">${brandName}</span>
     </div>
     <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary/20">
     <img alt="User Profile" class="w-full h-full object-cover" src="${avatar}">

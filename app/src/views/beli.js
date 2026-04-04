@@ -1,7 +1,9 @@
-import { supabase } from '../supabase.js';
+import { supabase, fetchBrandName } from '../supabase.js';
 import { getBottomNav } from './home.js';
 
 export async function renderBeli(container) {
+  const brandName = await fetchBrandName();
+
   // Fetch user data for the avatar
   const { data: user } = await supabase
     .from('yari_users')
@@ -27,7 +29,7 @@ export async function renderBeli(container) {
     <div class="flex items-center gap-4">
     <span class="material-symbols-outlined text-[#0f5238]">menu</span>
     </div>
-    <h1 class="text-[#0f5238] font-black tracking-tighter text-lg font-['Plus_Jakarta_Sans']">Setor Sampah</h1>
+    <h1 class="text-[#0f5238] font-black tracking-tighter text-lg font-['Plus_Jakarta_Sans']">${brandName}</h1>
     <div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center overflow-hidden">
     <img class="w-full h-full object-cover" src="${avatar}"/>
     </div>

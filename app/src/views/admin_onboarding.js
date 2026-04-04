@@ -209,7 +209,7 @@ export async function renderAdminOnboarding(container, currentPath) {
                     { key: 'cta_title', value: 'Mulai Perjalanan Hijau Anda', type: 'text', section: 'cta', label: 'Judul CTA' },
                     { key: 'cta_subtitle', value: 'Bergabung dengan komunitas pejuang lingkungan kami dan ubah kebiasaan menjadi pundi-pundi rupiah yang bernilai konstan.', type: 'textarea', section: 'cta', label: 'Sub-judul CTA' },
                     
-                    { key: 'footer_about', value: 'YARI (Setor Sampah Indonesia) adalah pelopor ekosistem ekonomi sirkular digital yang memberdayakan masyarakat untuk mengelola limbah menjadi aset bernilai.', type: 'textarea', section: 'footer', label: 'Tentang YARI' },
+                    { key: 'footer_about', value: 'YARI (Setor Sampah Indonesia) adalah pelopor ekosistem ekonomi sirkular digital yang memberdayakan masyarakat untuk mengelola limbah menjadi aset bernilai.', type: 'textarea', section: 'footer', label: 'Tentang Perusahaan' },
                     { key: 'footer_fb', value: '#', type: 'text', section: 'footer', label: 'Link Facebook' },
                     { key: 'footer_ig', value: '#', type: 'text', section: 'footer', label: 'Link Instagram' },
                     { key: 'footer_tiktok', value: '#', type: 'text', section: 'footer', label: 'Link TikTok' }

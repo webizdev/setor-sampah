@@ -1,7 +1,8 @@
-import { supabase } from '../supabase.js';
+import { supabase, fetchBrandName } from '../supabase.js';
 import { getBottomNav } from './home.js';
 
 export async function renderLayanan(container) {
+  const brandName = await fetchBrandName();
 
   // Fetch user data for profile picture
   const { data: user } = await supabase
@@ -28,7 +29,7 @@ export async function renderLayanan(container) {
       <div class="flex items-center gap-4">
         <span class="material-symbols-outlined text-[#0f5238] dark:text-[#f3f4f5]">menu</span>
       </div>
-      <h1 class="text-[#0f5238] dark:text-[#f3f4f5] font-black tracking-tighter text-lg headline">Setor Sampah</h1>
+      <h1 class="text-[#0f5238] dark:text-[#f3f4f5] font-black tracking-tighter text-lg headline">${brandName}</h1>
       <div class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center overflow-hidden ring-2 ring-white shadow-sm cursor-pointer" onclick="window.location.hash = '#/profile'">
         <img alt="User Profile" class="w-full h-full object-cover" src="${avatar}">
       </div>

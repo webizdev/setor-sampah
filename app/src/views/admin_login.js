@@ -1,7 +1,8 @@
-import { supabase } from '../supabase.js';
+import { supabase, fetchBrandName } from '../supabase.js';
 import { setAdminSession } from '../admin.js';
 
 export async function renderAdminLogin(container) {
+  const brandName = await fetchBrandName();
   const html = `
     <div class="min-h-screen flex items-center justify-center bg-slate-50 px-6">
         <div class="w-full max-w-md bg-white rounded-3xl shadow-xl p-8 border border-slate-100">
@@ -10,7 +11,7 @@ export async function renderAdminLogin(container) {
                     <span class="material-symbols-outlined text-primary text-3xl">admin_panel_settings</span>
                 </div>
                 <h1 class="headline text-2xl font-black text-on-surface tracking-tight">Super Admin</h1>
-                <p class="text-on-surface-variant text-sm mt-1">Setor Sampah Management</p>
+                <p class="text-on-surface-variant text-sm mt-1">${brandName} Management</p>
             </div>
             
             <form id="admin-login-form" class="space-y-6">

@@ -1,7 +1,9 @@
-import { supabase } from '../supabase.js';
+import { supabase, fetchBrandName } from '../supabase.js';
 import { getBottomNav } from './home.js';
 
 export async function renderProfile(container) {
+  const brandName = await fetchBrandName();
+
   // Fetch user data
   async function loadData() {
     const { data: user } = await supabase
@@ -51,7 +53,7 @@ export async function renderProfile(container) {
       <header class="fixed top-0 w-full z-[5000] bg-slate-50/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200/50">
         <div class="flex justify-between items-center px-6 py-4 w-full">
           <button class="material-symbols-outlined text-[#0f5238] dark:text-[#f3f4f5] hover:bg-emerald-100/30 p-2 rounded-full transition-all">menu</button>
-          <h1 class="headline tracking-tight font-black text-lg text-[#0f5238] dark:text-[#f3f4f5]">Setor Sampah</h1>
+          <h1 class="headline tracking-tight font-black text-lg text-[#0f5238] dark:text-[#f3f4f5]">${brandName}</h1>
           <button id="open-settings-btn" onclick="window.openSettings()" class="material-symbols-outlined text-[#0f5238]/60 dark:text-[#f3f4f5]/60 hover:text-primary transition-colors p-2">settings</button>
         </div>
       </header>
