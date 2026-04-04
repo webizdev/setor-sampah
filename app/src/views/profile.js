@@ -260,12 +260,12 @@ export async function renderProfile(container) {
             <button onclick="window.confirmLocation()" class="bg-primary text-white px-6 py-2.5 rounded-xl text-xs font-black hover:bg-[#0f5238] transition-colors shadow-lg shadow-primary/20">Pasang Pin</button>
           </div>
         </header>
-        <div id="map-view" class="flex-grow w-full relative bg-slate-50">
+        <div id="map-view" class="flex-grow w-full h-full relative bg-slate-100 overflow-hidden">
           <!-- Crosshair Overlay -->
-          <div class="absolute inset-0 z-[1000] flex items-center justify-center pointer-events-none mb-8">
+          <div class="absolute inset-0 z-[1000] flex items-center justify-center pointer-events-none mb-10">
             <div class="relative">
-               <span class="material-symbols-outlined text-primary text-6xl drop-shadow-[0_15px_15px_rgba(34,197,94,0.4)]">location_on</span>
-               <div class="absolute bottom-1 left-1/2 -translate-x-1/2 w-4 h-2 bg-black/10 rounded-full blur-[3px]"></div>
+               <span class="material-symbols-outlined text-primary text-6xl drop-shadow-[0_15px_20px_rgba(34,197,94,0.4)]">location_on</span>
+               <div class="absolute bottom-1 left-1/2 -translate-x-1/2 w-5 h-2 bg-black/10 rounded-full blur-[4px]"></div>
             </div>
           </div>
         </div>
@@ -481,14 +481,20 @@ export async function renderProfile(container) {
       attribution: '&copy; OpenStreetMap contributors'
     }).addTo(leafletMap);
 
-    // Hide loader once map tiles are ready
     setTimeout(() => {
       const loading = document.getElementById('map-loading-overlay');
       if (loading) {
         loading.classList.add('opacity-0', 'scale-110');
         setTimeout(() => loading.classList.add('hidden'), 700);
       }
+      // Final size check after everything is stable
+      if (leafletMap) leafletMap.invalidateSize();
     }, 1200);
+
+    // Initial size check after a short delay
+    setTimeout(() => {
+      if (leafletMap) leafletMap.invalidateSize();
+    }, 200);
 
     L.control.zoom({ position: 'bottomright' }).addTo(leafletMap);
 
