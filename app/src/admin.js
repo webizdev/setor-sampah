@@ -11,6 +11,7 @@ import { renderAdminReports } from './views/admin_reports.js';
 import { renderAdminMember } from './views/admin_member.js';
 import { renderAdminLayanan } from './views/admin_layanan.js';
 import { renderAdminCompany } from './views/admin_company.js';
+import { renderAdminOnboarding } from './views/admin_onboarding.js';
 
 // Simple Router for Admin Pages
 const adminRoutes = {
@@ -23,6 +24,7 @@ const adminRoutes = {
   '/member': renderAdminMember,
   '/services': renderAdminLayanan,
   '/company': renderAdminCompany,
+  '/onboarding': renderAdminOnboarding,
 };
 
 // Check if admin is authenticated
@@ -69,7 +71,8 @@ export function getAdminSidebar(currentPath) {
     { path: '/catalog', label: 'Katalog', icon: 'inventory_2' },
     { path: '/services', label: 'Layanan', icon: 'category' },
     { path: '/artikel', label: 'Artikel', icon: 'article' },
-    { path: '/company', label: 'Company', icon: 'business' },
+    { path: '/company', label: 'Profil Perusahaan', icon: 'business' },
+    { path: '/onboarding', label: 'Onboarding', icon: 'auto_awesome' },
   ];
 
   return `

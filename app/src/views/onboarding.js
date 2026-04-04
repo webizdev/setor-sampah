@@ -1,6 +1,38 @@
 import { supabase } from '../supabase.js';
 
-export function renderOnboarding(container) {
+export async function renderOnboarding(container) {
+    // 1. Fetch Dynamic Content with Fallbacks
+    const { data: rawContent } = await supabase.from('yari_onboarding_content').select('key, value');
+    
+    // Map array to object for easy access
+    const content = (rawContent || []).reduce((acc, item) => {
+        acc[item.key] = item.value;
+        return acc;
+    }, {});
+
+    // Fallbacks
+    const d = {
+        hero_title: content.hero_title || 'Ubah Sampah Jadi Berkah.',
+        hero_subtitle: content.hero_subtitle || 'Solusi cerdas kelola limbah rumah tangga. Dapatkan penghasilan tambahan dan menangkan reward eksklusif untuk setiap kontribusi hijau Anda.',
+        hero_image_1: content.hero_image_1 || 'images/home.png',
+        hero_image_2: content.hero_image_2 || 'images/beli.png',
+        hero_image_3: content.hero_image_3 || 'images/layanan.png',
+        hero_image_4: content.hero_image_4 || 'images/profile.png',
+        hero_image_5: content.hero_image_5 || 'images/maps.png',
+        layanan_title: content.layanan_title || 'Layanan Kelola Sampah Cerdas',
+        layanan_desc: content.layanan_desc || 'Solusi lengkap dari penjemputan hingga penjualan daur ulang yang dirancang khusus untuk kenyamanan ekosistem Anda.',
+        service_1_title: content.service_1_title || 'Penjemputan Langsung',
+        service_1_desc: content.service_1_desc || 'Pesan jadwal penjemputan dari rumah. Tim kurir tangkas kami akan mengambil sampah daur ulang Anda dengan timbangan transparan.',
+        service_2_title: content.service_2_title || 'Drop-off Terdekat',
+        service_2_desc: content.service_2_desc || 'Setorkan langsung komoditas Anda ke mitra pengepul terverifikasi dalam jaringan terdekat untuk proses penjualan instan dan mandiri.',
+        service_3_title: content.service_3_title || 'Aksi Ekosistem & CSR',
+        service_3_desc: content.service_3_desc || 'Terlibatlah dalam misi donasi, tukar poin dengan hadiah, pelatihan daur ulang mandiri, dan bangun gaya hidup ramah lingkungan sesungguhnya.',
+        fitur_title: content.fitur_title || 'Fitur Premium untuk Gaya Hidup Hijau.',
+        fitur_subtitle: content.fitur_subtitle || 'Kami menyediakan ekosistem terpadu dari penjemputan hingga penjualan daur ulang.',
+        cta_title: content.cta_title || 'Mulai Perjalanan Hijau Anda',
+        cta_subtitle: content.cta_subtitle || 'Bergabung dengan komunitas pejuang lingkungan kami dan ubah kebiasaan menjadi pundi-pundi rupiah yang bernilai konstan.'
+    };
+
     const html = `
         <div class="bg-surface font-body text-on-surface selection:bg-secondary-container min-h-screen">
             <style>
@@ -67,9 +99,9 @@ export function renderOnboarding(container) {
                     <div class="px-6 lg:px-12 max-w-screen-2xl mx-auto grid md:grid-cols-12 gap-12 items-center">
                     <div class="md:col-span-7 z-10">
                         <span class="inline-block py-1.5 px-4 rounded-full bg-secondary-container text-on-secondary-container text-xs font-bold font-headline tracking-widest uppercase mb-6 shadow-sm">Waste to Wealth Ecosystem</span>
-                        <h1 class="text-5xl md:text-7xl lg:text-8xl font-headline font-extrabold text-primary leading-[1] tracking-tighter mb-8">Ubah Sampah Jadi Berkah.</h1>
+                        <h1 class="text-5xl md:text-7xl lg:text-8xl font-headline font-extrabold text-primary leading-[1] tracking-tighter mb-8">${d.hero_title}</h1>
                         <p class="text-lg lg:text-xl text-on-surface-variant max-w-xl mb-10 leading-relaxed font-medium">
-                            Solusi cerdas kelola limbah rumah tangga. Dapatkan penghasilan tambahan dan menangkan reward eksklusif untuk setiap kontribusi hijau Anda.
+                            ${d.hero_subtitle}
                         </p>
                         <div class="flex flex-wrap gap-4">
                             <a href="#/home" class="bg-primary text-on-primary px-8 py-4 rounded-xl font-headline font-bold text-base shadow-xl shadow-primary/20 hover:brightness-110 transition-all flex items-center gap-2">
@@ -85,11 +117,11 @@ export function renderOnboarding(container) {
                         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 lg:w-96 lg:h-96 bg-secondary-fixed opacity-30 rounded-full blur-3xl"></div>
                         <div class="relative rounded-[2.5rem] overflow-hidden shadow-[0_20px_50px_rgba(15,82,56,0.2)] border-8 border-white max-w-[280px] md:max-w-[320px] aspect-[9/19] w-full mx-auto lg:ml-auto perspective-[1000px]">
                             <!-- Slides: jcSlider Carousel -->
-                            <img alt="Slide 1" class="hero-slide absolute top-0 left-0 w-full h-full object-contain bg-white transition-all duration-1000 ease-in-out z-10 opacity-100 scale-100" src="images/home.png" />
-                            <img alt="Slide 2" class="hero-slide absolute top-0 left-0 w-full h-full object-contain bg-white transition-all duration-1000 ease-in-out z-0 opacity-0 scale-100" src="images/beli.png" />
-                            <img alt="Slide 3" class="hero-slide absolute top-0 left-0 w-full h-full object-contain bg-white transition-all duration-1000 ease-in-out z-0 opacity-0 scale-100" src="images/layanan.png" />
-                            <img alt="Slide 4" class="hero-slide absolute top-0 left-0 w-full h-full object-contain bg-white transition-all duration-1000 ease-in-out z-0 opacity-0 scale-100" src="images/profile.png" />
-                            <img alt="Slide 5" class="hero-slide absolute top-0 left-0 w-full h-full object-contain bg-white transition-all duration-1000 ease-in-out z-0 opacity-0 scale-100" src="images/maps.png" />
+                            <img alt="Slide 1" class="hero-slide absolute top-0 left-0 w-full h-full object-contain bg-white transition-all duration-1000 ease-in-out z-10 opacity-100 scale-100" src="${d.hero_image_1}" />
+                            <img alt="Slide 2" class="hero-slide absolute top-0 left-0 w-full h-full object-contain bg-white transition-all duration-1000 ease-in-out z-0 opacity-0 scale-100" src="${d.hero_image_2}" />
+                            <img alt="Slide 3" class="hero-slide absolute top-0 left-0 w-full h-full object-contain bg-white transition-all duration-1000 ease-in-out z-0 opacity-0 scale-100" src="${d.hero_image_3}" />
+                            <img alt="Slide 4" class="hero-slide absolute top-0 left-0 w-full h-full object-contain bg-white transition-all duration-1000 ease-in-out z-0 opacity-0 scale-100" src="${d.hero_image_4}" />
+                            <img alt="Slide 5" class="hero-slide absolute top-0 left-0 w-full h-full object-contain bg-white transition-all duration-1000 ease-in-out z-0 opacity-0 scale-100" src="${d.hero_image_5}" />
                         </div>
                     </div>
                 </div>
@@ -98,9 +130,9 @@ export function renderOnboarding(container) {
                 <!-- Layanan / Services Section -->
                 <section id="layanan-section" class="py-16 md:py-24 px-6 lg:px-12 max-w-7xl mx-auto">
                     <div class="text-center mb-16">
-                        <h2 class="text-3xl md:text-5xl font-headline font-extrabold text-primary mb-6">Layanan Kelola Sampah Cerdas</h2>
+                        <h2 class="text-3xl md:text-5xl font-headline font-extrabold text-primary mb-6">${d.layanan_title}</h2>
                         <p class="text-on-surface-variant text-lg max-w-2xl mx-auto leading-relaxed">
-                            Solusi lengkap dari penjemputan hingga penjualan daur ulang yang dirancang khusus untuk kenyamanan ekosistem Anda.
+                            ${d.layanan_desc}
                         </p>
                     </div>
                     
@@ -110,9 +142,9 @@ export function renderOnboarding(container) {
                             <div class="w-16 h-16 bg-primary-fixed rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
                                 <span class="material-symbols-outlined text-3xl text-on-primary-fixed">local_shipping</span>
                             </div>
-                            <h3 class="text-2xl font-headline font-bold text-primary mb-4">Penjemputan Langsung</h3>
+                            <h3 class="text-2xl font-headline font-bold text-primary mb-4">${d.service_1_title}</h3>
                             <p class="text-on-surface-variant leading-relaxed">
-                                Pesan jadwal penjemputan dari rumah. Tim kurir tangkas kami akan mengambil sampah daur ulang Anda dengan timbangan transparan.
+                                ${d.service_1_desc}
                             </p>
                         </div>
                         
@@ -121,9 +153,9 @@ export function renderOnboarding(container) {
                             <div class="w-16 h-16 bg-secondary-fixed rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
                                 <span class="material-symbols-outlined text-3xl text-on-secondary-fixed">storefront</span>
                             </div>
-                            <h3 class="text-2xl font-headline font-bold text-primary mb-4">Drop-off Terdekat</h3>
+                            <h3 class="text-2xl font-headline font-bold text-primary mb-4">${d.service_2_title}</h3>
                             <p class="text-on-surface-variant leading-relaxed">
-                                Setorkan langsung komoditas Anda ke mitra pengepul terverifikasi dalam jaringan terdekat untuk proses penjualan instan dan mandiri.
+                                ${d.service_2_desc}
                             </p>
                         </div>
 
@@ -132,9 +164,9 @@ export function renderOnboarding(container) {
                             <div class="w-16 h-16 bg-tertiary-fixed rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
                                 <span class="material-symbols-outlined text-3xl text-on-tertiary-fixed">volunteer_activism</span>
                             </div>
-                            <h3 class="text-2xl font-headline font-bold text-primary mb-4">Aksi Ekosistem & CSR</h3>
+                            <h3 class="text-2xl font-headline font-bold text-primary mb-4">${d.service_3_title}</h3>
                             <p class="text-on-surface-variant leading-relaxed">
-                                Terlibatlah dalam misi donasi, tukar poin dengan hadiah, pelatihan daur ulang mandiri, dan bangun gaya hidup ramah lingkungan sesungguhnya.
+                                ${d.service_3_desc}
                             </p>
                         </div>
                     </div>
@@ -163,8 +195,8 @@ export function renderOnboarding(container) {
                 <section id="fitur-section" class="py-16 md:py-24 px-6 lg:px-12 max-w-screen-2xl mx-auto">
                     <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
                         <div class="max-w-2xl">
-                            <h2 class="text-4xl lg:text-5xl font-headline font-extrabold text-primary tracking-tighter mb-4">Fitur Premium untuk Gaya Hidup Hijau.</h2>
-                            <p class="text-on-surface-variant text-lg font-medium">Kami menyediakan ekosistem terpadu dari penjemputan hingga penjualan daur ulang.</p>
+                            <h2 class="text-4xl lg:text-5xl font-headline font-extrabold text-primary tracking-tighter mb-4">${d.fitur_title}</h2>
+                            <p class="text-on-surface-variant text-lg font-medium">${d.fitur_subtitle}</p>
                         </div>
                     </div>
 
@@ -242,9 +274,9 @@ export function renderOnboarding(container) {
                         <div class="absolute bottom-0 left-0 w-96 h-96 bg-secondary-fixed opacity-10 rounded-full blur-3xl"></div>
                         
                         <div class="relative z-10">
-                            <h2 class="text-4xl md:text-6xl font-headline font-extrabold text-white tracking-tighter mb-8 shadow-sm">Mulai Perjalanan Hijau Anda</h2>
+                            <h2 class="text-4xl md:text-6xl font-headline font-extrabold text-white tracking-tighter mb-8 shadow-sm">${d.cta_title}</h2>
                             <p class="text-primary-fixed text-lg md:text-xl max-w-2xl mx-auto mb-12 opacity-90 font-medium">
-                                Bergabung dengan komunitas pejuang lingkungan kami dan ubah kebiasaan menjadi pundi-pundi rupiah yang bernilai konstan.
+                                ${d.cta_subtitle}
                             </p>
                             <div class="flex flex-wrap justify-center gap-6">
                                 <a href="#/home" class="bg-secondary-fixed text-on-secondary-fixed px-10 py-5 rounded-2xl font-headline font-extrabold text-lg shadow-xl shadow-secondary-fixed/30 hover:scale-105 transition-all flex items-center gap-2">
