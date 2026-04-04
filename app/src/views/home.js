@@ -14,6 +14,121 @@ export async function renderHome(container) {
   const name = user?.full_name?.split(' ')[0] || 'User';
   const avatar = user?.avatar_url || '';
 
+  const eksplorasiData = [
+    {
+      kategori: 'Agenda',
+      badgeClass: 'bg-primary text-white',
+      items: [
+        {
+          title: 'Sapu Bersih Pantai Kuta',
+          icon: 'water_drop',
+          desc: '24 Okt 2026',
+          img: 'https://images.unsplash.com/photo-1618477461853-cf6ed80fbfc9?q=80&w=300&auto=format&fit=crop',
+          link: 'https://google.com/search?q=Sapu+Bersih+Pantai+Kuta'
+        },
+        {
+          title: 'Webinar Daur Ulang',
+          icon: 'event',
+          desc: '12 Nov 2026',
+          img: 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=300&auto=format&fit=crop',
+          link: 'https://google.com/search?q=Webinar+Daur+Ulang'
+        }
+      ]
+    },
+    {
+      kategori: 'Kegiatan',
+      badgeClass: 'bg-secondary text-white',
+      items: [
+        {
+          title: 'Workshop Kompos Mandiri',
+          icon: 'location_on',
+          desc: 'Balai Kota',
+          img: 'https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?q=80&w=300&auto=format&fit=crop',
+          link: 'https://google.com/search?q=Workshop+Kompos'
+        },
+        {
+          title: 'Gotong Royong RT 05',
+          icon: 'group',
+          desc: 'Komp. Hijau',
+          img: 'https://images.unsplash.com/photo-1605600659908-0ef719419d41?q=80&w=300&auto=format&fit=crop',
+          link: 'https://google.com'
+        }
+      ]
+    },
+    {
+      kategori: 'Lowongan Kerja',
+      badgeClass: 'bg-blue-600 text-white',
+      items: [
+        {
+          title: 'Staf Operasional Bank Sampah',
+          icon: 'work',
+          desc: 'Full-time • Jakarta',
+          img: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=300&auto=format&fit=crop',
+          link: 'https://linkedin.com'
+        }
+      ]
+    },
+    {
+      kategori: 'Edukasi',
+      badgeClass: 'bg-purple-600 text-white',
+      items: [
+        {
+          title: 'Cara Jitu Memilah Sampah Plastik',
+          icon: 'school',
+          desc: 'Video Panduan',
+          img: 'https://images.unsplash.com/photo-1516997184284-fd38171d184d?q=80&w=300&auto=format&fit=crop',
+          link: 'https://youtube.com'
+        }
+      ]
+    },
+    {
+      kategori: 'Artikel',
+      badgeClass: 'bg-orange-500 text-white',
+      items: [
+        {
+          title: 'Inovasi Plastik Biodegradable',
+          icon: 'article',
+          desc: 'Lingkungan • 5 min read',
+          img: 'https://images.unsplash.com/photo-1621503930472-fb5300be74fb?q=80&w=300&auto=format&fit=crop',
+          link: 'https://medium.com'
+        }
+      ]
+    }
+  ];
+
+  let feedHtml = '';
+  eksplorasiData.forEach((section, index) => {
+    // Hanya tampilkan 2 kategori pertama
+    const displayClass = index > 1 ? "hidden eksplorasi-extra" : "";
+    
+    let cardsHtml = '';
+    section.items.forEach(item => {
+      cardsHtml += `
+        <div class="snap-center shrink-0 w-[260px] bg-surface-container-low rounded-xl overflow-hidden group shadow-[0_2px_10px_rgba(0,0,0,0.02)] active:scale-[0.98] transition-transform cursor-pointer" onclick="window.open('${item.link}', '_blank')">
+          <div class="h-40 overflow-hidden relative">
+            <img alt="${item.title}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="${item.img}">
+            <div class="absolute top-3 left-3 ${section.badgeClass} px-3 py-1.5 rounded-full text-[9px] font-bold uppercase tracking-widest backdrop-blur-sm">${section.kategori}</div>
+          </div>
+          <div class="p-4">
+            <h4 class="headline font-bold text-[15px] leading-snug mb-2 text-on-surface line-clamp-2">${item.title}</h4>
+            <div class="flex items-center gap-2 text-on-surface-variant text-xs">
+              <span class="material-symbols-outlined text-[16px]">${item.icon}</span>
+              <span>${item.desc}</span>
+            </div>
+          </div>
+        </div>
+      `;
+    });
+
+    feedHtml += `
+      <div class="${displayClass} mb-6">
+        <div class="flex overflow-x-auto hide-scrollbar gap-4 px-6 pb-4 snap-x">
+          ${cardsHtml}
+        </div>
+      </div>
+    `;
+  });
+
   const html = `
     <!-- TopAppBar -->
     <header class="fixed top-0 w-full z-50 bg-slate-50/80 dark:bg-slate-900/80 backdrop-blur-xl">
@@ -61,42 +176,15 @@ export async function renderHome(container) {
     </div>
     </div>
     </section>
-    <!-- Large Slider Section: Agenda, Kegiatan, Edukasi, Lowongan Kerja -->
-    <section class="mb-10 -mx-6 overflow-hidden">
-    <div class="px-6 flex justify-between items-end mb-4">
-    <h3 class="headline text-lg font-bold">Eksplorasi Lingkungan</h3>
-    <span class="text-primary font-bold text-xs uppercase tracking-widest">Lihat Semua</span>
-    </div>
-    <div class="flex overflow-x-auto hide-scrollbar gap-5 px-6 pb-4">
-    <!-- Agenda -->
-    <div class="min-w-[280px] bg-surface-container-low rounded-xl overflow-hidden group">
-    <div class="h-44 overflow-hidden relative">
-    <img alt="Agenda" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCdEBqlgW-d-eCA7rmuX4Xhs4UQc7je3B6NDlFHf-f1ElwwjVfNxZ9Y8cBbTC6sXKGB6DASQvlMZtcYNreXc1F-8WDH9hfmMg-JpB3dNTGGDcSg7qFYPE2BU7Y3KF0HEVwX8WvgPb4r2iifKLBu2O3Gdwc7DLJ9OylhIcnekCjtBpuyJ6QaWcAazhPjHdFOAnYex3E0HyidcRnLE7T3GoKtY2jjasGDubia0Qxed4GvJGR9ZTD7TMi1xGQYbpwsE9G-174C_gJY9A">
-    <div class="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest text-primary">Agenda</div>
-    </div>
-    <div class="p-5">
-    <h4 class="headline font-bold text-lg leading-tight mb-2">Piknik Bersih Pantai Ancol</h4>
-    <div class="flex items-center gap-2 text-on-surface-variant text-sm">
-    <span class="material-symbols-outlined text-sm">calendar_today</span>
-    <span>24 Okt 2026</span>
-    </div>
-    </div>
-    </div>
-    <!-- Kegiatan -->
-    <div class="min-w-[280px] bg-surface-container-low rounded-xl overflow-hidden group">
-    <div class="h-44 overflow-hidden relative">
-    <img alt="Kegiatan" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuABuBs6EFVMhPkKHMievbhDGjEtu2IOw_fkefMGmpbWHvcx5BFEf9viKcCjr8pEg7GzsNK8IXWDJHvPPC5naHoXSUZa2cOONJIO51FS67DsVgjIqS9HmPF9KO-J4ZN_kKhrteTcNBwCVmUqoHU8LSSC0x1jreln7i-KU6wFMfaKOvGk1zqMfVUhkhq-y7XpXY1yVf2Gt8F01kaRyEvzU6nKHCFMs4bf3aHmhXVdqFZS3iwxZvMp0SUjvDSq8O_6eI8f0nEPDT2q9g">
-    <div class="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest text-secondary">Kegiatan</div>
-    </div>
-    <div class="p-5">
-    <h4 class="headline font-bold text-lg leading-tight mb-2">Workshop Kompos Mandiri</h4>
-    <div class="flex items-center gap-2 text-on-surface-variant text-sm">
-    <span class="material-symbols-outlined text-sm">location_on</span>
-    <span>Balai Kota, Jakarta</span>
-    </div>
-    </div>
-    </div>
-    </div>
+    <!-- Large Slider Section: Feed Eksplorasi -->
+    <section class="mb-4 -mx-6 overflow-hidden">
+      <div class="px-6 flex justify-between items-end mb-4">
+        <h3 class="headline text-lg font-bold">Eksplorasi Lingkungan</h3>
+        <span onclick="document.querySelectorAll('.eksplorasi-extra').forEach(el => el.classList.toggle('hidden')); this.innerText = this.innerText === 'LIHAT SEMUA' ? 'TUTUP' : 'LIHAT SEMUA';" class="text-primary font-bold text-xs uppercase tracking-widest cursor-pointer select-none">LIHAT SEMUA</span>
+      </div>
+      <div>
+        ${feedHtml}
+      </div>
     </section>
     <!-- Quick Actions / Layanan Terpopuler -->
     <section class="mb-10">
