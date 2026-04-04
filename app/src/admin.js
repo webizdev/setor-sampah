@@ -9,6 +9,7 @@ import { renderAdminTransactions } from './views/admin_transactions.js';
 import { renderAdminArtikel } from './views/admin_artikel.js';
 import { renderAdminReports } from './views/admin_reports.js';
 import { renderAdminMember } from './views/admin_member.js';
+import { renderAdminLayanan } from './views/admin_layanan.js';
 
 // Simple Router for Admin Pages
 const adminRoutes = {
@@ -19,6 +20,7 @@ const adminRoutes = {
   '/artikel': renderAdminArtikel,
   '/laporan': renderAdminReports,
   '/member': renderAdminMember,
+  '/services': renderAdminLayanan,
 };
 
 // Check if admin is authenticated
@@ -76,6 +78,10 @@ export function getAdminTopNav(currentPath) {
                 <a href="#/catalog" class="flex items-center gap-1.5 transition-colors px-3 py-2 rounded-lg whitespace-nowrap ${currentPath === '/catalog' ? 'bg-primary/5 text-primary font-bold' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800 font-medium'}">
                     <span class="material-symbols-outlined text-[18px] ${currentPath === '/catalog' ? 'font-fill' : ''}">inventory_2</span>
                     <span class="text-xs sm:text-sm">Katalog</span>
+                </a>
+                <a href="#/services" class="flex items-center gap-1.5 transition-colors px-3 py-2 rounded-lg whitespace-nowrap ${currentPath === '/services' ? 'bg-primary/5 text-primary font-bold' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800 font-medium'}">
+                    <span class="material-symbols-outlined text-[18px] ${currentPath === '/services' ? 'font-fill' : ''}">category</span>
+                    <span class="text-xs sm:text-sm">Layanan</span>
                 </a>
                 <a href="#/artikel" class="flex items-center gap-1.5 transition-colors px-3 py-2 rounded-lg whitespace-nowrap ${currentPath === '/artikel' ? 'bg-primary/5 text-primary font-bold' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800 font-medium'}">
                     <span class="material-symbols-outlined text-[18px] ${currentPath === '/artikel' ? 'font-fill' : ''}">article</span>
