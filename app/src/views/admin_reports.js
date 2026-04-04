@@ -1,5 +1,5 @@
 import { supabase } from '../supabase.js';
-import { getAdminTopNav } from '../admin.js';
+import { getAdminSidebar } from '../admin.js';
 
 export async function renderAdminReports(container, currentPath) {
     let groupedReports = [];
@@ -44,84 +44,87 @@ export async function renderAdminReports(container, currentPath) {
         groupedReports = Object.values(groups);
 
         const html = `
-            <div class="min-h-screen bg-slate-50 pb-12 text-slate-800">
-                ${getAdminTopNav(currentPath)}
+            <div class="flex h-screen bg-slate-50 overflow-hidden text-slate-800">
+                ${getAdminSidebar(currentPath)}
                 
-                <main class="pt-8 px-6 max-w-6xl mx-auto">
-                    <header class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+                <main class="flex-1 overflow-y-auto pt-24 lg:pt-12 px-6 pb-12">
+                    <header class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6 max-w-6xl mx-auto">
                         <div>
-                            <h2 class="text-3xl font-black headline tracking-tight">Laporan & Konfirmasi</h2>
-                            <p class="text-slate-500 mt-1">Gabungan setoran sampah per user yang belum dikonfirmasi.</p>
+                            <h2 class="text-3xl font-black headline tracking-tight uppercase">Laporan & <span class="text-primary">Konfirmasi</span></h2>
+                            <p class="text-slate-500 mt-1 font-medium opacity-70">Gabungan setoran sampah per user yang belum dikonfirmasi.</p>
                         </div>
                     </header>
 
-                    <div class="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left border-collapse">
-                                <thead>
-                                    <tr class="bg-slate-50/50 border-b border-slate-100">
-                                        <th class="px-6 py-5 text-[10px] font-bold uppercase tracking-widest text-slate-400">Pemasok (User)</th>
-                                        <th class="px-6 py-5 text-[10px] font-bold uppercase tracking-widest text-slate-400 text-right">Total Qty (Pending)</th>
-                                        <th class="px-6 py-5 text-[10px] font-bold uppercase tracking-widest text-slate-400 text-right">Total Nominal (Saldo)</th>
-                                        <th class="px-6 py-5 text-[10px] font-bold uppercase tracking-widest text-slate-400 text-center">Status</th>
-                                        <th class="px-6 py-5 text-[10px] font-bold uppercase tracking-widest text-slate-400 text-center">Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-slate-50 text-sm">
-                                    ${groupedReports.map(group => `
-                                        <tr class="hover:bg-slate-50/50 transition-colors">
-                                            <td class="px-6 py-5">
-                                                <div class="font-bold text-slate-800">${group.user_name}</div>
-                                                <div class="text-[10px] text-slate-400">${group.user_whatsapp}</div>
-                                            </td>
-                                            <td class="px-6 py-5 text-right font-medium">
-                                                <span class="text-slate-700">${group.total_qty.toFixed(1)}</span> <span class="text-[10px] text-slate-300">Kg</span>
-                                            </td>
-                                            <td class="px-6 py-5 text-right">
-                                                <div class="text-xs font-black text-primary">Rp ${group.total_nominal.toLocaleString('id-ID')}</div>
-                                            </td>
-                                            <td class="px-6 py-5 text-center">
-                                                <span class="px-2 py-1 rounded-full bg-orange-100 text-orange-600 text-[9px] font-black uppercase tracking-wider">Pending</span>
-                                            </td>
-                                            <td class="px-6 py-5 text-center">
-                                                <div class="flex items-center justify-center gap-2">
-                                                    <button onclick="window.printReceipt('${group.user_id}')" class="text-slate-400 hover:text-slate-800 p-2 rounded-lg transition-colors material-symbols-outlined cursor-pointer" title="Cetak Nota">print</button>
-                                                    <button onclick="window.confirmGrouped('${group.user_id}')" class="bg-primary hover:bg-[#0f5238] text-white text-[10px] font-black px-4 py-2 rounded-xl shadow-sm transition-all cursor-pointer">
-                                                        Konfirmasi
-                                                    </button>
-                                                </div>
-                                            </td>
+                    <div class="max-w-6xl mx-auto">
+                        <div class="bg-white rounded-[2rem] border border-slate-100 shadow-sm overflow-hidden">
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left border-collapse min-w-[800px]">
+                                    <thead>
+                                        <tr class="bg-slate-50 text-slate-500 font-bold uppercase tracking-[0.15em] text-[10px]">
+                                            <th class="px-6 py-6">Pemasok (User)</th>
+                                            <th class="px-6 py-6 text-right">Total Qty (Pending)</th>
+                                            <th class="px-6 py-6 text-right">Total Nominal (Saldo)</th>
+                                            <th class="px-6 py-6 text-center">Status Transaksi</th>
+                                            <th class="px-6 py-6 text-center">Aksi Manager</th>
                                         </tr>
-                                    `).join('')}
-                                    
-                                    ${groupedReports.length === 0 ? `
-                                        <tr>
-                                            <td colspan="5" class="px-6 py-16 text-center">
-                                                <span class="material-symbols-outlined text-5xl text-slate-200 mb-2">history_edu</span>
-                                                <p class="text-slate-400 font-medium tracking-tight">Semua setoran sudah dikonfirmasi.</p>
-                                            </td>
-                                        </tr>
-                                    ` : ''}
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-50 text-sm">
+                                        ${groupedReports.map(group => `
+                                            <tr class="hover:bg-slate-50/50 transition-colors">
+                                                <td class="px-6 py-6">
+                                                    <div class="font-black text-slate-800 uppercase">${group.user_name}</div>
+                                                    <div class="text-[10px] font-bold text-slate-400 mt-0.5 tracking-wider uppercase">${group.user_whatsapp}</div>
+                                                </td>
+                                                <td class="px-6 py-6 text-right font-black">
+                                                    <span class="text-slate-700 text-lg">${group.total_qty.toFixed(1)}</span> <span class="text-[10px] text-slate-300 uppercase tracking-widest ml-1">Kg</span>
+                                                </td>
+                                                <td class="px-6 py-6 text-right">
+                                                    <div class="text-lg font-black text-primary">Rp ${group.total_nominal.toLocaleString('id-ID')}</div>
+                                                </td>
+                                                <td class="px-6 py-6 text-center">
+                                                    <span class="px-3 py-1.5 rounded-full bg-orange-100 text-orange-600 text-[10px] font-black uppercase tracking-widest shadow-sm shadow-orange-100">Pending</span>
+                                                </td>
+                                                <td class="px-6 py-6 text-center">
+                                                    <div class="flex items-center justify-center gap-3">
+                                                        <button onclick="window.printReceipt('${group.user_id}')" class="text-slate-400 hover:text-slate-800 p-2.5 rounded-xl transition-all material-symbols-outlined cursor-pointer hover:bg-slate-100" title="Cetak Nota">print</button>
+                                                        <button onclick="window.confirmGrouped('${group.user_id}')" class="bg-primary hover:bg-[#0f5238] text-white text-[10px] font-black px-6 py-3 rounded-2xl shadow-xl shadow-primary/20 transition-all cursor-pointer uppercase tracking-widest hover:-translate-y-1">
+                                                            Konfirmasi
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        `).join('')}
+                                        
+                                        ${groupedReports.length === 0 ? `
+                                            <tr>
+                                                <td colspan="5" class="px-6 py-24 text-center">
+                                                    <span class="material-symbols-outlined text-7xl text-slate-200 mb-4 scale-150 opacity-50">task_alt</span>
+                                                    <h4 class="text-lg font-black text-slate-400 uppercase tracking-widest leading-none">Semua Beres!</h4>
+                                                    <p class="text-slate-400 mt-2 text-sm font-medium">Tidak ada setoran tertunda yang perlu dikonfirmasi.</p>
+                                                </td>
+                                            </tr>
+                                        ` : ''}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </main>
 
                 <!-- Receipt Modal -->
-                <div id="receipt-modal" class="fixed inset-0 z-[60] bg-slate-900/50 backdrop-blur-sm hidden flex-col items-center justify-center p-4">
-                    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg p-0 overflow-hidden relative flex flex-col max-h-[90vh]">
-                        <button onclick="window.closeReceiptModal()" class="absolute top-6 right-6 text-slate-400 hover:text-slate-800 material-symbols-outlined no-print cursor-pointer">close</button>
+                <div id="receipt-modal" class="fixed inset-0 z-[100] bg-slate-900/60 backdrop-blur-md hidden flex-col items-center justify-center p-4">
+                    <div class="bg-white rounded-[2.5rem] shadow-2xl w-full max-w-lg p-0 overflow-hidden relative flex flex-col max-h-[90vh]">
+                        <button onclick="window.closeReceiptModal()" class="absolute top-8 right-8 text-slate-400 hover:text-slate-800 material-symbols-outlined no-print cursor-pointer transition-colors z-10">close</button>
                         
-                        <div id="receipt-content" class="p-10 flex-grow overflow-y-auto">
+                        <div id="receipt-content" class="p-10 md:p-12 flex-grow overflow-y-auto">
                             <!-- Receipt Content Loaded Dynamically -->
                         </div>
                         
-                        <div class="bg-slate-50 p-6 flex gap-3 no-print border-t border-slate-100">
-                            <button onclick="window.printContent()" class="flex-grow bg-slate-800 text-white font-black py-4 rounded-2xl hover:bg-slate-900 transition-colors flex items-center justify-center gap-2 cursor-pointer">
-                                <span class="material-symbols-outlined">print</span> Cetak Nota
+                        <div class="bg-slate-50 py-8 px-10 flex gap-4 no-print border-t border-slate-100">
+                            <button onclick="window.printContent()" class="flex-grow bg-slate-800 text-white font-black py-4 rounded-2xl hover:bg-slate-900 transition-all flex items-center justify-center gap-2 cursor-pointer uppercase tracking-widest text-xs hover:-translate-y-1 shadow-xl shadow-slate-800/10">
+                                <span class="material-symbols-outlined text-sm">print</span> Cetak Nota
                             </button>
-                            <button onclick="window.closeReceiptModal()" class="px-6 bg-white border border-slate-200 text-slate-500 font-bold py-4 rounded-2xl hover:bg-slate-50 transition-colors cursor-pointer">
+                            <button onclick="window.closeReceiptModal()" class="px-8 bg-white border border-slate-200 text-slate-500 font-bold py-4 rounded-2xl hover:bg-slate-100 transition-all cursor-pointer">
                                 Tutup
                             </button>
                         </div>
@@ -131,9 +134,11 @@ export async function renderAdminReports(container, currentPath) {
                 <style>
                     @media print {
                         body * { visibility: hidden; }
-                        #receipt-modal, #receipt-modal #receipt-content { visibility: visible; display: block !important; position: absolute; left: 0; top: 0; width: 100%; margin: 0; padding: 20px; }
+                        #receipt-modal, #receipt-modal #receipt-content { visibility: visible; display: block !important; position: absolute; left: 0; top: 0; width: 100%; margin: 0; padding: 0; background: white; }
                         #receipt-modal #receipt-content * { visibility: visible; }
                         .no-print { display: none !important; }
+                        .rounded-[2.5rem] { border-radius: 0 !important; }
+                        .shadow-2xl { shadow: none !important; }
                     }
                 </style>
             </div>
@@ -145,58 +150,61 @@ export async function renderAdminReports(container, currentPath) {
             if (!group) return;
 
             const content = `
-                <div class="text-center mb-8 border-b-2 border-slate-100 pb-6">
-                    <h1 class="text-2xl font-black headline tracking-tight">YARI SETOR SAMPAH</h1>
-                    <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">Nota Tanda Terima Setoran</p>
+                <div class="text-center mb-10 border-b-2 border-slate-100 pb-8">
+                    <h1 class="text-3xl font-black headline tracking-tight uppercase">YARI <span class="text-primary">SAMPAH</span></h1>
+                    <p class="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em] mt-2">Nota Tanda Terima Setoran Resmi</p>
                 </div>
                 
-                <div class="grid grid-cols-2 gap-8 mb-10 text-sm">
+                <div class="grid grid-cols-2 gap-8 mb-12 text-sm">
                     <div>
-                        <div class="text-[10px] font-bold text-slate-300 uppercase tracking-widest mb-1">Diberikan Kepada:</div>
-                        <div class="font-black text-slate-800">${group.user_name}</div>
-                        <div class="text-slate-500 font-medium">${group.user_whatsapp}</div>
+                        <div class="text-[10px] font-black text-slate-300 uppercase tracking-widest mb-2">Pelanggan:</div>
+                        <div class="font-black text-slate-800 text-lg uppercase">${group.user_name}</div>
+                        <div class="text-slate-500 font-bold mt-1 uppercase tracking-wider text-xs">${group.user_whatsapp}</div>
                     </div>
                     <div class="text-right">
-                        <div class="text-[10px] font-bold text-slate-300 uppercase tracking-widest mb-1">Tanggal Cetak:</div>
-                        <div class="font-bold text-slate-800">${new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' })}</div>
+                        <div class="text-[10px] font-black text-slate-300 uppercase tracking-widest mb-2">Ref No:</div>
+                        <div class="font-bold text-slate-800">#${group.user_id.slice(0, 8).toUpperCase()}</div>
+                        <div class="text-slate-400 text-xs mt-1 font-medium">${new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' })}</div>
                     </div>
                 </div>
 
-                <table class="w-full text-left mb-10">
-                    <thead>
-                        <tr class="border-b-2 border-slate-800/10">
-                            <th class="py-3 text-[10px] font-bold uppercase tracking-widest text-slate-400">Rincian Item</th>
-                            <th class="py-3 text-[10px] font-bold uppercase tracking-widest text-slate-400 text-right">Qty</th>
-                            <th class="py-3 text-[10px] font-bold uppercase tracking-widest text-slate-400 text-right">Nominal</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-100">
-                        ${group.items.map(item => `
-                            <tr>
-                                <td class="py-4">
-                                    <div class="font-bold text-slate-700">${item.name}</div>
-                                    <div class="text-[9px] text-slate-400">${item.date}</div>
-                                </td>
-                                <td class="py-4 text-right">
-                                    <span class="font-bold text-slate-800">${item.qty}</span> <span class="text-[10px] text-slate-400">Kg</span>
-                                </td>
-                                <td class="py-4 text-right font-black text-slate-800">
-                                    Rp ${item.price.toLocaleString('id-ID')}
-                                </td>
+                <div class="space-y-6">
+                    <table class="w-full text-left">
+                        <thead>
+                            <tr class="border-b border-slate-100">
+                                <th class="pb-4 text-[10px] font-black uppercase tracking-widest text-slate-300">Rincian Materi</th>
+                                <th class="pb-4 text-[10px] font-black uppercase tracking-widest text-slate-300 text-right">Massa</th>
+                                <th class="pb-4 text-[10px] font-black uppercase tracking-widest text-slate-300 text-right">Potensi Hasil</th>
                             </tr>
-                        `).join('')}
-                    </tbody>
-                    <tfoot>
-                        <tr class="border-t-2 border-slate-800/10">
-                            <td colspan="2" class="py-6 text-sm font-black uppercase tracking-widest text-slate-400">Total Saldo</td>
-                            <td class="py-6 text-right text-xl font-black text-primary">Rp ${group.total_nominal.toLocaleString('id-ID')}</td>
-                        </tr>
-                    </tfoot>
-                </table>
+                        </thead>
+                        <tbody class="divide-y divide-slate-50">
+                            ${group.items.map(item => `
+                                <tr>
+                                    <td class="py-5">
+                                        <div class="font-black text-slate-700 uppercase">${item.name}</div>
+                                        <div class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-1">${item.date}</div>
+                                    </td>
+                                    <td class="py-5 text-right">
+                                        <span class="font-black text-slate-800">${item.qty}</span> <span class="text-[10px] text-slate-400 uppercase font-black ml-1">Kg</span>
+                                    </td>
+                                    <td class="py-5 text-right font-black text-slate-800">
+                                        Rp ${item.price.toLocaleString('id-ID')}
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                        <tfoot>
+                            <tr class="border-t-2 border-slate-900/10">
+                                <td colspan="2" class="py-8 text-xs font-black uppercase tracking-[0.3em] text-slate-400">Total Reward Saldo</td>
+                                <td class="py-8 text-right text-2xl font-black text-primary">Rp ${group.total_nominal.toLocaleString('id-ID')}</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
 
-                <div class="text-center pt-8 border-t border-dashed border-slate-200">
-                    <p class="text-[11px] text-slate-400 italic">Terima kasih telah berkontribusi menjaga lingkungan!</p>
-                    <p class="text-[9px] text-slate-300 mt-1 uppercase font-bold tracking-[0.2em]">&copy; YARI Application Ecosystem</p>
+                <div class="text-center pt-10 border-t border-dashed border-slate-200 mt-4">
+                    <p class="text-[12px] text-slate-400 font-medium leading-relaxed">Terima kasih telah berkontribusi nyata menjaga kelestarian lingkungan bersama kami!</p>
+                    <p class="text-[9px] text-slate-300 mt-4 uppercase font-black tracking-[0.4em] opacity-50">&copy; YARI ECOSYSTEM 2026</p>
                 </div>
             `;
             

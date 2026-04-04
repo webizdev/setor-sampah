@@ -44,62 +44,93 @@ export function clearAdminSession() {
   localStorage.removeItem('yari_admin_session');
 }
 
-// Top App Bar Nav component for authenticated admin pages
-export function getAdminTopNav(currentPath) {
-  return `
-    <header class="w-full bg-white border-b border-slate-100 sticky top-0 z-40 shadow-sm">
-        <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center md:h-16 gap-3 py-3 md:py-0">
-            <!-- Logo -->
-            <div class="flex items-center gap-2 w-full md:w-auto justify-between">
-                <div class="flex items-center gap-2">
-                    <div class="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center text-primary">
-                        <span class="material-symbols-outlined text-sm">shield_person</span>
-                    </div>
-                    <h1 class="headline font-black text-xl text-slate-800 tracking-tight">Admin<span class="text-primary">Panel</span></h1>
-                </div>
-            </div>
+// Mobile Toggle State Handler
+window.toggleAdminSidebar = () => {
+    const sidebar = document.getElementById('admin-sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+    const isHidden = sidebar.classList.contains('-translate-x-full');
+    
+    if (isHidden) {
+        sidebar.classList.remove('-translate-x-full');
+        overlay.classList.remove('hidden');
+    } else {
+        sidebar.classList.add('-translate-x-full');
+        overlay.classList.add('hidden');
+    }
+};
 
-            <!-- Navigation Links -->
-            <nav class="flex items-center gap-1 sm:gap-4 overflow-x-auto w-full md:w-auto scrollbar-hide">
-                <a href="#/" class="flex items-center gap-1.5 transition-colors px-3 py-2 rounded-lg whitespace-nowrap ${currentPath === '/' ? 'bg-primary/5 text-primary font-bold' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800 font-medium'}">
-                    <span class="material-symbols-outlined text-[18px] ${currentPath === '/' ? 'font-fill' : ''}">dashboard</span>
-                    <span class="text-xs sm:text-sm">Dasbor</span>
-                </a>
-                <a href="#/laporan" class="flex items-center gap-1.5 transition-colors px-3 py-2 rounded-lg whitespace-nowrap ${currentPath === '/laporan' ? 'bg-primary/5 text-primary font-bold' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800 font-medium'}">
-                    <span class="material-symbols-outlined text-[18px] ${currentPath === '/laporan' ? 'font-fill' : ''}">analytics</span>
-                    <span class="text-xs sm:text-sm">Laporan</span>
-                </a>
-                <a href="#/member" class="flex items-center gap-1.5 transition-colors px-3 py-2 rounded-lg whitespace-nowrap ${currentPath === '/member' ? 'bg-primary/5 text-primary font-bold' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800 font-medium'}">
-                    <span class="material-symbols-outlined text-[18px] ${currentPath === '/member' ? 'font-fill' : ''}">group</span>
-                    <span class="text-xs sm:text-sm">Member</span>
-                </a>
-                <a href="#/transactions" class="flex items-center gap-1.5 transition-colors px-3 py-2 rounded-lg whitespace-nowrap ${currentPath === '/transactions' ? 'bg-primary/5 text-primary font-bold' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800 font-medium'}">
-                    <span class="material-symbols-outlined text-[18px] ${currentPath === '/transactions' ? 'font-fill' : ''}">receipt_long</span>
-                    <span class="text-xs sm:text-sm">Transaksi</span>
-                </a>
-                <a href="#/catalog" class="flex items-center gap-1.5 transition-colors px-3 py-2 rounded-lg whitespace-nowrap ${currentPath === '/catalog' ? 'bg-primary/5 text-primary font-bold' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800 font-medium'}">
-                    <span class="material-symbols-outlined text-[18px] ${currentPath === '/catalog' ? 'font-fill' : ''}">inventory_2</span>
-                    <span class="text-xs sm:text-sm">Katalog</span>
-                </a>
-                <a href="#/services" class="flex items-center gap-1.5 transition-colors px-3 py-2 rounded-lg whitespace-nowrap ${currentPath === '/services' ? 'bg-primary/5 text-primary font-bold' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800 font-medium'}">
-                    <span class="material-symbols-outlined text-[18px] ${currentPath === '/services' ? 'font-fill' : ''}">category</span>
-                    <span class="text-xs sm:text-sm">Layanan</span>
-                </a>
-                <a href="#/artikel" class="flex items-center gap-1.5 transition-colors px-3 py-2 rounded-lg whitespace-nowrap ${currentPath === '/artikel' ? 'bg-primary/5 text-primary font-bold' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800 font-medium'}">
-                    <span class="material-symbols-outlined text-[18px] ${currentPath === '/artikel' ? 'font-fill' : ''}">article</span>
-                    <span class="text-xs sm:text-sm">Artikel</span>
-                </a>
-                <a href="#/company" class="flex items-center gap-1.5 transition-colors px-3 py-2 rounded-lg whitespace-nowrap ${currentPath === '/company' ? 'bg-primary/5 text-primary font-bold' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800 font-medium'}">
-                    <span class="material-symbols-outlined text-[18px] ${currentPath === '/company' ? 'font-fill' : ''}">business</span>
-                    <span class="text-xs sm:text-sm">Company</span>
-                </a>
-                <button onclick="window.logoutAdmin()" class="flex items-center gap-1.5 transition-colors px-3 py-2 rounded-lg text-red-500 hover:bg-red-50 ml-auto md:ml-0 whitespace-nowrap font-medium cursor-pointer">
-                    <span class="material-symbols-outlined text-[18px]">logout</span>
-                    <span class="text-xs sm:text-sm">Keluar</span>
-                </button>
-            </nav>
+// Sidebar Navigation Component
+export function getAdminSidebar(currentPath) {
+  const menuItems = [
+    { path: '/', label: 'Dasbor', icon: 'dashboard' },
+    { path: '/laporan', label: 'Laporan', icon: 'analytics' },
+    { path: '/member', label: 'Member', icon: 'group' },
+    { path: '/transactions', label: 'Transaksi', icon: 'receipt_long' },
+    { path: '/catalog', label: 'Katalog', icon: 'inventory_2' },
+    { path: '/services', label: 'Layanan', icon: 'category' },
+    { path: '/artikel', label: 'Artikel', icon: 'article' },
+    { path: '/company', label: 'Company', icon: 'business' },
+  ];
+
+  return `
+    <!-- Mobile Header -->
+    <div class="lg:hidden fixed top-0 w-full bg-white border-b border-slate-100 z-[60] flex items-center justify-between px-6 py-4 shadow-sm backdrop-blur-md bg-white/80">
+        <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary text-2xl font-fill">shield_person</span>
+            <h1 class="headline font-black text-lg text-slate-800 tracking-tight">Admin<span class="text-primary">Panel</span></h1>
         </div>
-    </header>
+        <button onclick="window.toggleAdminSidebar()" class="w-10 h-10 flex items-center justify-center bg-slate-50 rounded-xl text-slate-600 hover:text-primary transition-colors cursor-pointer">
+            <span class="material-symbols-outlined">menu</span>
+        </button>
+    </div>
+
+    <!-- Sidebar Backdrop for Mobile -->
+    <div id="sidebar-overlay" onclick="window.toggleAdminSidebar()" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[70] hidden lg:hidden transition-all duration-300"></div>
+
+    <!-- Main Sidebar -->
+    <aside id="admin-sidebar" class="fixed lg:sticky top-0 left-0 h-screen w-[280px] bg-white border-r border-slate-100 z-[80] transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-out shadow-2xl lg:shadow-none flex flex-col pt-6 pb-8 overflow-hidden">
+        
+        <!-- Branding Desktop -->
+        <div class="px-8 mb-10 hidden lg:flex items-center gap-3">
+            <div class="w-10 h-10 bg-primary/10 rounded-2xl flex items-center justify-center text-primary shadow-inner">
+                <span class="material-symbols-outlined font-fill text-2xl">shield_person</span>
+            </div>
+            <div>
+                <h1 class="headline font-black text-xl text-slate-800 tracking-tight leading-none mb-0.5 uppercase">Admin<span class="text-primary">Panel</span></h1>
+                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-0.5">Management Suite</p>
+            </div>
+        </div>
+
+        <!-- Scrollable Nav Section -->
+        <nav class="flex-grow px-4 flex flex-col gap-1 overflow-y-auto no-scrollbar">
+            ${menuItems.map(item => `
+                <a href="#${item.path}" 
+                   onclick="if(window.innerWidth < 1024) window.toggleAdminSidebar()"
+                   class="flex items-center gap-4 transition-all px-4 py-3.5 rounded-2xl group ${currentPath === item.path ? 'bg-primary text-white shadow-lg shadow-primary/20 font-bold' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800 font-medium'}">
+                    <span class="material-symbols-outlined text-[22px] transition-transform group-hover:scale-110 ${currentPath === item.path ? 'font-fill rotate-3' : ''}">${item.icon}</span>
+                    <span class="text-sm tracking-tight">${item.label}</span>
+                </a>
+            `).join('')}
+        </nav>
+
+        <!-- Footer / Logout -->
+        <div class="px-4 mt-8 pt-6 border-t border-slate-50 group">
+            <button onclick="window.logoutAdmin()" 
+                    class="w-full flex items-center gap-4 transition-all px-4 py-4 rounded-2xl text-red-500 hover:bg-red-50 font-bold cursor-pointer hover:shadow-inner">
+                <span class="material-symbols-outlined text-[22px] group-hover:-translate-x-1 transition-transform">logout</span>
+                <span class="text-sm">Keluar Panel</span>
+            </button>
+            <div class="mt-6 px-4 py-4 bg-slate-50 rounded-3xl">
+                 <div class="flex items-center gap-3">
+                     <div class="w-8 h-8 rounded-full bg-primary/20 border-2 border-white flex items-center justify-center font-black text-[10px] text-primary uppercase shadow-sm">AD</div>
+                     <div class="flex-1 min-w-0">
+                         <p class="text-[10px] text-slate-400 font-black uppercase tracking-wider leading-none mb-1">Authenticated as</p>
+                         <p class="text-xs font-bold text-slate-700 truncate">Administrator</p>
+                     </div>
+                 </div>
+            </div>
+        </div>
+    </aside>
   `;
 }
 

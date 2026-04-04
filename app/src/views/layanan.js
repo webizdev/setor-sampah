@@ -39,7 +39,7 @@ export async function renderLayanan(container) {
       <section class="mb-8">
         <span class="text-secondary font-bold tracking-widest text-[9px] uppercase mb-1.5 block">Interactive Services</span>
         <h2 class="text-2xl font-black headline text-on-surface tracking-tight mb-2 leading-tight">Layanan Kami.</h2>
-        <p class="text-on-surface-variant text-sm leading-relaxed opacity-70 italic">Klik kartu untuk melihat detail layanan.</p>
+        <p class="text-on-surface-variant text-sm leading-relaxed opacity-70">Klik kartu untuk melihat detail layanan.</p>
       </section>
 
       <!-- Services List (Interactive) -->
