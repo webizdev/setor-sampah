@@ -107,9 +107,17 @@ export async function renderAdminArtikel(container, currentPath) {
                                     <input id="form-image" type="url" required class="w-full border border-slate-100 bg-slate-50/50 rounded-2xl px-5 py-4 text-sm font-bold focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/5 outline-none transition-all placeholder:text-slate-300" placeholder="https://...">
                                 </div>
 
-                                <div class="col-span-2 space-y-1.5">
-                                    <label class="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Link Website (Arahkan Target)</label>
-                                    <input id="form-link" type="url" required class="w-full border border-slate-100 bg-slate-50/50 rounded-2xl px-5 py-4 text-sm font-bold focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/5 outline-none transition-all placeholder:text-slate-300" placeholder="https://...">
+                                <div class="col-span-2 space-y-1.5 px-1 py-1">
+                                    <label class="flex items-center gap-3 cursor-pointer group">
+                                        <div class="relative flex items-center">
+                                            <input id="form-is-notified" type="checkbox" class="peer h-6 w-6 cursor-pointer appearance-none rounded-lg bg-slate-100 border border-slate-200 checked:bg-primary checked:border-primary transition-all shadow-sm">
+                                            <span class="material-symbols-outlined absolute text-white opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none text-base font-black">check</span>
+                                        </div>
+                                        <div class="flex flex-col">
+                                            <span class="text-xs font-black text-slate-700 uppercase tracking-widest group-hover:text-primary transition-colors">Informasikan ke Member</span>
+                                            <span class="text-[9px] font-medium text-slate-400">Picu notifikasi (titik merah) di aplikasi user</span>
+                                        </div>
+                                    </label>
                                 </div>
 
                                 <div class="col-span-2 pt-6">
@@ -130,6 +138,7 @@ export async function renderAdminArtikel(container, currentPath) {
             document.getElementById('form-id').value = '';
             document.getElementById('form-urutan').value = '0';
             document.getElementById('form-category').value = 'Artikel';
+            document.getElementById('form-is-notified').checked = false;
             document.getElementById('modal-title').innerText = 'Tambah Artikel';
             document.getElementById('article-modal').classList.remove('hidden');
             document.getElementById('article-modal').classList.add('flex');
@@ -152,6 +161,7 @@ export async function renderAdminArtikel(container, currentPath) {
             document.getElementById('form-desc').value = item.deskripsi || '';
             document.getElementById('form-image').value = item.image_url || '';
             document.getElementById('form-link').value = item.link_website || '';
+            document.getElementById('form-is-notified').checked = item.is_notified || false;
             
             document.getElementById('modal-title').innerText = 'Edit Artikel';
             document.getElementById('article-modal').classList.remove('hidden');
@@ -189,8 +199,14 @@ export async function renderAdminArtikel(container, currentPath) {
                 maps: document.getElementById('form-maps').value,
                 deskripsi: document.getElementById('form-desc').value,
                 image_url: document.getElementById('form-image').value,
-                link_website: document.getElementById('form-link').value
+                link_website: document.getElementById('form-link').value,
+                is_notified: document.getElementById('form-is-notified').checked
             };
+            
+            // Set notified_at if checkbox is newly checked or it's a new article being notified
+            if (payload.is_notified) {
+                payload.notified_at = new Date().toISOString();
+            }
 
             try {
                 if (id) {

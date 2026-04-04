@@ -7,11 +7,12 @@ import { supabase } from '../supabase.js';
 export async function getNotificationBellHTML() {
   const lastSeenId = localStorage.getItem('yari_last_notif_id') || '';
   
-  // Fetch only the latest article to check for indicator
+  // Fetch only the latest article that has been marked for notification
   const { data: latest } = await supabase
     .from('yari_articles')
     .select('id')
-    .order('created_at', { ascending: false })
+    .eq('is_notified', true)
+    .order('notified_at', { ascending: false })
     .limit(1)
     .maybeSingle();
 
