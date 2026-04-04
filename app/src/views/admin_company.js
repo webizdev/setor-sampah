@@ -186,6 +186,8 @@ export async function renderAdminCompany(container, currentPath) {
                 btn.disabled = true;
                 btn.classList.add('opacity-50');
 
+                const id = document.getElementById('form-id').value;
+
                 try {
                     let logoUrl = profile?.logo_url || '';
                     
