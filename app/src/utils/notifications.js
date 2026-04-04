@@ -26,10 +26,19 @@ export async function getNotificationBellHTML() {
   const readIds = getReadIds();
   
   // Fetch only the latest article that has been marked for notification
-  const { data: latest } = await supabase
+  // Filter by global (null) or targeted (window.USER_ID)
+  let query = supabase
     .from('yari_articles')
     .select('id')
-    .eq('is_notified', true)
+    .eq('is_notified', true);
+
+  if (window.USER_ID) {
+    query = query.or(`target_user_id.is.null,target_user_id.eq.${window.USER_ID}`);
+  } else {
+    query = query.is('target_user_id', null);
+  }
+
+  const { data: latest } = await query
     .order('notified_at', { ascending: false })
     .limit(1)
     .maybeSingle();
@@ -136,11 +145,19 @@ window.toggleNotifications = async () => {
     document.getElementById('notification-panel').classList.remove('translate-x-full');
   });
 
-  // Fetch all notified articles
-  const { data: articles } = await supabase
+  // Fetch notified articles (Global + Private)
+  let queryDetail = supabase
     .from('yari_articles')
     .select('*')
-    .eq('is_notified', true)
+    .eq('is_notified', true);
+
+  if (window.USER_ID) {
+    queryDetail = queryDetail.or(`target_user_id.is.null,target_user_id.eq.${window.USER_ID}`);
+  } else {
+    queryDetail = queryDetail.is('target_user_id', null);
+  }
+
+  const { data: articles } = await queryDetail
     .order('notified_at', { ascending: false })
     .limit(10);
 
