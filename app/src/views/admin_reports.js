@@ -1,5 +1,6 @@
 import { supabase } from '../supabase.js';
 import { getAdminSidebar } from '../admin.js';
+import { updateAllUserTiers } from '../utils/tier_engine.js';
 
 export async function renderAdminReports(container, currentPath) {
     let groupedReports = [];
@@ -249,8 +250,11 @@ export async function renderAdminReports(container, currentPath) {
                     .eq('id', userId);
 
                 if (userError) throw userError;
+                
+                // Trigger Global Recalculation
+                await updateAllUserTiers();
 
-                alert('Berhasil! Seluruh setoran user telah dikonfirmasi dan saldo diperbarui.');
+                alert('Berhasil! Seluruh setoran user telah dikonfirmasi dan tier seluruh member diperbarui.');
                 loadView();
             } catch (err) {
                 console.error(err);

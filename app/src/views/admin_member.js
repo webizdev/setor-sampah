@@ -1,5 +1,6 @@
 import { supabase } from '../supabase.js';
 import { getAdminSidebar } from '../admin.js';
+import { updateAllUserTiers } from '../utils/tier_engine.js';
 
 export async function renderAdminMember(container, currentPath) {
     let searchTerm = '';
@@ -46,7 +47,14 @@ export async function renderAdminMember(container, currentPath) {
                                 </div>
                                 <div>
                                     <div class="font-black text-slate-800 uppercase leading-none">${user.full_name || 'Tanpa Nama'}</div>
-                                    <div class="text-[9px] text-primary font-black uppercase tracking-[0.2em] mt-1.5 opacity-60">${user.tier || 'BRONZE'} MEMBER</div>
+                                    <div class="mt-2 flex items-center">
+                                        <span class="px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest border ${
+                                            (user.tier || '').toUpperCase() === 'PRIORITAS' ? 'bg-indigo-50 text-indigo-600 border-indigo-100' :
+                                            (user.tier || '').toUpperCase() === 'GOLD' ? 'bg-amber-50 text-amber-600 border-amber-100' :
+                                            (user.tier || '').toUpperCase() === 'SILVER' ? 'bg-slate-50 text-slate-500 border-slate-200' :
+                                            'bg-orange-50 text-orange-600 border-orange-100'
+                                        }">${user.tier || 'BRONZE'} MEMBER</span>
+                                    </div>
                                 </div>
                             </div>
                         </td>
@@ -117,9 +125,14 @@ export async function renderAdminMember(container, currentPath) {
                             <h2 class="text-3xl font-black headline tracking-tight uppercase">Manajemen <span class="text-primary">Member</span></h2>
                             <p class="text-slate-500 mt-1 font-medium opacity-70">Akses data pengguna dan monitoring real-time arus kas mereka.</p>
                         </div>
-                        <div class="w-full md:w-80 relative group">
-                            <span class="material-symbols-outlined absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors">search</span>
-                            <input id="member-search" type="text" placeholder="Cari nama atau WhatsApp..." class="w-full bg-white border border-slate-100 rounded-[1.5rem] pl-14 pr-6 py-4 focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all shadow-sm font-bold text-sm placeholder:text-slate-300" value="${searchTerm}">
+                        <div class="flex items-center gap-3">
+                            <div class="w-full md:w-80 relative group">
+                                <span class="material-symbols-outlined absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors">search</span>
+                                <input id="member-search" type="text" placeholder="Cari nama atau WhatsApp..." class="w-full bg-white border border-slate-100 rounded-[1.5rem] pl-14 pr-6 py-4 focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all shadow-sm font-bold text-sm placeholder:text-slate-300" value="${searchTerm}">
+                            </div>
+                            <button id="btn-refresh-tiers" class="bg-primary/5 hover:bg-primary/10 text-primary p-4 rounded-2xl transition-all material-symbols-outlined cursor-pointer group" title="Segarkan Tier Seluruh Member">
+                                <span class="group-hover:rotate-180 transition-transform duration-500 inline-block">cached</span>
+                            </button>
                         </div>
                     </header>
 
@@ -197,6 +210,17 @@ export async function renderAdminMember(container, currentPath) {
             searchInput.addEventListener('input', (e) => {
                 searchTerm = e.target.value;
                 renderTable();
+            });
+        }
+
+        const refreshBtn = document.getElementById('btn-refresh-tiers');
+        if(refreshBtn) {
+            refreshBtn.addEventListener('click', async () => {
+                refreshBtn.classList.add('animate-spin');
+                await updateAllUserTiers();
+                refreshBtn.classList.remove('animate-spin');
+                alert('Tier seluruh member telah diperbarui berdasarkan kontribusi terbaru.');
+                loadView();
             });
         }
 

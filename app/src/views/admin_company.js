@@ -70,6 +70,47 @@ export async function renderAdminCompany(container, currentPath) {
                                     </div>
                                     <p class="mt-4 text-[11px] text-slate-400 ml-2 font-medium opacity-60">Nomor ini menjadi basis rujukan semua tombol "Hubungi Kami" & CTA di aplikasi client.</p>
                                 </div>
+
+                                <!-- Tier Thresholds Section -->
+                                <div class="pt-8 border-t border-slate-100">
+                                    <div class="mb-8">
+                                        <h3 class="text-xl font-black headline tracking-tight uppercase">Konfigurasi <span class="text-primary">Hierarchy Tier</span></h3>
+                                        <p class="text-[11px] text-slate-400 mt-1 font-medium opacity-70 uppercase tracking-widest">Atur persentase kontribusi minimal untuk setiap level keanggotaan.</p>
+                                    </div>
+
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                        <!-- Prioritas -->
+                                        <div class="group">
+                                            <label class="flex items-center gap-2 text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-4 ml-2 group-focus-within:text-primary transition-colors">
+                                                <span class="material-symbols-outlined text-sm font-bold">military_tech</span> Prioritas (%)
+                                            </label>
+                                            <input type="number" id="form-tier-prioritas" required step="0.1" value="${profile?.tier_prioritas_threshold ?? 60}"
+                                                   class="w-full bg-slate-50 border-2 border-transparent rounded-[1.5rem] px-6 py-4 font-bold text-slate-800 outline-none focus:bg-white focus:border-primary/20 focus:ring-4 focus:ring-primary/5 transition-all text-lg shadow-inner">
+                                        </div>
+
+                                        <!-- Gold -->
+                                        <div class="group">
+                                            <label class="flex items-center gap-2 text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-4 ml-2 group-focus-within:text-primary transition-colors">
+                                                <span class="material-symbols-outlined text-sm font-bold">workspace_premium</span> Gold (%)
+                                            </label>
+                                            <input type="number" id="form-tier-gold" required step="0.1" value="${profile?.tier_gold_threshold ?? 30}"
+                                                   class="w-full bg-slate-50 border-2 border-transparent rounded-[1.5rem] px-6 py-4 font-bold text-slate-800 outline-none focus:bg-white focus:border-primary/20 focus:ring-4 focus:ring-primary/5 transition-all text-lg shadow-inner">
+                                        </div>
+
+                                        <!-- Silver -->
+                                        <div class="group">
+                                            <label class="flex items-center gap-2 text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-4 ml-2 group-focus-within:text-primary transition-colors">
+                                                <span class="material-symbols-outlined text-sm font-bold">verified</span> Silver (%)
+                                            </label>
+                                            <input type="number" id="form-tier-silver" required step="0.1" value="${profile?.tier_silver_threshold ?? 20}"
+                                                   class="w-full bg-slate-50 border-2 border-transparent rounded-[1.5rem] px-6 py-4 font-bold text-slate-800 outline-none focus:bg-white focus:border-primary/20 focus:ring-4 focus:ring-primary/5 transition-all text-lg shadow-inner">
+                                        </div>
+                                    </div>
+                                    <p class="mt-6 text-[10px] text-amber-600 bg-amber-50 p-4 rounded-2xl font-bold flex items-start gap-3">
+                                        <span class="material-symbols-outlined text-sm">warning</span>
+                                        <span>REKOMENDASI: Urutkan nilai dari yang tertinggi ke terendah (Prioritas > Gold > Silver). Angka di bawah ambang batas Silver otomatis menjadi BRONZE.</span>
+                                    </p>
+                                </div>
                             </div>
                             
                             <div class="pt-6">
@@ -120,7 +161,10 @@ export async function renderAdminCompany(container, currentPath) {
                 const payload = {
                     nama: document.getElementById('form-nama').value,
                     alamat: document.getElementById('form-alamat').value,
-                    whatsapp: document.getElementById('form-whatsapp').value
+                    whatsapp: document.getElementById('form-whatsapp').value,
+                    tier_prioritas_threshold: document.getElementById('form-tier-prioritas').value,
+                    tier_gold_threshold: document.getElementById('form-tier-gold').value,
+                    tier_silver_threshold: document.getElementById('form-tier-silver').value
                 };
 
                 try {

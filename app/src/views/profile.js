@@ -72,11 +72,20 @@ export async function renderProfile(container) {
             <input type="file" id="avatar-input" accept="image/*" class="hidden">
           </div>
           
-          <div class="space-y-1">
+          <div class="space-y-3">
             <h2 class="text-3xl font-black headline tracking-tight text-slate-800">${name}</h2>
-            <div class="flex items-center justify-center gap-2 text-slate-500 font-bold text-sm">
-              <span class="material-symbols-outlined text-sm">corporate_fare</span>
-              <span>${org}</span>
+            <div class="flex items-center justify-center gap-3">
+              <span class="px-2.5 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest border ${
+                  (user.tier || '').toUpperCase() === 'PRIORITAS' ? 'bg-indigo-50 text-indigo-600 border-indigo-100' :
+                  (user.tier || '').toUpperCase() === 'GOLD' ? 'bg-amber-50 text-amber-600 border-amber-100' :
+                  (user.tier || '').toUpperCase() === 'SILVER' ? 'bg-slate-50 text-slate-500 border-slate-200' :
+                  'bg-orange-50 text-orange-600 border-orange-100'
+              }">${user.tier || 'BRONZE'} MEMBER</span>
+              <div class="w-1 h-1 rounded-full bg-slate-200"></div>
+              <div class="flex items-center gap-1.5 text-slate-500 font-bold text-[11px] uppercase tracking-wider">
+                <span class="material-symbols-outlined text-[14px]">corporate_fare</span>
+                <span>${org}</span>
+              </div>
             </div>
           </div>
 

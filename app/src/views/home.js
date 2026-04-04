@@ -92,10 +92,19 @@ export async function renderHome(container) {
     <div class="z-10">
     <p class="text-xs uppercase tracking-widest opacity-80 mb-1">Total Kontribusi</p>
     <p class="headline text-3xl font-extrabold">${contribution}<span class="text-lg font-normal ml-1">kg</span></p>
-    <p class="text-sm mt-2 font-medium bg-white/20 inline-block px-3 py-1 rounded-full backdrop-blur-sm">Sangat Bagus!</p>
+    <p class="text-[10px] mt-2 font-black uppercase tracking-[0.2em] bg-white/20 inline-block px-4 py-2 rounded-xl backdrop-blur-md border border-white/10">
+        Status: ${
+            (user.tier || '').toUpperCase() === 'PRIORITAS' ? 'Elite Eco-Warrior' :
+            (user.tier || '').toUpperCase() === 'GOLD' ? 'Top Contributor' :
+            (user.tier || '').toUpperCase() === 'SILVER' ? 'Active Supporter' :
+            'Member Perintis'
+        }
+    </p>
     </div>
     <div class="z-10 text-right">
-    <span class="material-symbols-outlined text-4xl opacity-50" style="font-variation-settings: 'FILL' 1;">eco</span>
+    <span class="material-symbols-outlined text-4xl opacity-50" style="font-variation-settings: 'FILL' 1;">
+        ${(user.tier || '').toUpperCase() === 'PRIORITAS' ? 'workspace_premium' : 'eco'}
+    </span>
     </div>
     <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-white/5 rounded-full blur-3xl"></div>
     </div>
