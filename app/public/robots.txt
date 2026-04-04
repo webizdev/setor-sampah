@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://asriapp.my.id/sitemap.xml
+
+# Disallow admin panel from being indexed
+Disallow: /admin.html
+Disallow: /admin.html#/
