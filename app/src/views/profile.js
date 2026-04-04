@@ -230,21 +230,29 @@ export async function renderProfile(container) {
       </div>
 
       <!-- Map Selection Modal -->
-      <div id="map-modal" class="fixed inset-0 z-[110] bg-slate-900 hidden flex-col transition-all duration-300 opacity-0 text-slate-800">
-        <header class="bg-white px-6 py-4 flex items-center justify-between border-b border-slate-100 flex-shrink-0">
+      <div id="map-modal" class="fixed inset-0 z-[110] bg-white hidden flex-col transition-all duration-500 opacity-0 text-slate-800">
+        <header class="bg-white px-6 py-4 flex items-center justify-between border-b border-slate-100 flex-shrink-0 z-[111] shadow-sm">
           <div>
             <h4 class="text-lg font-black headline tracking-tight">Tandai Lokasi</h4>
-            <div id="map-address-preview" class="text-[11px] text-slate-500 font-medium truncate max-w-[200px]">Geser peta untuk memilih...</div>
+            <div id="map-address-preview" class="text-[11px] text-slate-500 font-medium truncate max-w-[200px]">Mendeteksi lokasi...</div>
           </div>
           <div class="flex items-center gap-2">
             <button onclick="window.closeMap()" class="bg-slate-100 text-slate-600 px-4 py-2.5 rounded-xl text-xs font-bold hover:bg-slate-200 transition-colors">Batal</button>
             <button onclick="window.confirmLocation()" class="bg-primary text-white px-6 py-2.5 rounded-xl text-xs font-black hover:bg-[#0f5238] transition-colors shadow-lg shadow-primary/20">Pasang Pin</button>
           </div>
         </header>
-        <div id="map-view" class="flex-grow w-full relative">
+        <div id="map-view" class="flex-grow w-full relative bg-slate-50">
+          <!-- Loading State Overlay -->
+          <div id="map-loading-overlay" class="absolute inset-0 z-[1050] bg-slate-50 flex flex-col items-center justify-center gap-4 transition-opacity duration-500">
+            <div class="w-10 h-10 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
+            <p class="text-[10px] font-black uppercase tracking-widest text-slate-400">Menyiapkan Peta...</p>
+          </div>
           <!-- Crosshair Overlay -->
           <div class="absolute inset-0 z-[1000] flex items-center justify-center pointer-events-none mb-8">
-            <span class="material-symbols-outlined text-primary text-4xl drop-shadow-lg">location_on</span>
+            <div class="relative">
+               <span class="material-symbols-outlined text-primary text-5xl drop-shadow-[0_8px_8px_rgba(0,0,0,0.2)]">location_on</span>
+               <div class="absolute bottom-1 left-1/2 -translate-x-1/2 w-2 h-1 bg-black/20 rounded-full blur-[2px]"></div>
+            </div>
           </div>
         </div>
       </div>
@@ -410,11 +418,23 @@ export async function renderProfile(container) {
   window.openMap = (direct = false) => {
     window.DIRECT_MAP_SAVE = direct;
     const modal = document.getElementById('map-modal');
+    const loading = document.getElementById('map-loading-overlay');
+    
+    if (loading) loading.style.opacity = '1';
     modal.classList.remove('hidden');
+    
     setTimeout(() => {
       modal.classList.add('opacity-100');
       initLeaflet();
-    }, 10);
+      // Force immediate resize after transition starts
+      if (leafletMap) {
+        setTimeout(() => {
+          leafletMap.invalidateSize();
+          if (loading) loading.style.opacity = '0';
+          setTimeout(() => loading?.classList.add('hidden'), 500);
+        }, 600);
+      }
+    }, 50);
   };
 
   window.closeMap = () => {
@@ -446,6 +466,15 @@ export async function renderProfile(container) {
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; OpenStreetMap contributors'
     }).addTo(leafletMap);
+
+    // Hide loader once map is initialized
+    setTimeout(() => {
+      const loading = document.getElementById('map-loading-overlay');
+      if (loading) {
+        loading.style.opacity = '0';
+        setTimeout(() => loading.classList.add('hidden'), 500);
+      }
+    }, 1000);
 
     L.control.zoom({ position: 'bottomright' }).addTo(leafletMap);
 
