@@ -168,7 +168,12 @@ export async function renderRegister(container) {
       localStorage.setItem('yari_user_id', newUser.id);
       window.USER_ID = newUser.id;
       
-      // 4. Redirect
+      // 4. Trigger PWA Install Prompt
+      if (window.showInstallPromotion) {
+        window.showInstallPromotion();
+      }
+
+      // 5. Redirect (After a short delay if needed, but the modal is fixed/on top)
       window.location.hash = '#/home';
 
     } catch (err) {

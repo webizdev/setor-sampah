@@ -6,6 +6,7 @@ import { renderLayanan } from './src/views/layanan.js';
 import { renderProfile } from './src/views/profile.js';
 import { renderOnboarding } from './src/views/onboarding.js';
 import { renderRegister } from './src/views/register.js';
+import './src/utils/pwa.js'; // Ensure PWA listener is active
 
 // Global Session Check
 window.USER_ID = localStorage.getItem('yari_user_id') || null;
