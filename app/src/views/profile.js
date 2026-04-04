@@ -21,8 +21,19 @@ export async function renderProfile(container) {
 
   let { user, pendingTxs } = await loadData();
   let leafletMap = null;
+  let miniMapInstance = null;
 
   function render() {
+    // Cleanup existing maps before re-render to prevent "layered" maps or memory leaks
+    if (leafletMap) {
+      try { leafletMap.remove(); } catch(e) {}
+      leafletMap = null;
+    }
+    if (miniMapInstance) {
+      try { miniMapInstance.remove(); } catch(e) {}
+      miniMapInstance = null;
+    }
+
     const pendingSaldo = (pendingTxs || []).reduce((acc, tx) => acc + parseFloat(tx.total_price || 0), 0);
     const saldo = user?.saldo || 0;
     const name = user?.full_name || 'User';
@@ -325,7 +336,7 @@ export async function renderProfile(container) {
       setTimeout(() => {
         const miniMapContainer = document.getElementById('mini-map');
         if (miniMapContainer && window.L) {
-          const miniMap = L.map('mini-map', {
+          miniMapInstance = L.map('mini-map', {
             center: [lat, lng],
             zoom: 16,
             zoomControl: false,
@@ -335,8 +346,8 @@ export async function renderProfile(container) {
             doubleClickZoom: false,
             boxZoom: false
           });
-          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(miniMap);
-          L.marker([lat, lng]).addTo(miniMap);
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(miniMapInstance);
+          L.marker([lat, lng]).addTo(miniMapInstance);
         }
       }, 300);
     }
