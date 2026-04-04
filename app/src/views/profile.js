@@ -48,7 +48,7 @@ export async function renderProfile(container) {
 
     const html = `
       <!-- Top App Bar -->
-      <header class="fixed top-0 w-full z-[100] bg-slate-50/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200/50">
+      <header class="fixed top-0 w-full z-[5000] bg-slate-50/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200/50">
         <div class="flex justify-between items-center px-6 py-4 w-full">
           <button class="material-symbols-outlined text-[#0f5238] dark:text-[#f3f4f5] hover:bg-emerald-100/30 p-2 rounded-full transition-all">menu</button>
           <h1 class="headline tracking-tight font-black text-lg text-[#0f5238] dark:text-[#f3f4f5]">Setor Sampah</h1>
@@ -150,7 +150,7 @@ export async function renderProfile(container) {
             </div>
             <div class="flex flex-col gap-4">
               <!-- Mini Map Preview -->
-              <div id="mini-map" class="w-full h-32 rounded-2xl bg-slate-100 overflow-hidden border border-slate-100 relative group cursor-pointer" onclick="window.openMap(true)">
+              <div id="mini-map" class="w-full h-32 rounded-2xl bg-slate-100 overflow-hidden border border-slate-100 relative z-0 group cursor-pointer" onclick="window.openMap(true)">
                 ${!lat ? `
                   <div class="absolute inset-0 flex flex-col items-center justify-center text-slate-400 gap-2">
                     <span class="material-symbols-outlined text-3xl">map</span>
@@ -189,7 +189,7 @@ export async function renderProfile(container) {
       </main>
 
       <!-- Settings Modal -->
-      <div id="settings-modal" class="fixed inset-0 z-[100] flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm hidden transition-all duration-300 opacity-0">
+      <div id="settings-modal" class="fixed inset-0 z-[6000] flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm hidden transition-all duration-300 opacity-0">
         <div class="bg-white w-full sm:max-w-md rounded-t-[2.5rem] sm:rounded-[2.5rem] p-8 space-y-6 shadow-2xl relative translate-y-full transition-transform duration-300">
           <div class="flex justify-between items-center mb-2">
             <h3 class="text-2xl font-black headline tracking-tight">Pengaturan Profil</h3>
@@ -241,9 +241,9 @@ export async function renderProfile(container) {
       </div>
 
       <!-- Map Selection Modal -->
-      <div id="map-modal" class="fixed inset-0 z-[110] bg-white hidden flex-col transition-all duration-500 opacity-0 text-slate-800">
+      <div id="map-modal" class="fixed inset-0 z-[7000] bg-white hidden flex-col transition-all duration-500 opacity-0 text-slate-800">
         <!-- Full-Screen Loading Overlay -->
-        <div id="map-loading-overlay" class="absolute inset-0 z-[2000] bg-white flex flex-col items-center justify-center transition-all duration-700">
+        <div id="map-loading-overlay" class="absolute inset-0 z-[8000] bg-white flex flex-col items-center justify-center transition-all duration-700">
           <div class="absolute inset-0 z-0 overflow-hidden opacity-30">
             <img src="./src/assets/map_load_placeholder.png" class="w-full h-full object-cover blur-xl scale-125" alt="Map Background">
           </div>
