@@ -3,6 +3,31 @@ import { supabase } from '../supabase.js';
 export function renderOnboarding(container) {
     const html = `
         <div class="bg-surface font-body text-on-surface selection:bg-secondary-container min-h-screen">
+            <style>
+                .nav-link {
+                    position: relative;
+                    transition: all 0.3s ease;
+                }
+                nav .nav-link::after {
+                    content: '';
+                    position: absolute;
+                    bottom: -4px;
+                    left: 0;
+                    width: 0;
+                    height: 3px;
+                    background-color: #f9b17a; /* tertiary/orange */
+                    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                    border-radius: 99px;
+                    opacity: 0;
+                }
+                nav .nav-link:hover::after, nav .nav-link.active::after {
+                    width: 100%;
+                    opacity: 1;
+                }
+                nav .nav-link:hover, nav .nav-link.active {
+                    color: var(--md-sys-color-primary, #0f5238) !important;
+                }
+            </style>
             <!-- TopNavBar -->
             <nav class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-surface-variant">
                 <div class="flex justify-between items-center px-6 lg:px-12 py-4 lg:py-6 max-w-screen-2xl mx-auto">
@@ -10,11 +35,11 @@ export function renderOnboarding(container) {
                         <span class="material-symbols-outlined text-3xl">recycling</span>
                         YARI
                     </div>
-                    <div class="hidden md:flex items-center gap-8">
-                        <a class="nav-link font-headline uppercase tracking-widest text-sm font-bold text-primary border-b-2 border-tertiary-fixed-dim pb-1" href="#home">Beranda</a>
-                        <a class="nav-link font-headline uppercase tracking-widest text-sm font-bold text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors duration-300 px-4 py-2 rounded-full" href="#layanan-section">Layanan</a>
-                        <a class="nav-link font-headline uppercase tracking-widest text-sm font-bold text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors duration-300 px-4 py-2 rounded-full" href="#katalog-section">Katalog</a>
-                        <a class="nav-link font-headline uppercase tracking-widest text-sm font-bold text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors duration-300 px-4 py-2 rounded-full" href="#footer-section">Tentang Kami</a>
+                    <div class="hidden md:flex items-center gap-10">
+                        <a class="nav-link font-headline uppercase tracking-widest text-sm font-bold" href="#home">Beranda</a>
+                        <a class="nav-link font-headline uppercase tracking-widest text-sm font-bold text-on-surface-variant hover:text-primary transition-all duration-300" href="#layanan-section">Layanan</a>
+                        <a class="nav-link font-headline uppercase tracking-widest text-sm font-bold text-on-surface-variant hover:text-primary transition-all duration-300" href="#katalog-section">Katalog</a>
+                        <a class="nav-link font-headline uppercase tracking-widest text-sm font-bold text-on-surface-variant hover:text-primary transition-all duration-300" href="#footer-section">Tentang Kami</a>
                     </div>
                     <a href="#/home" class="bg-primary text-on-primary px-6 py-3 rounded-xl font-headline font-bold text-sm tracking-wide hover:brightness-110 transition-all active:scale-95 flex items-center gap-2">
                         <span>Masuk Aplikasi</span>
@@ -462,21 +487,50 @@ export function renderOnboarding(container) {
 
     fetchFooterData();
 
-    // Smooth Scroll Implementation
-    const setupSmoothScroll = () => {
-        const anchors = container.querySelectorAll('a[href^="#"]');
-        anchors.forEach(link => {
+    // ScrollSpy & Smooth Scroll Implementation
+    const setupNavigation = () => {
+        const navLinks = container.querySelectorAll('.nav-link');
+        const sections = Array.from(navLinks).map(link => {
+            const id = link.getAttribute('href');
+            if (id.startsWith('#') && !id.includes('/')) {
+                return container.querySelector(id);
+            }
+            return null;
+        }).filter(Boolean);
+
+        const handleScrollSpy = () => {
+            let current = '';
+            const navHeight = container.querySelector('nav').offsetHeight || 80;
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - navHeight - 100;
+                if (window.pageYOffset >= sectionTop) {
+                    current = '#' + section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === current) {
+                    link.classList.add('active');
+                }
+            });
+        };
+
+        window.addEventListener('scroll', handleScrollSpy);
+        handleScrollSpy(); // Initial check
+
+        navLinks.forEach(link => {
             link.addEventListener('click', (e) => {
                 const targetId = link.getAttribute('href');
                 
-                // Only handle internal anchor links (not router links like #/home)
                 if (targetId.startsWith('#') && !targetId.includes('/')) {
                     e.preventDefault();
                     const targetElement = container.querySelector(targetId);
                     
                     if (targetElement) {
                         const navHeight = container.querySelector('nav').offsetHeight || 80;
-                        const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - navHeight;
+                        const targetPosition = targetElement.offsetTop - navHeight;
                         
                         window.scrollTo({
                             top: targetPosition,
@@ -488,5 +542,5 @@ export function renderOnboarding(container) {
         });
     };
 
-    setupSmoothScroll();
+    setupNavigation();
 }
