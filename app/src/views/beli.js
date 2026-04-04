@@ -39,7 +39,7 @@ export async function renderBeli(container) {
     <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
     <div class="max-w-md">
     <span class="text-secondary font-bold text-xs uppercase tracking-[0.2em] mb-2 block">Katalog Marketplace</span>
-    <h2 class="headline font-extrabold text-4xl tracking-tight text-on-surface">Beli Sampah</h2>
+    <h2 class="headline font-extrabold text-4xl tracking-tight text-on-surface uppercase italic">Jual Sampah</h2>
     <p class="text-on-surface-variant mt-2 text-sm md:text-base">Tukarkan sampah anorganik Anda menjadi saldo digital dengan nilai ekonomi tinggi.</p>
     </div>
     <div class="w-full md:w-72">
