@@ -106,9 +106,9 @@ export async function renderOnboarding(container) {
                         <a class="nav-link font-headline uppercase tracking-widest text-sm font-bold text-on-surface-variant hover:text-primary transition-all duration-300" href="#katalog-section">Katalog</a>
                         <a class="nav-link font-headline uppercase tracking-widest text-sm font-bold text-on-surface-variant hover:text-primary transition-all duration-300" href="#footer-section">Tentang Kami</a>
                     </div>
-                    <a href="#/home" class="bg-primary text-on-primary px-4 md:px-6 py-2.5 md:py-3 rounded-xl font-headline font-bold text-xs md:text-sm tracking-wide hover:brightness-110 transition-all active:scale-95 flex items-center gap-2 shrink-0">
-                        <span class="hidden sm:inline">Masuk Aplikasi</span>
-                        <span class="material-symbols-outlined text-sm md:text-base">login</span>
+                    <a href="${window.USER_ID ? '#/home' : '#/register'}" class="bg-primary text-on-primary px-4 md:px-6 py-2.5 md:py-3 rounded-xl font-headline font-bold text-xs md:text-sm tracking-wide hover:brightness-110 transition-all active:scale-95 flex items-center gap-2 shrink-0">
+                        <span class="hidden sm:inline">${window.USER_ID ? 'Buka Dashboard' : 'Masuk Aplikasi'}</span>
+                        <span class="material-symbols-outlined text-sm md:text-base">${window.USER_ID ? 'dashboard' : 'login'}</span>
                     </a>
                 </div>
             </nav>
@@ -124,8 +124,8 @@ export async function renderOnboarding(container) {
                             ${d.hero_subtitle}
                         </p>
                         <div class="flex flex-wrap gap-4">
-                            <a href="#/home" class="bg-primary text-on-primary px-8 py-4 rounded-xl font-headline font-bold text-base shadow-xl shadow-primary/20 hover:brightness-110 transition-all flex items-center gap-2">
-                                <span>Mulai Sekarang</span>
+                            <a href="${window.USER_ID ? '#/home' : '#/register'}" class="bg-primary text-on-primary px-8 py-4 rounded-xl font-headline font-bold text-base shadow-xl shadow-primary/20 hover:brightness-110 transition-all flex items-center gap-2">
+                                <span>${window.USER_ID ? 'Dashboard Saya' : 'Mulai Sekarang'}</span>
                                 <span class="material-symbols-outlined">arrow_forward</span>
                             </a>
                             <a href="#layanan-section" class="border-2 border-primary text-primary px-8 py-4 rounded-xl font-headline font-bold text-base hover:bg-primary/5 transition-all">
@@ -299,9 +299,9 @@ export async function renderOnboarding(container) {
                                 ${d.cta_subtitle}
                             </p>
                             <div class="flex flex-wrap justify-center gap-6">
-                                <a href="#/home" class="bg-secondary-fixed text-on-secondary-fixed px-10 py-5 rounded-2xl font-headline font-extrabold text-lg shadow-xl shadow-secondary-fixed/30 hover:scale-105 transition-all flex items-center gap-2">
-                                    <span>Masuk Aplikasi</span>
-                                    <span class="material-symbols-outlined">exit_to_app</span>
+                                <a href="${window.USER_ID ? '#/home' : '#/register'}" class="bg-secondary-fixed text-on-secondary-fixed px-10 py-5 rounded-2xl font-headline font-extrabold text-lg shadow-xl shadow-secondary-fixed/30 hover:scale-105 transition-all flex items-center gap-2">
+                                    <span>${window.USER_ID ? 'Lihat Dashboard' : 'Masuk Aplikasi'}</span>
+                                    <span class="material-symbols-outlined">${window.USER_ID ? 'dashboard' : 'exit_to_app'}</span>
                                 </a>
                             </div>
                         </div>
