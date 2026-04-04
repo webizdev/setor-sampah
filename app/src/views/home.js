@@ -165,7 +165,7 @@ export function getBottomNav(activeTab) {
 
   return `
     <!-- BottomNavBar -->
-    <nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pt-3 pb-6 bg-white/80 dark:bg-slate-900/80 backdrop-blur-2xl z-50 rounded-t-[1.5rem] shadow-[0_-8px_30px_rgba(0,0,0,0.04)]">
+    <nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pt-3 pb-6 bg-white/80 dark:bg-slate-900/80 backdrop-blur-2xl z-[100] rounded-t-[1.5rem] shadow-[0_-12px_40px_rgba(0,0,0,0.06)] border-t border-slate-100/50">
         <a class="flex flex-col items-center justify-center px-5 py-2 duration-200 transition-all ${getActiveClass('/')}" href="#/">
         <span class="material-symbols-outlined" ${getIconClass('/')}>home</span>
         <span class="font-['Manrope'] font-medium text-[11px] uppercase tracking-wider mt-1">Home</span>

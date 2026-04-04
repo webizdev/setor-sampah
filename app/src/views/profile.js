@@ -48,7 +48,7 @@ export async function renderProfile(container) {
 
     const html = `
       <!-- Top App Bar -->
-      <header class="fixed top-0 w-full z-[60] bg-slate-50/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200/50">
+      <header class="fixed top-0 w-full z-[100] bg-slate-50/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200/50">
         <div class="flex justify-between items-center px-6 py-4 w-full">
           <button class="material-symbols-outlined text-[#0f5238] dark:text-[#f3f4f5] hover:bg-emerald-100/30 p-2 rounded-full transition-all">menu</button>
           <h1 class="headline tracking-tight font-black text-lg text-[#0f5238] dark:text-[#f3f4f5]">Setor Sampah</h1>
