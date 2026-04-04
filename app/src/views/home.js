@@ -213,11 +213,7 @@ export async function renderHome(container) {
     </div>
     </section>
     </main>
-    <div class="fixed bottom-24 right-6 z-40">
-    <button class="w-16 h-16 bg-gradient-to-br from-[#0f5238] to-[#2d6a4f] text-white rounded-2xl shadow-xl flex items-center justify-center active:scale-90 transition-transform duration-200">
-    <span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">add</span>
-    </button>
-    </div>
+
     ${getBottomNav('/')}
   `;
 
