@@ -4,7 +4,6 @@ import { updateAllUserTiers } from '../utils/tier_engine.js';
 
 export async function renderAdminReports(container, currentPath) {
     let groupedReports = [];
-    let companyProfile = { name: 'YARI SAMPAH' };
 
     async function loadView() {
         const { data: transactions, error } = await supabase
@@ -16,10 +15,6 @@ export async function renderAdminReports(container, currentPath) {
         if (error) {
             console.error("Error loading reports", error);
         }
-
-        // Load Company Profile for Branding
-        const { data: profile } = await supabase.from('yari_company_profile').select('*').single();
-        if (profile) companyProfile = profile;
 
         // Grouping logic by User
         const groups = (transactions || []).reduce((acc, tx) => {
@@ -48,192 +43,6 @@ export async function renderAdminReports(container, currentPath) {
         }, {});
 
         groupedReports = Object.values(groups);
-
-        // Define Global Functions BEFORE setting innerHTML
-        window.printReceipt = (userId) => {
-            console.log("Printing receipt for user:", userId);
-            console.log("Current reports available:", groupedReports.length);
-            
-            const group = groupedReports.find(g => g.user_id === userId);
-            if (!group) {
-                console.warn("Group not found for user ID:", userId);
-                alert("Data transaksi tidak ditemukan untuk user ini.");
-                return;
-            }
-
-            const content = `
-                <div class="text-center mb-10 border-b-2 border-slate-100 pb-8">
-                    <h1 class="text-3xl font-black headline tracking-tight uppercase">${companyProfile.name}</h1>
-                    <p class="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em] mt-2">Nota Tanda Terima Setoran Resmi</p>
-                </div>
-                
-                <div class="grid grid-cols-2 gap-8 mb-12 text-sm">
-                    <div>
-                        <div class="text-[10px] font-black text-slate-300 uppercase tracking-widest mb-2">Pelanggan:</div>
-                        <div class="font-black text-slate-800 text-lg uppercase">${group.user_name}</div>
-                        <div class="text-slate-500 font-bold mt-1 uppercase tracking-wider text-xs">${group.user_whatsapp}</div>
-                    </div>
-                    <div class="text-right">
-                        <div class="text-[10px] font-black text-slate-300 uppercase tracking-widest mb-2">Ref No:</div>
-                        <div class="font-bold text-slate-800">#${group.user_id.slice(0, 8).toUpperCase()}</div>
-                        <div class="text-slate-400 text-xs mt-1 font-medium">${new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' })}</div>
-                    </div>
-                </div>
-
-                <div class="space-y-6">
-                    <table class="w-full text-left">
-                        <thead>
-                            <tr class="border-b border-slate-100">
-                                <th class="pb-4 text-[10px] font-black uppercase tracking-widest text-slate-300">Rincian Materi</th>
-                                <th class="pb-4 text-[10px] font-black uppercase tracking-widest text-slate-300 text-right">Massa</th>
-                                <th class="pb-4 text-[10px] font-black uppercase tracking-widest text-slate-300 text-right">Potensi Hasil</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-slate-50">
-                            ${group.items.map(item => `
-                                <tr>
-                                    <td class="py-5">
-                                        <div class="font-black text-slate-700 uppercase">${item.name}</div>
-                                        <div class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-1">${item.date}</div>
-                                    </td>
-                                    <td class="py-5 text-right">
-                                        <span class="font-black text-slate-800">${item.qty}</span> <span class="text-[10px] text-slate-400 uppercase font-black ml-1">Kg</span>
-                                    </td>
-                                    <td class="py-5 text-right font-black text-slate-800">
-                                        Rp ${item.price.toLocaleString('id-ID')}
-                                    </td>
-                                </tr>
-                            `).join('')}
-                        </tbody>
-                        <tfoot>
-                            <tr class="border-t-2 border-slate-900/10">
-                                <td colspan="2" class="py-8 text-xs font-black uppercase tracking-[0.3em] text-slate-400">Total Reward Saldo</td>
-                                <td class="py-8 text-right text-2xl font-black text-primary">Rp ${group.total_nominal.toLocaleString('id-ID')}</td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
-
-                <div class="text-center pt-10 border-t border-dashed border-slate-200 mt-4">
-                    <p class="text-[12px] text-slate-400 font-medium leading-relaxed">Terima kasih telah berkontribusi nyata menjaga kelestarian lingkungan bersama kami!</p>
-                    <p class="text-[9px] text-slate-300 mt-4 uppercase font-black tracking-[0.4em] opacity-50">&copy; ${companyProfile.name.toUpperCase()} 2026</p>
-                </div>
-            `;
-            
-            const contentEl = document.getElementById('receipt-content');
-            const modalEl = document.getElementById('receipt-modal');
-            if (contentEl && modalEl) {
-                contentEl.innerHTML = content;
-                modalEl.classList.remove('hidden');
-                modalEl.classList.add('flex');
-            } else {
-                console.error("Receipt modal elements not found in DOM");
-                alert("Terjadi kesalahan teknis: Modal tidak ditemukan.");
-            }
-        };
-
-
-        window.closeReceiptModal = () => {
-            const modal = document.getElementById('receipt-modal');
-            if (modal) {
-                modal.classList.remove('flex');
-                modal.classList.add('hidden');
-            }
-        };
-
-        window.printContent = () => {
-            const contentEl = document.getElementById('receipt-content');
-            if (!contentEl) return;
-            const content = contentEl.innerHTML;
-            
-            // Create a hidden iframe for clean printing
-            const printFrame = document.createElement('iframe');
-            printFrame.style.position = 'fixed';
-            printFrame.style.right = '0';
-            printFrame.style.bottom = '0';
-            printFrame.style.width = '0';
-            printFrame.style.height = '0';
-            printFrame.style.border = '0';
-            document.body.appendChild(printFrame);
-
-            const doc = printFrame.contentWindow.document;
-            doc.write(`
-                <html>
-                    <head>
-                        <title>Cetak Nota</title>
-                        <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
-                        <script src="https://cdn.tailwindcss.com"></script>
-                        <script>
-                            tailwind.config = {
-                                theme: {
-                                    extend: {
-                                        colors: { primary: '#0f5238' }
-                                    }
-                                }
-                            }
-                        </script>
-                        <style>
-                            body { font-family: 'Manrope', sans-serif; margin: 0; padding: 0; background-color: white; }
-                            h1, h2, h3, .headline { font-family: 'Plus Jakarta Sans', sans-serif; }
-                            @page { size: A4; margin: 20mm; }
-                            @media print {
-                                body { -webkit-print-color-adjust: exact; }
-                                .print-container { width: 100%; max-width: 100%; margin: 0 auto; }
-                            }
-                        </style>
-                    </head>
-                    <body>
-                        <div class="print-container p-4">
-                            ${content}
-                        </div>
-                        <script>
-                            window.onload = function() {
-                                window.print();
-                                setTimeout(() => {
-                                    window.parent.document.body.removeChild(window.frameElement);
-                                }, 100);
-                            };
-                        </script>
-                    </body>
-                </html>
-            `);
-            doc.close();
-        };
-
-        window.confirmGrouped = async (userId) => {
-            const group = groupedReports.find(g => g.user_id === userId);
-            if (!group) return;
-
-            if(!confirm(`Konfirmasi gabungan ${group.tx_ids.length} transaksi untuk ${group.user_name}? Saldo user akan bertambah Rp ${group.total_nominal.toLocaleString('id-ID')}`)) return;
-            
-            try {
-                const { error: txError } = await supabase
-                    .from('yari_transactions')
-                    .update({ status: 'completed' })
-                    .in('id', group.tx_ids);
-                
-                if (txError) throw txError;
-
-                const { data: userData } = await supabase.from('yari_users').select('saldo, total_contribution_kg').eq('id', userId).single();
-                
-                const newSaldo = parseFloat(userData.saldo || 0) + group.total_nominal;
-                const newContribution = parseFloat(userData.total_contribution_kg || 0) + group.total_qty;
-
-                const { error: userError } = await supabase
-                    .from('yari_users')
-                    .update({ saldo: newSaldo, total_contribution_kg: newContribution })
-                    .eq('id', userId);
-
-                if (userError) throw userError;
-                await updateAllUserTiers();
-
-                alert('Berhasil! Seluruh setoran user telah dikonfirmasi.');
-                loadView();
-            } catch (err) {
-                console.error(err);
-                alert('Gagal konfirmasi: ' + err.message);
-            }
-        };
 
         const html = `
             <div class="flex h-screen bg-slate-50 overflow-hidden text-slate-800">
@@ -322,9 +131,195 @@ export async function renderAdminReports(container, currentPath) {
                         </div>
                     </div>
                 </div>
+
+                <!-- No specific print style needed here anymore as we use the iframe method -->
             </div>
         `;
         container.innerHTML = html;
+
+        window.printReceipt = async (userId) => {
+            const group = groupedReports.find(g => g.user_id === userId);
+            if (!group) return;
+
+            // Fetch company name dynamically
+            const { data: companyProfile } = await supabase
+                .from('yari_company_profile')
+                .select('nama')
+                .maybeSingle();
+            const companyName = companyProfile?.nama || 'YARI SAMPAH';
+            const nameParts = companyName.trim().split(' ');
+            const firstPart = nameParts[0];
+            const restPart = nameParts.slice(1).join(' ');
+
+            const content = `
+                <div class="text-center mb-10 border-b-2 border-slate-100 pb-8">
+                    <h1 class="text-3xl font-black headline tracking-tight uppercase">${firstPart}${restPart ? ` <span class="text-primary">${restPart}</span>` : ''}</h1>
+                    <p class="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em] mt-2">Nota Tanda Terima Setoran Resmi</p>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-8 mb-12 text-sm">
+                    <div>
+                        <div class="text-[10px] font-black text-slate-300 uppercase tracking-widest mb-2">Pelanggan:</div>
+                        <div class="font-black text-slate-800 text-lg uppercase">${group.user_name}</div>
+                        <div class="text-slate-500 font-bold mt-1 uppercase tracking-wider text-xs">${group.user_whatsapp}</div>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-[10px] font-black text-slate-300 uppercase tracking-widest mb-2">Ref No:</div>
+                        <div class="font-bold text-slate-800">#${group.user_id.slice(0, 8).toUpperCase()}</div>
+                        <div class="text-slate-400 text-xs mt-1 font-medium">${new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' })}</div>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <table class="w-full text-left">
+                        <thead>
+                            <tr class="border-b border-slate-100">
+                                <th class="pb-4 text-[10px] font-black uppercase tracking-widest text-slate-300">Rincian Materi</th>
+                                <th class="pb-4 text-[10px] font-black uppercase tracking-widest text-slate-300 text-right">Massa</th>
+                                <th class="pb-4 text-[10px] font-black uppercase tracking-widest text-slate-300 text-right">Potensi Hasil</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-50">
+                            ${group.items.map(item => `
+                                <tr>
+                                    <td class="py-5">
+                                        <div class="font-black text-slate-700 uppercase">${item.name}</div>
+                                        <div class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-1">${item.date}</div>
+                                    </td>
+                                    <td class="py-5 text-right">
+                                        <span class="font-black text-slate-800">${item.qty}</span> <span class="text-[10px] text-slate-400 uppercase font-black ml-1">Kg</span>
+                                    </td>
+                                    <td class="py-5 text-right font-black text-slate-800">
+                                        Rp ${item.price.toLocaleString('id-ID')}
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                        <tfoot>
+                            <tr class="border-t-2 border-slate-900/10">
+                                <td colspan="2" class="py-8 text-xs font-black uppercase tracking-[0.3em] text-slate-400">Total Reward Saldo</td>
+                                <td class="py-8 text-right text-2xl font-black text-primary">Rp ${group.total_nominal.toLocaleString('id-ID')}</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+                <div class="text-center pt-10 border-t border-dashed border-slate-200 mt-4">
+                    <p class="text-[12px] text-slate-400 font-medium leading-relaxed">Terima kasih telah berkontribusi nyata menjaga kelestarian lingkungan bersama kami!</p>
+                    <p class="text-[9px] text-slate-300 mt-4 uppercase font-black tracking-[0.4em] opacity-50">&copy; YARI ECOSYSTEM 2026</p>
+                </div>
+            `;
+            
+            document.getElementById('receipt-content').innerHTML = content;
+            document.getElementById('receipt-modal').classList.remove('hidden');
+            document.getElementById('receipt-modal').classList.add('flex');
+        };
+
+        window.closeReceiptModal = () => {
+            document.getElementById('receipt-modal').classList.remove('flex');
+            document.getElementById('receipt-modal').classList.add('hidden');
+        };
+
+        window.printContent = () => {
+            const content = document.getElementById('receipt-content').innerHTML;
+            
+            // Create a hidden iframe for clean printing
+            const printFrame = document.createElement('iframe');
+            printFrame.style.position = 'fixed';
+            printFrame.style.right = '0';
+            printFrame.style.bottom = '0';
+            printFrame.style.width = '0';
+            printFrame.style.height = '0';
+            printFrame.style.border = '0';
+            document.body.appendChild(printFrame);
+
+            const doc = printFrame.contentWindow.document;
+            doc.write(`
+                <html>
+                    <head>
+                        <title>Cetak Nota YARI</title>
+                        <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
+                        <script src="https://cdn.tailwindcss.com"></script>
+                        <script>
+                            tailwind.config = {
+                                theme: {
+                                    extend: {
+                                        colors: {
+                                            primary: '#0f5238',
+                                        }
+                                    }
+                                }
+                            }
+                        </script>
+                        <style>
+                            body { font-family: 'Manrope', sans-serif; margin: 0; padding: 0; background-color: white; }
+                            h1, h2, h3, .headline { font-family: 'Plus Jakarta Sans', sans-serif; }
+                            @page {
+                                size: A4;
+                                margin: 20mm;
+                            }
+                            @media print {
+                                body { -webkit-print-color-adjust: exact; }
+                                .print-container { width: 100%; max-width: 100%; margin: 0 auto; }
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="print-container p-4">
+                            ${content}
+                        </div>
+                        <script>
+                            window.onload = function() {
+                                window.print();
+                                setTimeout(() => {
+                                    window.parent.document.body.removeChild(window.frameElement);
+                                }, 100);
+                            };
+                        </script>
+                    </body>
+                </html>
+            `);
+            doc.close();
+        };
+
+        window.confirmGrouped = async (userId) => {
+            const group = groupedReports.find(g => g.user_id === userId);
+            if (!group) return;
+
+            if(!confirm(`Konfirmasi gabungan ${group.tx_ids.length} transaksi untuk ${group.user_name}? Saldo user akan bertambah Rp ${group.total_nominal.toLocaleString('id-ID')}`)) return;
+            
+            try {
+                // Bulk Update Transactions
+                const { error: txError } = await supabase
+                    .from('yari_transactions')
+                    .update({ status: 'completed' })
+                    .in('id', group.tx_ids);
+                
+                if (txError) throw txError;
+
+                // Update User Balance
+                const { data: userData } = await supabase.from('yari_users').select('saldo, total_contribution_kg').eq('id', userId).single();
+                
+                const newSaldo = parseFloat(userData.saldo || 0) + group.total_nominal;
+                const newContribution = parseFloat(userData.total_contribution_kg || 0) + group.total_qty;
+
+                const { error: userError } = await supabase
+                    .from('yari_users')
+                    .update({ saldo: newSaldo, total_contribution_kg: newContribution })
+                    .eq('id', userId);
+
+                if (userError) throw userError;
+                
+                // Trigger Global Recalculation
+                await updateAllUserTiers();
+
+                alert('Berhasil! Seluruh setoran user telah dikonfirmasi dan tier seluruh member diperbarui.');
+                loadView();
+            } catch (err) {
+                console.error(err);
+                alert('Gagal konfirmasi: ' + err.message);
+            }
+        };
     }
 
     await loadView();
