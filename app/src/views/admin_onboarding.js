@@ -25,10 +25,21 @@ export async function renderAdminOnboarding(container, currentPath) {
             return order.indexOf(a.key) - order.indexOf(b.key);
         };
 
+        const sortFitur = (a, b) => {
+            const order = [
+                'fitur_title', 'fitur_subtitle', 
+                'feature_1_title', 'feature_1_desc', 'feature_1_icon',
+                'feature_2_title', 'feature_2_desc', 'feature_2_icon',
+                'feature_3_title', 'feature_3_desc', 'feature_3_icon',
+                'feature_4_title', 'feature_4_desc', 'feature_4_icon'
+            ];
+            return order.indexOf(a.key) - order.indexOf(b.key);
+        };
+
         const sections = {
             hero: (content?.filter(c => c.section === 'hero') || []).sort(sortHero),
             layanan: (content?.filter(c => c.section === 'layanan') || []).sort(sortLayanan),
-            fitur: content?.filter(c => c.section === 'fitur') || [],
+            fitur: (content?.filter(c => c.section === 'fitur') || []).sort(sortFitur),
             cta: content?.filter(c => c.section === 'cta') || []
         };
 
@@ -170,8 +181,24 @@ export async function renderAdminOnboarding(container, currentPath) {
                     { key: 'service_2_desc', value: 'Setorkan langsung komoditas Anda ke mitra pengepul terverifikasi dalam jaringan terdekat untuk proses penjualan instan dan mandiri.', type: 'textarea', section: 'layanan', label: 'Layanan 2: Deskripsi' },
                     { key: 'service_3_title', value: 'Aksi Ekosistem & CSR', type: 'text', section: 'layanan', label: 'Layanan 3: Judul' },
                     { key: 'service_3_desc', value: 'Terlibatlah dalam misi donasi, tukar poin dengan hadiah, pelatihan daur ulang mandiri, dan bangun gaya hidup ramah lingkungan sesungguhnya.', type: 'textarea', section: 'layanan', label: 'Layanan 3: Deskripsi' },
-                    { key: 'fitur_title', value: 'Fitur Premium untuk Gaya Hidup Hijau.', type: 'text', section: 'fitur', label: 'Judul Fitur' },
-                    { key: 'fitur_subtitle', value: 'Kami menyediakan ekosistem terpadu dari penjemputan hingga penjualan daur ulang.', type: 'textarea', section: 'fitur', label: 'Sub-judul Fitur' },
+                    { key: 'fitur_title', value: 'Fitur Premium untuk Gaya Hidup Hijau.', type: 'text', section: 'fitur', label: 'Judul Utama Section' },
+                    { key: 'fitur_subtitle', value: 'Kami menyediakan ekosistem terpadu dari penjemputan hingga penjualan daur ulang.', type: 'textarea', section: 'fitur', label: 'Deskripsi Utama Section' },
+                    
+                    { key: 'feature_1_title', value: 'Titik Jemput Akurat', type: 'text', section: 'fitur', label: 'Fitur 1: Judul' },
+                    { key: 'feature_1_desc', value: 'Layanan pick-up langsung ke depan pintu Anda dengan penentuan lokasi yang presisi menggunakan integrasi maps.', type: 'textarea', section: 'fitur', label: 'Fitur 1: Deskripsi' },
+                    { key: 'feature_1_icon', value: 'local_shipping', type: 'text', section: 'fitur', label: 'Fitur 1: Ikon' },
+                    
+                    { key: 'feature_2_title', value: 'Katalog Harga Real-time', type: 'text', section: 'fitur', label: 'Fitur 2: Judul' },
+                    { key: 'feature_2_desc', value: 'Pantau harga botol PET, kardus, dan logam agar Anda tahu pasti nilai sampah Anda setiap saat.', type: 'textarea', section: 'fitur', label: 'Fitur 2: Deskripsi' },
+                    { key: 'feature_2_icon', value: 'sell', type: 'text', section: 'fitur', label: 'Fitur 2: Ikon' },
+                    
+                    { key: 'feature_3_title', value: 'Aksi Komunitas', type: 'text', section: 'fitur', label: 'Fitur 3: Judul' },
+                    { key: 'feature_3_desc', value: 'Pelatihan daur ulang & ekonomi sirkular bersama ahli.', type: 'textarea', section: 'fitur', label: 'Fitur 3: Deskripsi' },
+                    { key: 'feature_3_icon', value: 'diversity_1', type: 'text', section: 'fitur', label: 'Fitur 3: Ikon' },
+                    
+                    { key: 'feature_4_title', value: 'Member Tiering', type: 'text', section: 'fitur', label: 'Fitur 4: Judul' },
+                    { key: 'feature_4_desc', value: 'Tingkatkan rank dari Bronze hingga Prioritas untuk bonus spesial.', type: 'textarea', section: 'fitur', label: 'Fitur 4: Deskripsi' },
+                    { key: 'feature_4_icon', value: 'workspace_premium', type: 'text', section: 'fitur', label: 'Fitur 4: Ikon' },
                     { key: 'cta_title', value: 'Mulai Perjalanan Hijau Anda', type: 'text', section: 'cta', label: 'Judul CTA' },
                     { key: 'cta_subtitle', value: 'Bergabung dengan komunitas pejuang lingkungan kami dan ubah kebiasaan menjadi pundi-pundi rupiah yang bernilai konstan.', type: 'textarea', section: 'cta', label: 'Sub-judul CTA' }
                 ];
@@ -179,7 +206,7 @@ export async function renderAdminOnboarding(container, currentPath) {
                 try {
                     const { error } = await supabase
                         .from('yari_onboarding_content')
-                        .insert(defaults);
+                        .upsert(defaults, { onConflict: 'key' });
 
                     if (error) throw error;
                     location.reload();

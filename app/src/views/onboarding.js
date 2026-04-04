@@ -29,6 +29,18 @@ export async function renderOnboarding(container) {
         service_3_desc: content.service_3_desc || 'Terlibatlah dalam misi donasi, tukar poin dengan hadiah, pelatihan daur ulang mandiri, dan bangun gaya hidup ramah lingkungan sesungguhnya.',
         fitur_title: content.fitur_title || 'Fitur Premium untuk Gaya Hidup Hijau.',
         fitur_subtitle: content.fitur_subtitle || 'Kami menyediakan ekosistem terpadu dari penjemputan hingga penjualan daur ulang.',
+        feature_1_title: content.feature_1_title || 'Titik Jemput Akurat',
+        feature_1_desc: content.feature_1_desc || 'Layanan pick-up langsung ke depan pintu Anda dengan penentuan lokasi yang presisi menggunakan integrasi maps.',
+        feature_1_icon: content.feature_1_icon || 'local_shipping',
+        feature_2_title: content.feature_2_title || 'Katalog Harga Real-time',
+        feature_2_desc: content.feature_2_desc || 'Pantau harga botol PET, kardus, dan logam agar Anda tahu pasti nilai sampah Anda setiap saat.',
+        feature_2_icon: content.feature_2_icon || 'sell',
+        feature_3_title: content.feature_3_title || 'Aksi Komunitas',
+        feature_3_desc: content.feature_3_desc || 'Pelatihan daur ulang & ekonomi sirkular bersama ahli.',
+        feature_3_icon: content.feature_3_icon || 'diversity_1',
+        feature_4_title: content.feature_4_title || 'Member Tiering',
+        feature_4_desc: content.feature_4_desc || 'Tingkatkan rank dari Bronze hingga Prioritas untuk bonus spesial.',
+        feature_4_icon: content.feature_4_icon || 'workspace_premium',
         cta_title: content.cta_title || 'Mulai Perjalanan Hijau Anda',
         cta_subtitle: content.cta_subtitle || 'Bergabung dengan komunitas pejuang lingkungan kami dan ubah kebiasaan menjadi pundi-pundi rupiah yang bernilai konstan.'
     };
@@ -210,11 +222,11 @@ export async function renderOnboarding(container) {
                             
                             <div class="relative z-10">
                                 <div class="w-16 h-16 bg-primary-fixed rounded-2xl flex items-center justify-center text-on-primary-fixed mb-8 shadow-lg">
-                                    <span class="material-symbols-outlined text-3xl">local_shipping</span>
+                                    <span class="material-symbols-outlined text-3xl">${d.feature_1_icon}</span>
                                 </div>
-                                <h3 class="text-4xl font-headline font-extrabold mb-4">Titik Jemput Akurat</h3>
+                                <h3 class="text-4xl font-headline font-extrabold mb-4">${d.feature_1_title}</h3>
                                 <p class="text-on-primary-container text-lg max-w-sm leading-relaxed">
-                                    Layanan pick-up langsung ke depan pintu Anda dengan penentuan lokasi yang presisi menggunakan integrasi maps.
+                                    ${d.feature_1_desc}
                                 </p>
                             </div>
                         </div>
@@ -226,13 +238,13 @@ export async function renderOnboarding(container) {
                             
                             <div class="relative z-10">
                                 <div class="flex justify-between items-start mb-6">
-                                    <h3 class="text-3xl font-headline font-extrabold text-on-secondary-container relative z-10">Katalog<br/>Harga Real-time</h3>
+                                    <h3 class="text-3xl font-headline font-extrabold text-on-secondary-container relative z-10">${d.feature_2_title}</h3>
                                     <div class="bg-white/50 p-3 rounded-2xl relative z-10">
-                                        <span class="material-symbols-outlined text-3xl text-on-secondary-container">sell</span>
+                                        <span class="material-symbols-outlined text-3xl text-on-secondary-container">${d.feature_2_icon}</span>
                                     </div>
                                 </div>
                                 <p class="text-on-secondary-container/80 text-lg font-medium max-w-[70%] relative z-10">
-                                    Pantau harga botol PET, kardus, dan logam agar Anda tahu pasti nilai sampah Anda setiap saat.
+                                    ${d.feature_2_desc}
                                 </p>
                             </div>
                         </div>
@@ -243,11 +255,11 @@ export async function renderOnboarding(container) {
                             <span class="material-symbols-outlined absolute -bottom-6 -right-6 text-[150px] text-primary opacity-5 group-hover:opacity-10 transition-opacity duration-500 pointer-events-none select-none" style="font-variation-settings: 'FILL' 1;">volunteer_activism</span>
                             
                             <div class="w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-sm relative z-10">
-                                <span class="material-symbols-outlined text-primary">diversity_1</span>
+                                <span class="material-symbols-outlined text-primary">${d.feature_3_icon}</span>
                             </div>
                             <div class="relative z-10">
-                                <h4 class="font-headline font-bold text-xl text-primary">Aksi Komunitas</h4>
-                                <p class="text-on-surface-variant mt-2 text-sm font-medium">Pelatihan daur ulang & ekonomi sirkular bersama ahli.</p>
+                                <h4 class="font-headline font-bold text-xl text-primary">${d.feature_3_title}</h4>
+                                <p class="text-on-surface-variant mt-2 text-sm font-medium">${d.feature_3_desc}</p>
                             </div>
                         </div>
 
@@ -257,11 +269,11 @@ export async function renderOnboarding(container) {
                             <span class="material-symbols-outlined absolute -bottom-6 -right-6 text-[150px] text-tertiary opacity-5 group-hover:opacity-10 transition-opacity duration-500 pointer-events-none select-none" style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
                             
                             <div class="w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-sm relative z-10">
-                                <span class="material-symbols-outlined text-tertiary">workspace_premium</span>
+                                <span class="material-symbols-outlined text-tertiary">${d.feature_4_icon}</span>
                             </div>
                             <div class="relative z-10">
-                                <h4 class="font-headline font-bold text-xl text-primary">Member Tiering</h4>
-                                <p class="text-on-surface-variant mt-2 text-sm font-medium">Tingkatkan rank dari Bronze hingga Prioritas untuk bonus spesial.</p>
+                                <h4 class="font-headline font-bold text-xl text-primary">${d.feature_4_title}</h4>
+                                <p class="text-on-surface-variant mt-2 text-sm font-medium">${d.feature_4_desc}</p>
                             </div>
                         </div>
                     </div>
