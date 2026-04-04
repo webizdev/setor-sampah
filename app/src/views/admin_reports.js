@@ -146,7 +146,7 @@ export async function renderAdminReports(container, currentPath) {
                 .from('yari_company_profile')
                 .select('nama')
                 .maybeSingle();
-            const companyName = companyProfile?.nama || 'YARI SAMPAH';
+            const companyName = companyProfile?.nama || 'ASRI APPS';
             const nameParts = companyName.trim().split(' ');
             const firstPart = nameParts[0];
             const restPart = nameParts.slice(1).join(' ');
@@ -209,7 +209,7 @@ export async function renderAdminReports(container, currentPath) {
                     <p class="text-[9px] text-slate-300 mt-4 uppercase font-black tracking-[0.4em] opacity-50">&copy; YARI ECOSYSTEM 2026</p>
                 </div>
             `;
-            
+
             document.getElementById('receipt-content').innerHTML = content;
             document.getElementById('receipt-modal').classList.remove('hidden');
             document.getElementById('receipt-modal').classList.add('flex');
@@ -222,7 +222,7 @@ export async function renderAdminReports(container, currentPath) {
 
         window.printContent = () => {
             const content = document.getElementById('receipt-content').innerHTML;
-            
+
             // Create a hidden iframe for clean printing
             const printFrame = document.createElement('iframe');
             printFrame.style.position = 'fixed';
@@ -286,20 +286,20 @@ export async function renderAdminReports(container, currentPath) {
             const group = groupedReports.find(g => g.user_id === userId);
             if (!group) return;
 
-            if(!confirm(`Konfirmasi gabungan ${group.tx_ids.length} transaksi untuk ${group.user_name}? Saldo user akan bertambah Rp ${group.total_nominal.toLocaleString('id-ID')}`)) return;
-            
+            if (!confirm(`Konfirmasi gabungan ${group.tx_ids.length} transaksi untuk ${group.user_name}? Saldo user akan bertambah Rp ${group.total_nominal.toLocaleString('id-ID')}`)) return;
+
             try {
                 // Bulk Update Transactions
                 const { error: txError } = await supabase
                     .from('yari_transactions')
                     .update({ status: 'completed' })
                     .in('id', group.tx_ids);
-                
+
                 if (txError) throw txError;
 
                 // Update User Balance
                 const { data: userData } = await supabase.from('yari_users').select('saldo, total_contribution_kg').eq('id', userId).single();
-                
+
                 const newSaldo = parseFloat(userData.saldo || 0) + group.total_nominal;
                 const newContribution = parseFloat(userData.total_contribution_kg || 0) + group.total_qty;
 
@@ -309,7 +309,7 @@ export async function renderAdminReports(container, currentPath) {
                     .eq('id', userId);
 
                 if (userError) throw userError;
-                
+
                 // Trigger Global Recalculation
                 await updateAllUserTiers();
 
