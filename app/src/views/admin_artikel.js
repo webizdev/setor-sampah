@@ -214,11 +214,35 @@ export async function renderAdminArtikel(container, currentPath) {
             }
 
             try {
+                let result;
                 if (id) {
-                    await supabase.from('yari_articles').update(payload).eq('id', id);
+                    result = await supabase.from('yari_articles').update(payload).eq('id', id);
                 } else {
-                    await supabase.from('yari_articles').insert(payload);
+                    result = await supabase.from('yari_articles').insert(payload);
                 }
+
+                if (result.error) {
+                    // Check if error is due to missing columns (common if migration wasn't run)
+                    if (result.error.message.includes('column') && (result.error.message.includes('is_notified') || result.error.message.includes('notified_at'))) {
+                        console.warn("Database columns missing, attempting fallback save without notification flags...");
+                        const fallbackPayload = { ...payload };
+                        delete fallbackPayload.is_notified;
+                        delete fallbackPayload.notified_at;
+                        
+                        let fallbackResult;
+                        if (id) {
+                            fallbackResult = await supabase.from('yari_articles').update(fallbackPayload).eq('id', id);
+                        } else {
+                            fallbackResult = await supabase.from('yari_articles').insert(fallbackPayload);
+                        }
+                        
+                        if (fallbackResult.error) throw fallbackResult.error;
+                        alert("Berhasil disimpan (Tanpa Notifikasi). Mohon jalankan SQL migration untuk mengaktifkan fitur notifikasi.");
+                    } else {
+                        throw result.error;
+                    }
+                }
+
                 window.closeArticleModal();
                 loadView();
             } catch (err) {

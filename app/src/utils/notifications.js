@@ -1,11 +1,29 @@
 import { supabase } from '../supabase.js';
 
 /**
- * Shared utility for simple notifications based on yari_articles.
+ * Shared utility for granular notifications based on yari_articles.
+ * Tracks read states in localStorage and removes read items from the "Latest Update" list.
  */
 
+function getReadIds() {
+  try {
+    const stored = localStorage.getItem('yari_read_notif_ids');
+    return stored ? JSON.parse(stored) : [];
+  } catch (e) {
+    return [];
+  }
+}
+
+function saveReadId(id) {
+  const readIds = getReadIds();
+  if (!readIds.includes(id)) {
+    readIds.push(id);
+    localStorage.setItem('yari_read_notif_ids', JSON.stringify(readIds));
+  }
+}
+
 export async function getNotificationBellHTML() {
-  const lastSeenId = localStorage.getItem('yari_last_notif_id') || '';
+  const readIds = getReadIds();
   
   // Fetch only the latest article that has been marked for notification
   const { data: latest } = await supabase
@@ -16,20 +34,57 @@ export async function getNotificationBellHTML() {
     .limit(1)
     .maybeSingle();
 
-  const hasNew = latest && latest.id !== lastSeenId;
+  const hasNew = latest && !readIds.includes(latest.id);
 
   return `
-    <div class="relative cursor-pointer group" onclick="window.toggleNotifications()">
+    <div id="notif-bell-container" class="relative cursor-pointer group" onclick="window.toggleNotifications()">
       <span class="material-symbols-outlined text-[#0f5238] dark:text-[#f3f4f5] text-2xl group-hover:scale-110 transition-transform">notifications</span>
       ${hasNew ? `
-        <span class="absolute top-0.5 right-0.5 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white dark:border-slate-800 animate-pulse"></span>
-        <span class="absolute top-0.5 right-0.5 w-2.5 h-2.5 bg-red-500 rounded-full animate-ping opacity-75"></span>
+        <span id="notif-badge-solid" class="absolute top-0.5 right-0.5 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white dark:border-slate-800 animate-pulse"></span>
+        <span id="notif-badge-ping" class="absolute top-0.5 right-0.5 w-2.5 h-2.5 bg-red-500 rounded-full animate-ping opacity-75"></span>
       ` : ''}
     </div>
   `;
 }
 
-// Global functions for the notification system
+// Global action to mark as read and handle navigation
+window.markNotifAsRead = (id, url) => {
+  // 1. Save state
+  saveReadId(id);
+  
+  // 2. Immediate UI feedback in panel
+  const item = document.getElementById(`notif-item-${id}`);
+  if (item) {
+    item.classList.add('opacity-0', 'scale-95', '-translate-x-4');
+    setTimeout(() => {
+      item.remove();
+      // If list is empty, show empty state
+      const container = document.getElementById('notif-list-container');
+      if (container && container.children.length === 0) {
+        container.innerHTML = `
+          <div class="flex flex-col items-center justify-center py-20 opacity-30">
+            <span class="material-symbols-outlined text-6xl mb-4">notifications_off</span>
+            <p class="font-bold uppercase tracking-widest text-xs">Belum ada notifikasi.</p>
+          </div>
+        `;
+      }
+    }, 300);
+  }
+
+  // 3. Immediate UI feedback on bell (if this was the latest)
+  // We check if there's any newer unread notification locally? 
+  // For simplicity, we remove the badge from the bell immediately if it exists
+  const badgeSolid = document.getElementById('notif-badge-solid');
+  const badgePing = document.getElementById('notif-badge-ping');
+  if (badgeSolid) badgeSolid.remove();
+  if (badgePing) badgePing.remove();
+
+  // 4. Navigate
+  if (url && url !== 'undefined') {
+    window.open(url, '_blank');
+  }
+};
+
 window.toggleNotifications = async () => {
   const existing = document.getElementById('notification-overlay');
   if (existing) {
@@ -37,6 +92,8 @@ window.toggleNotifications = async () => {
     setTimeout(() => existing.remove(), 300);
     return;
   }
+
+  const readIds = getReadIds();
 
   // Create Overlay Layer
   const overlay = document.createElement('div');
@@ -79,23 +136,28 @@ window.toggleNotifications = async () => {
     document.getElementById('notification-panel').classList.remove('translate-x-full');
   });
 
-  // Fetch Data
+  // Fetch all notified articles
   const { data: articles } = await supabase
     .from('yari_articles')
     .select('*')
-    .order('created_at', { ascending: false })
+    .eq('is_notified', true)
+    .order('notified_at', { ascending: false })
     .limit(10);
 
   const container = document.getElementById('notif-list-container');
-  if (!articles || articles.length === 0) {
+  
+  // Filter out already read articles (Inbox Zero approach)
+  const unreadArticles = (articles || []).filter(item => !readIds.includes(item.id));
+
+  if (unreadArticles.length === 0) {
     container.innerHTML = `
       <div class="flex flex-col items-center justify-center py-20 opacity-30">
         <span class="material-symbols-outlined text-6xl mb-4">notifications_off</span>
-        <p class="font-bold uppercase tracking-widest text-xs">Belum ada notifikasi.</p>
+        <p class="font-bold uppercase tracking-widest text-xs">Belum ada notifikasi baru.</p>
       </div>
     `;
   } else {
-    container.innerHTML = articles.map(item => {
+    container.innerHTML = unreadArticles.map(item => {
       const type = item.kategori?.toLowerCase() || 'info';
       let icon = 'info';
       let bg = 'bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400';
@@ -109,8 +171,9 @@ window.toggleNotifications = async () => {
       }
 
       return `
-        <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700/30 hover:border-primary/30 transition-all cursor-pointer group"
-             onclick="window.open('${item.link_website}', '_blank')">
+        <div id="notif-item-${item.id}" 
+             class="p-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 hover:border-primary/50 transition-all duration-300 cursor-pointer group shadow-sm"
+             onclick="window.markNotifAsRead('${item.id}', '${item.link_website}')">
           <div class="flex gap-4">
             <div class="w-12 h-12 rounded-xl ${bg} flex-shrink-0 flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
               <span class="material-symbols-outlined text-2xl">${icon}</span>
@@ -126,8 +189,5 @@ window.toggleNotifications = async () => {
         </div>
       `;
     }).join('');
-
-    // Mark as read
-    localStorage.setItem('yari_last_notif_id', articles[0].id);
   }
 };
