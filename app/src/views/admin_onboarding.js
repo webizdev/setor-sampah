@@ -36,11 +36,17 @@ export async function renderAdminOnboarding(container, currentPath) {
             return order.indexOf(a.key) - order.indexOf(b.key);
         };
 
+        const sortFooter = (a, b) => {
+            const order = ['footer_about', 'footer_fb', 'footer_ig', 'footer_tiktok'];
+            return order.indexOf(a.key) - order.indexOf(b.key);
+        };
+
         const sections = {
             hero: (content?.filter(c => c.section === 'hero') || []).sort(sortHero),
             layanan: (content?.filter(c => c.section === 'layanan') || []).sort(sortLayanan),
             fitur: (content?.filter(c => c.section === 'fitur') || []).sort(sortFitur),
-            cta: content?.filter(c => c.section === 'cta') || []
+            cta: content?.filter(c => c.section === 'cta') || [],
+            footer: (content?.filter(c => c.section === 'footer') || []).sort(sortFooter)
         };
 
         const html = `
@@ -79,6 +85,7 @@ export async function renderAdminOnboarding(container, currentPath) {
                             ${renderSection('Layanan Section', 'category', sections.layanan)}
                             ${renderSection('Fitur Section', 'auto_awesome', sections.fitur)}
                             ${renderSection('CTA Section', 'campaign', sections.cta)}
+                            ${renderSection('Footer Section', 'info', sections.footer)}
                         `}
                     </div>
                 </main>
@@ -200,7 +207,12 @@ export async function renderAdminOnboarding(container, currentPath) {
                     { key: 'feature_4_desc', value: 'Tingkatkan rank dari Bronze hingga Prioritas untuk bonus spesial.', type: 'textarea', section: 'fitur', label: 'Fitur 4: Deskripsi' },
                     { key: 'feature_4_icon', value: 'workspace_premium', type: 'text', section: 'fitur', label: 'Fitur 4: Ikon' },
                     { key: 'cta_title', value: 'Mulai Perjalanan Hijau Anda', type: 'text', section: 'cta', label: 'Judul CTA' },
-                    { key: 'cta_subtitle', value: 'Bergabung dengan komunitas pejuang lingkungan kami dan ubah kebiasaan menjadi pundi-pundi rupiah yang bernilai konstan.', type: 'textarea', section: 'cta', label: 'Sub-judul CTA' }
+                    { key: 'cta_subtitle', value: 'Bergabung dengan komunitas pejuang lingkungan kami dan ubah kebiasaan menjadi pundi-pundi rupiah yang bernilai konstan.', type: 'textarea', section: 'cta', label: 'Sub-judul CTA' },
+                    
+                    { key: 'footer_about', value: 'YARI (Setor Sampah Indonesia) adalah pelopor ekosistem ekonomi sirkular digital yang memberdayakan masyarakat untuk mengelola limbah menjadi aset bernilai.', type: 'textarea', section: 'footer', label: 'Tentang YARI' },
+                    { key: 'footer_fb', value: '#', type: 'text', section: 'footer', label: 'Link Facebook' },
+                    { key: 'footer_ig', value: '#', type: 'text', section: 'footer', label: 'Link Instagram' },
+                    { key: 'footer_tiktok', value: '#', type: 'text', section: 'footer', label: 'Link TikTok' }
                 ];
 
                 try {
