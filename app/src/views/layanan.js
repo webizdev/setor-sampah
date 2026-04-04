@@ -3,16 +3,25 @@ import { getBottomNav } from './home.js';
 
 export async function renderLayanan(container) {
 
+  // Fetch user data for profile picture
+  const { data: user } = await supabase
+    .from('yari_users')
+    .select('avatar_url')
+    .eq('id', window.USER_ID)
+    .single();
+
+  const avatar = user?.avatar_url || 'https://via.placeholder.com/150';
+
   const html = `
     <!-- TopAppBar -->
-    <header class="fixed top-0 w-full z-50 bg-slate-50/80 dark:bg-slate-900/80 backdrop-blur-xl flex justify-between items-center px-6 py-4 w-full">
-    <div class="flex items-center gap-4">
-    <span class="material-symbols-outlined text-[#0f5238] dark:text-[#f3f4f5]">menu</span>
-    </div>
-    <h1 class="text-[#0f5238] dark:text-[#f3f4f5] font-black tracking-tighter text-lg headline">Setor Sampah</h1>
-    <div class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center overflow-hidden">
-    <img alt="User Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDU8LQyMowtAYTcIeRT217kyhOK-CukILVx6RRdGhbW-4OlyAGnfBdxepvwspeBZlGv2JWQHOdKll4ZiZG8Y2YeFRelrbjhO55HpiF60Msc0m7QjRhavHXWNG8kQDXTcphfqufWOzNj09S2ht3RBgnnOla3HPvgPoJ9KiOHIAop-jfm6CJIygzoXNdl64jE2rk-M7F6bB6o_ZiwwxqMzPTj9hsaqNn596DCMRrOwXaNi-_tAsi5Ogf55Gxfm2BfP7xQd2zdYbcuZQ">
-    </div>
+    <header class="fixed top-0 w-full z-[5000] bg-slate-50/80 dark:bg-slate-900/80 backdrop-blur-xl flex justify-between items-center px-6 py-4">
+      <div class="flex items-center gap-4">
+        <span class="material-symbols-outlined text-[#0f5238] dark:text-[#f3f4f5]">menu</span>
+      </div>
+      <h1 class="text-[#0f5238] dark:text-[#f3f4f5] font-black tracking-tighter text-lg headline">Setor Sampah</h1>
+      <div class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center overflow-hidden ring-2 ring-white shadow-sm cursor-pointer" onclick="window.location.hash = '#/profile'">
+        <img alt="User Profile" class="w-full h-full object-cover" src="${avatar}">
+      </div>
     </header>
     <!-- Content Canvas -->
     <main class="pt-24 px-6 pb-32 max-w-5xl mx-auto">
