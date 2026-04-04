@@ -54,43 +54,46 @@ export async function renderBeli(container) {
     <section class="mb-12">
     <div class="flex gap-4 overflow-x-auto pb-4 no-scrollbar">
     <button class="flex-none bg-gradient-to-br from-[#0f5238] to-[#2d6a4f] text-white px-6 py-3 rounded-xl font-bold text-sm">Semua</button>
-    ${categories.map(cat => `
+    ${(categories || []).map(cat => `
         <button class="flex-none bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high transition-colors px-6 py-3 rounded-xl font-medium text-sm">${cat.name}</button>
     `).join('')}
     </div>
     </section>
     <!-- Product Bento Grid -->
-    <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="catalog-container">
-    ${catalog.map(item => `
-        <div class="bg-surface-container-lowest rounded-[1.5rem] overflow-hidden group transition-all duration-300 hover:shadow-2xl hover:shadow-primary/5">
-        <div class="h-48 overflow-hidden relative">
-        <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="${item.image_url}"/>
-        ${item.is_popular ? `<div class="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-bold text-primary uppercase tracking-wider">Populer</div>` : ''}
+    <section class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6" id="catalog-container">
+    ${(catalog || []).map(item => `
+        <div class="bg-surface-container-lowest rounded-xl md:rounded-[1.5rem] overflow-hidden group transition-all duration-300 hover:shadow-xl hover:shadow-primary/5 flex flex-col">
+        <div class="h-32 md:h-48 overflow-hidden relative">
+        <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="${item.image_url || 'https://via.placeholder.com/300x200?text=No+Image'}"/>
+        ${item.is_popular ? `<div class="absolute top-2 right-2 md:top-4 md:right-4 bg-white/90 backdrop-blur-md px-2 py-0.5 md:px-3 md:py-1 rounded-full text-[9px] md:text-[10px] font-bold text-primary uppercase tracking-wider">Populer</div>` : ''}
         </div>
-        <div class="p-6">
-        <div class="flex justify-between items-start mb-4">
+        <div class="p-3 md:p-6 flex-1 flex flex-col">
+        <div class="flex flex-col mb-3 md:mb-4 flex-1">
         <div>
-        <h3 class="font-bold text-lg text-on-surface">${item.name}</h3>
-        <span class="text-xs text-outline font-medium">Kategori: ${item.yari_waste_categories.name}</span>
+        <h3 class="font-bold text-[13px] md:text-lg text-on-surface line-clamp-1" title="${item.name}">${item.name}</h3>
+        <span class="text-[9px] md:text-xs text-outline font-medium line-clamp-1">${item.yari_waste_categories?.name || 'Uncategorized'}</span>
         </div>
-        <div class="text-right">
-        <p class="text-primary font-extrabold text-lg">IDR ${item.price_per_kg.toLocaleString('id-ID')}</p>
-        <p class="text-[10px] text-outline font-bold uppercase tracking-widest">Per Kilogram</p>
+        <div class="mt-2 md:mt-0 text-left md:text-right">
+        <p class="text-primary font-black text-[13px] md:text-lg">Rp ${item.price_per_kg.toLocaleString('id-ID')}</p>
+        <p class="text-[9px] md:text-[10px] text-outline font-bold uppercase tracking-widest">Per Kg</p>
         </div>
         </div>
-        <button onclick="window.jualSampah('${item.id}', ${item.price_per_kg})" class="w-full bg-surface-container-high text-primary font-bold py-3 rounded-xl flex items-center justify-center gap-2 hover:bg-primary hover:text-white transition-all duration-300"><span class="material-symbols-outlined text-[18px]">add_shopping_cart</span> Jual</button>
+        <button onclick="window.jualSampah('${item.id}', ${item.price_per_kg})" class="w-full mt-auto bg-surface-container-high text-primary font-bold py-2 md:py-3 rounded-lg md:rounded-xl flex items-center justify-center gap-1.5 hover:bg-primary hover:text-white transition-all duration-300 text-[11px] md:text-base"><span class="material-symbols-outlined text-[14px] md:text-[18px]">add_shopping_cart</span> Jual</button>
         </div>
         </div>
     `).join('')}
-    <!-- Banner Card (Asymmetric Element) -->
-    <div class="lg:col-span-1 bg-tertiary rounded-[1.5rem] p-8 text-white relative overflow-hidden flex flex-col justify-end min-h-[300px]">
-    <div class="absolute top-0 right-0 p-4">
-    <span class="material-symbols-outlined text-white/20 text-8xl">eco</span>
-    </div>
-    <h4 class="headline text-2xl font-bold mb-2">Ingin Setoran Skala Besar?</h4>
-    <p class="text-white/80 text-sm mb-6">Hubungi tim kurir khusus kami untuk penjemputan limbah industri di atas 100kg.</p>
-    <button class="bg-white text-tertiary font-bold px-6 py-3 rounded-xl text-sm self-start hover:scale-105 transition-transform">Hubungi Admin</button>
-    </div>
+    </section>
+
+    <!-- Full-width Banner Card (Asymmetric Element) -->
+    <section class="mt-8">
+      <div class="bg-tertiary rounded-[1.5rem] p-6 md:p-8 text-white relative overflow-hidden flex flex-col justify-end min-h-[200px] md:min-h-[300px]">
+      <div class="absolute top-0 right-0 p-4">
+      <span class="material-symbols-outlined text-white/20 text-6xl md:text-8xl">eco</span>
+      </div>
+      <h4 class="headline text-xl md:text-2xl font-bold mb-2">Ingin Setoran Skala Besar?</h4>
+      <p class="text-white/80 text-xs md:text-sm mb-4 md:mb-6 max-w-sm">Hubungi tim kurir khusus kami untuk penjemputan limbah industri di atas 100kg.</p>
+      <button class="bg-white text-tertiary font-bold px-5 py-2.5 md:px-6 md:py-3 rounded-xl text-xs md:text-sm self-start hover:scale-105 transition-transform">Hubungi Admin</button>
+      </div>
     </section>
     </main>
     ${getBottomNav('/jual')}

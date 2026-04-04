@@ -6,6 +6,9 @@ import { renderAdminLogin } from './views/admin_login.js';
 import { renderAdminDashboard } from './views/admin_dashboard.js';
 import { renderAdminCatalog } from './views/admin_catalog.js';
 import { renderAdminTransactions } from './views/admin_transactions.js';
+import { renderAdminArtikel } from './views/admin_artikel.js';
+import { renderAdminReports } from './views/admin_reports.js';
+import { renderAdminMember } from './views/admin_member.js';
 
 // Simple Router for Admin Pages
 const adminRoutes = {
@@ -13,6 +16,9 @@ const adminRoutes = {
   '/login': renderAdminLogin,
   '/catalog': renderAdminCatalog,
   '/transactions': renderAdminTransactions,
+  '/artikel': renderAdminArtikel,
+  '/laporan': renderAdminReports,
+  '/member': renderAdminMember,
 };
 
 // Check if admin is authenticated
@@ -55,6 +61,14 @@ export function getAdminTopNav(currentPath) {
                     <span class="material-symbols-outlined text-[18px] ${currentPath === '/' ? 'font-fill' : ''}">dashboard</span>
                     <span class="text-xs sm:text-sm">Dasbor</span>
                 </a>
+                <a href="#/laporan" class="flex items-center gap-1.5 transition-colors px-3 py-2 rounded-lg whitespace-nowrap ${currentPath === '/laporan' ? 'bg-primary/5 text-primary font-bold' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800 font-medium'}">
+                    <span class="material-symbols-outlined text-[18px] ${currentPath === '/laporan' ? 'font-fill' : ''}">analytics</span>
+                    <span class="text-xs sm:text-sm">Laporan</span>
+                </a>
+                <a href="#/member" class="flex items-center gap-1.5 transition-colors px-3 py-2 rounded-lg whitespace-nowrap ${currentPath === '/member' ? 'bg-primary/5 text-primary font-bold' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800 font-medium'}">
+                    <span class="material-symbols-outlined text-[18px] ${currentPath === '/member' ? 'font-fill' : ''}">group</span>
+                    <span class="text-xs sm:text-sm">Member</span>
+                </a>
                 <a href="#/transactions" class="flex items-center gap-1.5 transition-colors px-3 py-2 rounded-lg whitespace-nowrap ${currentPath === '/transactions' ? 'bg-primary/5 text-primary font-bold' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800 font-medium'}">
                     <span class="material-symbols-outlined text-[18px] ${currentPath === '/transactions' ? 'font-fill' : ''}">receipt_long</span>
                     <span class="text-xs sm:text-sm">Transaksi</span>
@@ -62,6 +76,10 @@ export function getAdminTopNav(currentPath) {
                 <a href="#/catalog" class="flex items-center gap-1.5 transition-colors px-3 py-2 rounded-lg whitespace-nowrap ${currentPath === '/catalog' ? 'bg-primary/5 text-primary font-bold' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800 font-medium'}">
                     <span class="material-symbols-outlined text-[18px] ${currentPath === '/catalog' ? 'font-fill' : ''}">inventory_2</span>
                     <span class="text-xs sm:text-sm">Katalog</span>
+                </a>
+                <a href="#/artikel" class="flex items-center gap-1.5 transition-colors px-3 py-2 rounded-lg whitespace-nowrap ${currentPath === '/artikel' ? 'bg-primary/5 text-primary font-bold' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800 font-medium'}">
+                    <span class="material-symbols-outlined text-[18px] ${currentPath === '/artikel' ? 'font-fill' : ''}">article</span>
+                    <span class="text-xs sm:text-sm">Artikel</span>
                 </a>
                 <button onclick="window.logoutAdmin()" class="flex items-center gap-1.5 transition-colors px-3 py-2 rounded-lg text-red-500 hover:bg-red-50 ml-auto md:ml-0 whitespace-nowrap font-medium cursor-pointer">
                     <span class="material-symbols-outlined text-[18px]">logout</span>

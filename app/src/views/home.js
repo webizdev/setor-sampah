@@ -14,120 +14,58 @@ export async function renderHome(container) {
   const name = user?.full_name?.split(' ')[0] || 'User';
   const avatar = user?.avatar_url || '';
 
-  const eksplorasiData = [
-    {
-      kategori: 'Agenda',
-      badgeClass: 'bg-primary text-white',
-      items: [
-        {
-          title: 'Sapu Bersih Pantai Kuta',
-          icon: 'water_drop',
-          desc: '24 Okt 2026',
-          img: 'https://images.unsplash.com/photo-1618477461853-cf6ed80fbfc9?q=80&w=300&auto=format&fit=crop',
-          link: 'https://google.com/search?q=Sapu+Bersih+Pantai+Kuta'
-        },
-        {
-          title: 'Webinar Daur Ulang',
-          icon: 'event',
-          desc: '12 Nov 2026',
-          img: 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=300&auto=format&fit=crop',
-          link: 'https://google.com/search?q=Webinar+Daur+Ulang'
-        }
-      ]
-    },
-    {
-      kategori: 'Kegiatan',
-      badgeClass: 'bg-secondary text-white',
-      items: [
-        {
-          title: 'Workshop Kompos Mandiri',
-          icon: 'location_on',
-          desc: 'Balai Kota',
-          img: 'https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?q=80&w=300&auto=format&fit=crop',
-          link: 'https://google.com/search?q=Workshop+Kompos'
-        },
-        {
-          title: 'Gotong Royong RT 05',
-          icon: 'group',
-          desc: 'Komp. Hijau',
-          img: 'https://images.unsplash.com/photo-1605600659908-0ef719419d41?q=80&w=300&auto=format&fit=crop',
-          link: 'https://google.com'
-        }
-      ]
-    },
-    {
-      kategori: 'Lowongan Kerja',
-      badgeClass: 'bg-blue-600 text-white',
-      items: [
-        {
-          title: 'Staf Operasional Bank Sampah',
-          icon: 'work',
-          desc: 'Full-time • Jakarta',
-          img: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=300&auto=format&fit=crop',
-          link: 'https://linkedin.com'
-        }
-      ]
-    },
-    {
-      kategori: 'Edukasi',
-      badgeClass: 'bg-purple-600 text-white',
-      items: [
-        {
-          title: 'Cara Jitu Memilah Sampah Plastik',
-          icon: 'school',
-          desc: 'Video Panduan',
-          img: 'https://images.unsplash.com/photo-1516997184284-fd38171d184d?q=80&w=300&auto=format&fit=crop',
-          link: 'https://youtube.com'
-        }
-      ]
-    },
-    {
-      kategori: 'Artikel',
-      badgeClass: 'bg-orange-500 text-white',
-      items: [
-        {
-          title: 'Inovasi Plastik Biodegradable',
-          icon: 'article',
-          desc: 'Lingkungan • 5 min read',
-          img: 'https://images.unsplash.com/photo-1621503930472-fb5300be74fb?q=80&w=300&auto=format&fit=crop',
-          link: 'https://medium.com'
-        }
-      ]
-    }
-  ];
+  // Load Eksplorasi Lingkungan / Artikel
+  const { data: articles } = await supabase
+    .from('yari_articles')
+    .select('*')
+    .order('urutan', { ascending: true })
+    .order('created_at', { ascending: false })
+    .limit(5);
 
-  let feedHtml = '';
-  eksplorasiData.forEach((section, index) => {
-    // Hanya tampilkan 2 kategori pertama
-    const displayClass = index > 1 ? "hidden eksplorasi-extra" : "";
+  let cardsHtml = '';
+  (articles || []).forEach(item => {
+    let badgeClass = 'bg-primary text-white';
+    if(item.kategori?.toLowerCase() === 'kegiatan') badgeClass = 'bg-secondary text-white';
+    else if(item.kategori?.toLowerCase() === 'lowongan kerja') badgeClass = 'bg-blue-600 text-white';
+    else if(item.kategori?.toLowerCase() === 'edukasi') badgeClass = 'bg-purple-600 text-white';
+    else if(item.kategori?.toLowerCase() === 'artikel') badgeClass = 'bg-orange-500 text-white';
+
+    const createdDate = new Date(item.created_at);
+    const fallbackDateText = createdDate.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
     
-    let cardsHtml = '';
-    section.items.forEach(item => {
-      cardsHtml += `
-        <div class="snap-center shrink-0 w-[260px] bg-surface-container-low rounded-xl overflow-hidden group shadow-[0_2px_10px_rgba(0,0,0,0.02)] active:scale-[0.98] transition-transform cursor-pointer" onclick="window.open('${item.link}', '_blank')">
+    const mapsText = item.maps ? item.maps : '-';
+    const dateText = item.tanggal ? item.tanggal : fallbackDateText;
+
+    cardsHtml += `
+        <div class="snap-center shrink-0 w-[260px] bg-surface-container-low rounded-xl overflow-hidden group shadow-[0_2px_10px_rgba(0,0,0,0.02)] active:scale-[0.98] transition-transform cursor-pointer" onclick="window.open('${item.link_website}', '_blank')">
           <div class="h-40 overflow-hidden relative">
-            <img alt="${item.title}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="${item.img}">
-            <div class="absolute top-3 left-3 ${section.badgeClass} px-3 py-1.5 rounded-full text-[9px] font-bold uppercase tracking-widest backdrop-blur-sm">${section.kategori}</div>
+            <img alt="${item.title}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="${item.image_url || 'https://via.placeholder.com/300x200?text=No+Image'}">
+            <div class="absolute top-3 left-3 ${badgeClass} px-3 py-1.5 rounded-full text-[9px] font-bold uppercase tracking-widest backdrop-blur-sm">${item.kategori || 'Artikel'}</div>
           </div>
-          <div class="p-4">
+          <div class="p-4 flex flex-col h-[110px]">
             <h4 class="headline font-bold text-[15px] leading-snug mb-2 text-on-surface line-clamp-2">${item.title}</h4>
-            <div class="flex items-center gap-2 text-on-surface-variant text-xs">
-              <span class="material-symbols-outlined text-[16px]">${item.icon}</span>
-              <span>${item.desc}</span>
+            <div class="mt-auto space-y-1.5">
+              <div class="flex items-center gap-2 text-on-surface-variant text-xs">
+                <span class="material-symbols-outlined text-[14px]">location_on</span>
+                <span class="truncate">${mapsText}</span>
+              </div>
+              <div class="flex items-center gap-2 text-on-surface-variant text-xs">
+                <span class="material-symbols-outlined text-[14px]">calendar_today</span>
+                <span class="truncate">${dateText}</span>
+              </div>
             </div>
           </div>
         </div>
-      `;
-    });
-
-    feedHtml += `
-      <div class="${displayClass} mb-6">
-        <div class="flex overflow-x-auto hide-scrollbar gap-4 px-6 pb-4 snap-x">
-          ${cardsHtml}
-        </div>
-      </div>
     `;
   });
+
+  const feedHtml = cardsHtml ? `
+    <div class="flex overflow-x-auto hide-scrollbar gap-4 px-6 pb-4 snap-x">
+      ${cardsHtml}
+    </div>
+  ` : `
+    <div class="px-6 pb-4 text-sm text-slate-400">Belum ada informasi terbaru.</div>
+  `;
 
   const html = `
     <!-- TopAppBar -->
@@ -180,7 +118,6 @@ export async function renderHome(container) {
     <section class="mb-4 -mx-6 overflow-hidden">
       <div class="px-6 flex justify-between items-end mb-4">
         <h3 class="headline text-lg font-bold">Eksplorasi Lingkungan</h3>
-        <span onclick="document.querySelectorAll('.eksplorasi-extra').forEach(el => el.classList.toggle('hidden')); this.innerText = this.innerText === 'LIHAT SEMUA' ? 'TUTUP' : 'LIHAT SEMUA';" class="text-primary font-bold text-xs uppercase tracking-widest cursor-pointer select-none">LIHAT SEMUA</span>
       </div>
       <div>
         ${feedHtml}
