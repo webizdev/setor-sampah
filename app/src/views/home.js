@@ -1,4 +1,5 @@
 import { supabase, fetchBrandName } from '../supabase.js';
+import { getNotificationBellHTML } from '../utils/notifications.js';
 
 export async function renderHome(container) {
   const brandName = await fetchBrandName();
@@ -23,6 +24,8 @@ export async function renderHome(container) {
     .order('urutan', { ascending: true })
     .order('created_at', { ascending: false })
     .limit(5);
+
+  const notificationsHTML = await getNotificationBellHTML();
 
   let cardsHtml = '';
   (articles || []).forEach(item => {
@@ -74,7 +77,7 @@ export async function renderHome(container) {
     <header class="fixed top-0 w-full z-50 bg-slate-50/80 dark:bg-slate-900/80 backdrop-blur-xl">
     <div class="flex justify-between items-center px-6 py-4 w-full">
     <div class="flex items-center gap-4">
-    <span class="material-symbols-outlined text-[#0f5238] dark:text-[#f3f4f5]">menu</span>
+    ${notificationsHTML}
     <span class="text-[#0f5238] dark:text-[#f3f4f5] font-black tracking-tighter text-xl headline">${brandName}</span>
     </div>
     <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary/20">

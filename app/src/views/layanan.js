@@ -1,4 +1,5 @@
 import { supabase, fetchBrandName } from '../supabase.js';
+import { getNotificationBellHTML } from '../utils/notifications.js';
 import { getBottomNav } from './home.js';
 
 export async function renderLayanan(container) {
@@ -12,6 +13,7 @@ export async function renderLayanan(container) {
     .single();
 
   const avatar = user?.avatar_url || 'https://via.placeholder.com/150';
+  const notificationsHTML = await getNotificationBellHTML();
 
   // Fetch dynamic services from the database
   const { data: services, error: servicesError } = await supabase
@@ -27,7 +29,7 @@ export async function renderLayanan(container) {
     <!-- TopAppBar -->
     <header class="fixed top-0 w-full z-[5000] bg-slate-50/80 dark:bg-slate-900/80 backdrop-blur-xl flex justify-between items-center px-6 py-4">
       <div class="flex items-center gap-4">
-        <span class="material-symbols-outlined text-[#0f5238] dark:text-[#f3f4f5]">menu</span>
+        ${notificationsHTML}
       </div>
       <h1 class="text-[#0f5238] dark:text-[#f3f4f5] font-black tracking-tighter text-lg headline">${brandName}</h1>
       <div class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center overflow-hidden ring-2 ring-white shadow-sm cursor-pointer" onclick="window.location.hash = '#/profile'">

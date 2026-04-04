@@ -1,4 +1,5 @@
 import { supabase, fetchBrandName } from '../supabase.js';
+import { getNotificationBellHTML } from '../utils/notifications.js';
 import { getBottomNav } from './home.js';
 
 export async function renderBeli(container) {
@@ -12,6 +13,7 @@ export async function renderBeli(container) {
     .single();
 
   const avatar = user?.avatar_url || '';
+  const notificationsHTML = await getNotificationBellHTML();
 
   // Fetch catalog categories
   const { data: categories } = await supabase
@@ -27,7 +29,7 @@ export async function renderBeli(container) {
     <!-- Top Navigation Anchor (Shared Component) -->
     <header class="fixed top-0 w-full z-50 bg-slate-50/80 backdrop-blur-xl flex justify-between items-center px-6 py-4 w-full">
     <div class="flex items-center gap-4">
-    <span class="material-symbols-outlined text-[#0f5238]">menu</span>
+    ${notificationsHTML}
     </div>
     <h1 class="text-[#0f5238] font-black tracking-tighter text-lg font-['Plus_Jakarta_Sans']">${brandName}</h1>
     <div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center overflow-hidden">
