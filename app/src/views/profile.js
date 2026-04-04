@@ -231,7 +231,26 @@ export async function renderProfile(container) {
 
       <!-- Map Selection Modal -->
       <div id="map-modal" class="fixed inset-0 z-[110] bg-white hidden flex-col transition-all duration-500 opacity-0 text-slate-800">
-        <header class="bg-white px-6 py-4 flex items-center justify-between border-b border-slate-100 flex-shrink-0 z-[111] shadow-sm">
+        <!-- Full-Screen Loading Overlay -->
+        <div id="map-loading-overlay" class="absolute inset-0 z-[2000] bg-white flex flex-col items-center justify-center transition-all duration-700">
+          <div class="absolute inset-0 z-0 overflow-hidden opacity-30">
+            <img src="./src/assets/map_load_placeholder.png" class="w-full h-full object-cover blur-xl scale-125" alt="Map Background">
+          </div>
+          <div class="relative z-10 flex flex-col items-center gap-8 animate-in fade-in zoom-in duration-500">
+            <div class="relative">
+              <div class="absolute -inset-10 bg-primary/20 rounded-full blur-[40px] animate-pulse"></div>
+              <div class="w-16 h-16 rounded-2xl bg-white shadow-2xl flex items-center justify-center ring-1 ring-slate-100 relative">
+                 <span class="material-symbols-outlined text-primary text-4xl animate-bounce">location_on</span>
+              </div>
+            </div>
+            <div class="text-center space-y-2">
+              <h3 class="text-lg font-black headline tracking-tight">Pinpointing Location...</h3>
+              <p class="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">Fetching Map Data</p>
+            </div>
+          </div>
+        </div>
+
+        <header class="bg-white/80 backdrop-blur-xl px-6 py-4 flex items-center justify-between border-b border-slate-100 flex-shrink-0 z-[111] shadow-sm">
           <div>
             <h4 class="text-lg font-black headline tracking-tight">Tandai Lokasi</h4>
             <div id="map-address-preview" class="text-[11px] text-slate-500 font-medium truncate max-w-[200px]">Mendeteksi lokasi...</div>
@@ -242,16 +261,11 @@ export async function renderProfile(container) {
           </div>
         </header>
         <div id="map-view" class="flex-grow w-full relative bg-slate-50">
-          <!-- Loading State Overlay -->
-          <div id="map-loading-overlay" class="absolute inset-0 z-[1050] bg-slate-50 flex flex-col items-center justify-center gap-4 transition-opacity duration-500">
-            <div class="w-10 h-10 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
-            <p class="text-[10px] font-black uppercase tracking-widest text-slate-400">Menyiapkan Peta...</p>
-          </div>
           <!-- Crosshair Overlay -->
           <div class="absolute inset-0 z-[1000] flex items-center justify-center pointer-events-none mb-8">
             <div class="relative">
-               <span class="material-symbols-outlined text-primary text-5xl drop-shadow-[0_8px_8px_rgba(0,0,0,0.2)]">location_on</span>
-               <div class="absolute bottom-1 left-1/2 -translate-x-1/2 w-2 h-1 bg-black/20 rounded-full blur-[2px]"></div>
+               <span class="material-symbols-outlined text-primary text-6xl drop-shadow-[0_15px_15px_rgba(34,197,94,0.4)]">location_on</span>
+               <div class="absolute bottom-1 left-1/2 -translate-x-1/2 w-4 h-2 bg-black/10 rounded-full blur-[3px]"></div>
             </div>
           </div>
         </div>
@@ -467,14 +481,14 @@ export async function renderProfile(container) {
       attribution: '&copy; OpenStreetMap contributors'
     }).addTo(leafletMap);
 
-    // Hide loader once map is initialized
+    // Hide loader once map tiles are ready
     setTimeout(() => {
       const loading = document.getElementById('map-loading-overlay');
       if (loading) {
-        loading.style.opacity = '0';
-        setTimeout(() => loading.classList.add('hidden'), 500);
+        loading.classList.add('opacity-0', 'scale-110');
+        setTimeout(() => loading.classList.add('hidden'), 700);
       }
-    }, 1000);
+    }, 1200);
 
     L.control.zoom({ position: 'bottomright' }).addTo(leafletMap);
 
