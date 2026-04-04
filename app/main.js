@@ -5,9 +5,12 @@ import { renderBeli } from './src/views/beli.js';
 import { renderLayanan } from './src/views/layanan.js';
 import { renderProfile } from './src/views/profile.js';
 
+import { renderOnboarding } from './src/views/onboarding.js';
+
 // Simple Router
 const routes = {
-  '/': renderHome,
+  '/': renderOnboarding,
+  '/home': renderHome,
   '/jual': renderBeli,
   '/layanan': renderLayanan,
   '/profile': renderProfile,
@@ -17,7 +20,7 @@ async function router() {
   const path = window.location.hash.slice(1) || '/';
   const appDiv = document.getElementById('app');
   
-  const renderFunc = routes[path] || renderHome;
+  const renderFunc = routes[path] || renderOnboarding;
   await renderFunc(appDiv);
 }
 
