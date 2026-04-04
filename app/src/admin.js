@@ -170,7 +170,30 @@ async function adminRouter() {
   }
 
   const renderFunc = adminRoutes[path] || renderAdminDashboard;
-  appDiv.innerHTML = '<div class="flex items-center justify-center min-h-screen text-primary"><span class="material-symbols-outlined animate-spin text-4xl">autorenew</span></div>';
+  // Show skeleton screen while loading
+  appDiv.innerHTML = `
+    <div class="flex h-screen bg-slate-50 animate-pulse overflow-hidden">
+      <div class="w-[280px] h-screen bg-white border-r border-slate-100 flex flex-col gap-4 p-6">
+        <div class="h-10 bg-slate-100 rounded-2xl w-3/4"></div>
+        <div class="mt-4 space-y-3">
+          <div class="h-10 bg-slate-100 rounded-xl"></div>
+          <div class="h-10 bg-slate-200 rounded-xl"></div>
+          <div class="h-10 bg-slate-100 rounded-xl"></div>
+          <div class="h-10 bg-slate-100 rounded-xl"></div>
+          <div class="h-10 bg-slate-100 rounded-xl"></div>
+        </div>
+      </div>
+      <div class="flex-1 p-10 space-y-6">
+        <div class="h-8 bg-slate-200 rounded-full w-48"></div>
+        <div class="grid grid-cols-3 gap-6">
+          <div class="h-28 bg-slate-200 rounded-3xl"></div>
+          <div class="h-28 bg-slate-200 rounded-3xl"></div>
+          <div class="h-28 bg-slate-100 rounded-3xl"></div>
+        </div>
+        <div class="h-64 bg-slate-200 rounded-3xl"></div>
+      </div>
+    </div>
+  `;
   await renderFunc(appDiv, path);
 }
 

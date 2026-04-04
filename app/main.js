@@ -41,8 +41,24 @@ async function router() {
 
   const renderFunc = routes[path] || renderOnboarding;
   
-  // Show screen
-  appDiv.innerHTML = '<div class="flex items-center justify-center min-h-screen"><span class="material-symbols-outlined animate-spin text-primary text-4xl">autorenew</span></div>';
+  // Show skeleton screen while loading
+  appDiv.innerHTML = `
+    <div class="flex flex-col min-h-screen bg-slate-50 animate-pulse">
+      <div class="h-16 bg-white border-b border-slate-100 w-full"></div>
+      <div class="flex-1 p-6 space-y-4 max-w-lg mx-auto w-full pt-8">
+        <div class="h-32 bg-slate-200 rounded-3xl w-full"></div>
+        <div class="h-5 bg-slate-200 rounded-full w-3/4"></div>
+        <div class="h-4 bg-slate-100 rounded-full w-1/2"></div>
+        <div class="grid grid-cols-2 gap-4 pt-2">
+          <div class="h-24 bg-slate-200 rounded-2xl"></div>
+          <div class="h-24 bg-slate-200 rounded-2xl"></div>
+          <div class="h-24 bg-slate-100 rounded-2xl"></div>
+          <div class="h-24 bg-slate-100 rounded-2xl"></div>
+        </div>
+        <div class="h-12 bg-slate-200 rounded-2xl w-full mt-4"></div>
+      </div>
+    </div>
+  `;
   await renderFunc(appDiv);
 }
 
