@@ -132,16 +132,7 @@ export async function renderAdminReports(container, currentPath) {
                     </div>
                 </div>
 
-                <style>
-                    @media print {
-                        body * { visibility: hidden; }
-                        #receipt-modal, #receipt-modal #receipt-content { visibility: visible; display: block !important; position: absolute; left: 0; top: 0; width: 100%; margin: 0; padding: 0; background: white; }
-                        #receipt-modal #receipt-content * { visibility: visible; }
-                        .no-print { display: none !important; }
-                        .rounded-[2.5rem] { border-radius: 0 !important; }
-                        .shadow-2xl { shadow: none !important; }
-                    }
-                </style>
+                <!-- No specific print style needed here anymore as we use the iframe method -->
             </div>
         `;
         container.innerHTML = html;
@@ -220,7 +211,58 @@ export async function renderAdminReports(container, currentPath) {
         };
 
         window.printContent = () => {
-            window.print();
+            const content = document.getElementById('receipt-content').innerHTML;
+            
+            // Create a hidden iframe for clean printing
+            const printFrame = document.createElement('iframe');
+            printFrame.style.position = 'fixed';
+            printFrame.style.right = '0';
+            printFrame.style.bottom = '0';
+            printFrame.style.width = '0';
+            printFrame.style.height = '0';
+            printFrame.style.border = '0';
+            document.body.appendChild(printFrame);
+
+            const doc = printFrame.contentWindow.document;
+            doc.write(`
+                <html>
+                    <head>
+                        <title>Cetak Nota YARI</title>
+                        <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
+                        <script src="https://cdn.tailwindcss.com"></script>
+                        <script>
+                            tailwind.config = {
+                                theme: {
+                                    extend: {
+                                        colors: {
+                                            primary: '#0f5238',
+                                        }
+                                    }
+                                }
+                            }
+                        </script>
+                        <style>
+                            body { font-family: 'Manrope', sans-serif; }
+                            h1, h2, h3, .headline { font-family: 'Plus Jakarta Sans', sans-serif; }
+                            @media print {
+                                body { -webkit-print-color-adjust: exact; }
+                            }
+                        </style>
+                    </head>
+                    <body class="p-10">
+                        ${content}
+                        <script>
+                            window.onload = function() {
+                                window.print();
+                                setTimeout(() => {
+                                    window.parent.document.body.removeChild(window.frameElement);
+                                }, 100);
+                            };
+                        </script>
+                    </body>
+                </html>
+            `);
+            doc.close();
         };
 
         window.confirmGrouped = async (userId) => {
