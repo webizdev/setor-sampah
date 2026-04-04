@@ -242,15 +242,22 @@ export async function renderAdminReports(container, currentPath) {
                             }
                         </script>
                         <style>
-                            body { font-family: 'Manrope', sans-serif; }
+                            body { font-family: 'Manrope', sans-serif; margin: 0; padding: 0; background-color: white; }
                             h1, h2, h3, .headline { font-family: 'Plus Jakarta Sans', sans-serif; }
+                            @page {
+                                size: A4;
+                                margin: 20mm;
+                            }
                             @media print {
                                 body { -webkit-print-color-adjust: exact; }
+                                .print-container { width: 100%; max-width: 100%; margin: 0 auto; }
                             }
                         </style>
                     </head>
-                    <body class="p-10">
-                        ${content}
+                    <body>
+                        <div class="print-container p-4">
+                            ${content}
+                        </div>
                         <script>
                             window.onload = function() {
                                 window.print();
