@@ -78,7 +78,10 @@ export async function renderBeli(container) {
         <p class="text-[9px] md:text-[10px] text-outline font-bold uppercase tracking-widest">Per Kg</p>
         </div>
         </div>
-        <button onclick="window.jualSampah('${item.id}', ${item.price_per_kg})" class="w-full mt-auto bg-surface-container-high text-primary font-bold py-2 md:py-3 rounded-lg md:rounded-xl flex items-center justify-center gap-1.5 hover:bg-primary hover:text-white transition-all duration-300 text-[11px] md:text-base"><span class="material-symbols-outlined text-[14px] md:text-[18px]">add_shopping_cart</span> Jual</button>
+        <button onclick="window.jualSampah('${item.id}', ${item.price_per_kg}, '${item.name.replace(/'/g, "\\'")}')" class="w-full mt-auto bg-surface-container-high text-primary font-bold py-2 md:py-3 rounded-lg md:rounded-xl flex items-center justify-center gap-1.5 hover:bg-primary hover:text-white transition-all duration-300 text-[11px] md:text-base tracking-wide">
+            <span class="material-symbols-outlined text-[14px] md:text-[18px]">add_shopping_cart</span>
+            Jual
+        </button>
         </div>
         </div>
     `).join('')}
@@ -96,28 +99,129 @@ export async function renderBeli(container) {
       </div>
     </section>
     </main>
+    <!-- Quantity Modal -->
+    <div id="qty-modal" class="fixed inset-0 z-[6000] hidden items-center justify-center p-6">
+        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="window.closeModal()"></div>
+        <div class="bg-white dark:bg-slate-900 w-full max-w-md rounded-[2.5rem] p-8 shadow-2xl relative z-10 animate-scale-up border border-slate-100/50">
+            <div class="mb-8 text-center md:text-left">
+                <span class="text-primary font-black text-xs uppercase tracking-[0.2em] mb-2 block">Konfirmasi Jual</span>
+                <h3 id="modal-item-name" class="headline text-2xl font-black text-on-surface leading-tight">Memuat Item...</h3>
+                <p id="modal-item-price" class="text-on-surface-variant font-bold text-sm opacity-60">Rp 0/Kg</p>
+            </div>
+            
+            <div class="space-y-6">
+                <div>
+                    <label class="text-[10px] uppercase font-black tracking-widest text-outline mb-3 block">Banyaknya Sampah (Kg)</label>
+                    <div class="relative group">
+                        <input id="qty-input" type="number" step="0.1" min="0.1" placeholder="Contoh: 1.5" 
+                               class="w-full bg-slate-50 border-2 border-slate-100 rounded-2xl px-6 py-4 text-2xl font-bold focus:ring-0 focus:border-primary transition-all outline-none"
+                               oninput="window.updateTotal()">
+                        <span class="absolute right-6 top-1/2 -translate-y-1/2 text-slate-400 font-bold">Kg</span>
+                    </div>
+                </div>
+
+                <div class="bg-primary/5 rounded-2xl p-5 flex justify-between items-center border border-primary/10">
+                    <div>
+                        <p class="text-[10px] font-black uppercase tracking-widest text-primary/60">Estimasi Saldo</p>
+                        <p id="total-estimation" class="text-2xl font-black text-primary">Rp 0</p>
+                    </div>
+                    <span class="material-symbols-outlined text-primary opacity-20 text-4xl">payments</span>
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-3 mt-10">
+                <button onclick="window.confirmSale()" class="w-full bg-primary text-white font-black py-5 rounded-2xl hover:brightness-110 active:scale-[0.98] transition-all shadow-lg shadow-primary/20 text-lg">Konfirmasi Jual</button>
+                <button onclick="window.closeModal()" class="w-full text-on-surface-variant font-bold py-3 hover:bg-slate-100 rounded-2xl transition-all">Batalkan</button>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        @keyframes scale-up {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .animate-scale-up {
+            animation: scale-up 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+    </style>
+
     ${getBottomNav('/jual')}
   `;
 
   container.innerHTML = html;
 
-  // Global function handler for Jual action
-  window.jualSampah = async (wasteId, price) => {
-    // Determine qty, for demo let's say 2kg
-    const qty = 2; // prompt("Opsi: Berapa Kg?", "1");
-    // if(!qty) return;
+  // Internal state for selected transaction
+  let currentWasteId = null;
+  let currentPrice = 0;
+
+  // Global function handler for opening modal
+  window.jualSampah = (wasteId, price, name) => {
+    currentWasteId = wasteId;
+    currentPrice = price;
+    
+    const modal = document.getElementById('qty-modal');
+    const modalName = document.getElementById('modal-item-name');
+    const modalPrice = document.getElementById('modal-item-price');
+    const qtyInput = document.getElementById('qty-input');
+    const totalEst = document.getElementById('total-estimation');
+
+    if (modal && modalName && modalPrice) {
+        modalName.textContent = name;
+        modalPrice.textContent = `Rp ${price.toLocaleString('id-ID')}/Kg`;
+        qtyInput.value = '';
+        totalEst.textContent = 'Rp 0';
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        
+        // Auto focus input
+        setTimeout(() => qtyInput.focus(), 100);
+    }
+  };
+
+  window.closeModal = () => {
+    const modal = document.getElementById('qty-modal');
+    if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    }
+  };
+
+  window.updateTotal = () => {
+    const qtyInput = document.getElementById('qty-input');
+    const totalEst = document.getElementById('total-estimation');
+    const qty = parseFloat(qtyInput.value) || 0;
+    
+    const total = qty * currentPrice;
+    totalEst.textContent = `Rp ${total.toLocaleString('id-ID')}`;
+  };
+
+  window.confirmSale = async () => {
+    const qtyInput = document.getElementById('qty-input');
+    const qty = parseFloat(qtyInput.value);
+    
+    if (!qty || qty <= 0) {
+        alert('Masukkan berat sampah yang valid!');
+        return;
+    }
 
     try {
-        await supabase.from('yari_transactions').insert({
+        const { error } = await supabase.from('yari_transactions').insert({
             user_id: window.USER_ID,
-            waste_id: wasteId,
+            waste_id: currentWasteId,
             qty_kg: qty,
-            total_price: qty * price
+            total_price: qty * currentPrice,
+            status: 'pending'
         });
-        alert('Berhasil! Sampah telah dimasukkan ke daftar jual Anda.');
+
+        if (error) throw error;
+        
+        alert(`Berhasil! Pengajuan jual ${qty}kg sampah telah tercatat.`);
+        window.closeModal();
     } catch(err) {
         console.error(err);
-        alert('Gagal memproses transaksi.');
+        alert('Gagal memproses transaksi: ' + err.message);
     }
   };
 }
+
