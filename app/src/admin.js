@@ -10,6 +10,7 @@ import { renderAdminArtikel } from './views/admin_artikel.js';
 import { renderAdminReports } from './views/admin_reports.js';
 import { renderAdminMember } from './views/admin_member.js';
 import { renderAdminLayanan } from './views/admin_layanan.js';
+import { renderAdminCompany } from './views/admin_company.js';
 
 // Simple Router for Admin Pages
 const adminRoutes = {
@@ -21,6 +22,7 @@ const adminRoutes = {
   '/laporan': renderAdminReports,
   '/member': renderAdminMember,
   '/services': renderAdminLayanan,
+  '/company': renderAdminCompany,
 };
 
 // Check if admin is authenticated
@@ -86,6 +88,10 @@ export function getAdminTopNav(currentPath) {
                 <a href="#/artikel" class="flex items-center gap-1.5 transition-colors px-3 py-2 rounded-lg whitespace-nowrap ${currentPath === '/artikel' ? 'bg-primary/5 text-primary font-bold' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800 font-medium'}">
                     <span class="material-symbols-outlined text-[18px] ${currentPath === '/artikel' ? 'font-fill' : ''}">article</span>
                     <span class="text-xs sm:text-sm">Artikel</span>
+                </a>
+                <a href="#/company" class="flex items-center gap-1.5 transition-colors px-3 py-2 rounded-lg whitespace-nowrap ${currentPath === '/company' ? 'bg-primary/5 text-primary font-bold' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800 font-medium'}">
+                    <span class="material-symbols-outlined text-[18px] ${currentPath === '/company' ? 'font-fill' : ''}">business</span>
+                    <span class="text-xs sm:text-sm">Company</span>
                 </a>
                 <button onclick="window.logoutAdmin()" class="flex items-center gap-1.5 transition-colors px-3 py-2 rounded-lg text-red-500 hover:bg-red-50 ml-auto md:ml-0 whitespace-nowrap font-medium cursor-pointer">
                     <span class="material-symbols-outlined text-[18px]">logout</span>
