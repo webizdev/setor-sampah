@@ -281,7 +281,7 @@ export async function renderAdminMember(container, currentPath) {
         // Submit Handler
         document.getElementById('payout-submit-btn')?.addEventListener('click', async () => {
             if (!selectedFile) {
-                alert('Tolong unggah bukti transfer (resi) terlebih dahulu!');
+                yariAlert('Belum Ada Resi', 'Tolong unggah bukti transfer (resi) terlebih dahulu!', 'info');
                 return;
             }
 
@@ -350,7 +350,7 @@ export async function renderAdminMember(container, currentPath) {
 
             } catch (err) {
                 console.error(err);
-                alert('Error: ' + err.message);
+                yariAlert('Gagal', 'Error: ' + err.message, 'error');
                 btn.disabled = false;
                 btn.innerHTML = '<span>Sudah di Transfer</span><span class="material-symbols-outlined">send</span>';
             }
@@ -371,7 +371,7 @@ export async function renderAdminMember(container, currentPath) {
                 refreshBtn.classList.add('animate-spin');
                 await updateAllUserTiers();
                 refreshBtn.classList.remove('animate-spin');
-                alert('Tier member diperbarui!');
+                yariAlert('Berhasil', 'Tier member diperbarui!', 'success');
                 loadView();
             });
         }

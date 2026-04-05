@@ -224,7 +224,7 @@ export async function renderAdminOnboarding(container, currentPath) {
                     location.reload();
                 } catch (err) {
                     console.error("Init failed", err);
-                    alert("Gagal inisialisasi: Pastikan tabel 'yari_onboarding_content' sudah dibuat di Supabase.\n\nError: " + err.message);
+                    yariAlert('Gagal', "Gagal inisialisasi: Pastikan tabel 'yari_onboarding_content' sudah dibuat di Supabase.\n\nError: " + err.message, 'error');
                     initBtn.innerHTML = originalContent;
                     initBtn.disabled = false;
                 }
@@ -280,7 +280,7 @@ export async function renderAdminOnboarding(container, currentPath) {
 
             } catch (err) {
                 console.error("Upload failed", err);
-                alert("Upload gagal: " + err.message);
+                yariAlert('Gagal', "Upload gagal: " + err.message, 'error');
                 originalBtn.innerHTML = originalContent;
                 originalBtn.disabled = false;
             } finally {
@@ -330,7 +330,7 @@ export async function renderAdminOnboarding(container, currentPath) {
 
             } catch (err) {
                 console.error("Save failed", err);
-                alert("Gagal menyimpan perubahan: " + err.message);
+                yariAlert('Gagal', "Gagal menyimpan perubahan: " + err.message, 'error');
                 saveAllBtn.innerHTML = originalContent;
                 saveAllBtn.disabled = false;
                 saveAllBtn.classList.remove('opacity-50');

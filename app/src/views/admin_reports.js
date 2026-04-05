@@ -286,7 +286,7 @@ export async function renderAdminReports(container, currentPath) {
             const group = groupedReports.find(g => g.user_id === userId);
             if (!group) return;
 
-            if (!confirm(`Konfirmasi gabungan ${group.tx_ids.length} transaksi untuk ${group.user_name}? Saldo user akan bertambah Rp ${group.total_nominal.toLocaleString('id-ID')}`)) return;
+            if (!(await yariConfirm("Konfirmasi Setoran?", `Konfirmasi gabungan ${group.tx_ids.length} transaksi untuk ${group.user_name}? Saldo user akan bertambah Rp ${group.total_nominal.toLocaleString('id-ID')}`))) return;
 
             try {
                 // Bulk Update Transactions
@@ -313,11 +313,11 @@ export async function renderAdminReports(container, currentPath) {
                 // Trigger Global Recalculation
                 await updateAllUserTiers();
 
-                alert('Berhasil! Seluruh setoran user telah dikonfirmasi dan tier seluruh member diperbarui.');
+                yariAlert('Berhasil', 'Seluruh setoran user telah dikonfirmasi dan tier seluruh member diperbarui.', 'success');
                 loadView();
             } catch (err) {
                 console.error(err);
-                alert('Gagal konfirmasi: ' + err.message);
+                yariAlert('Gagal', 'Gagal konfirmasi: ' + err.message, 'error');
             }
         };
     }

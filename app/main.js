@@ -6,10 +6,11 @@ import { renderLayanan } from './src/views/layanan.js';
 import { renderProfile } from './src/views/profile.js';
 import { renderOnboarding } from './src/views/onboarding.js';
 import { renderRegister } from './src/views/register.js';
-import './src/utils/pwa.js'; // Ensure PWA listener is active
+import { initModals } from './src/utils/modals.js';
 import { initDynamicBranding } from './src/utils/branding.js';
 
-// Init Branding (Logo, Favicon, naming)
+// Init Global Utilities
+initModals();
 initDynamicBranding();
 
 // Global Session Check

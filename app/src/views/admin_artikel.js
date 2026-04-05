@@ -174,12 +174,12 @@ export async function renderAdminArtikel(container, currentPath) {
         };
 
         window.deleteArticleItem = async (id) => {
-            if(!confirm("Yakin ingin menghapus artikel ini?")) return;
+            if(!(await yariConfirm("Hapus Artikel?", "Yakin ingin menghapus artikel ini?"))) return;
             try {
                 await supabase.from('yari_articles').delete().eq('id', id);
                 loadView(); 
             } catch (err) {
-                alert('Gagal menghapus:' + err.message);
+                yariAlert('Gagal', 'Gagal menghapus: ' + err.message, 'error');
             }
         };
 
@@ -236,8 +236,9 @@ export async function renderAdminArtikel(container, currentPath) {
                             fallbackResult = await supabase.from('yari_articles').insert(fallbackPayload);
                         }
                         
+                        
                         if (fallbackResult.error) throw fallbackResult.error;
-                        alert("Berhasil disimpan (Tanpa Notifikasi). Mohon jalankan SQL migration untuk mengaktifkan fitur notifikasi.");
+                        yariAlert('Berhasil', "Berhasil disimpan (Tanpa Notifikasi). Mohon jalankan SQL migration untuk mengaktifkan fitur notifikasi.", 'success');
                     } else {
                         throw result.error;
                     }
@@ -246,7 +247,7 @@ export async function renderAdminArtikel(container, currentPath) {
                 window.closeArticleModal();
                 loadView();
             } catch (err) {
-                alert("Gagal: " + err.message);
+                yariAlert('Gagal', "Gagal: " + err.message, 'error');
                 btn.innerText = originalText;
                 btn.disabled = false;
             }

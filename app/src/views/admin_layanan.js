@@ -170,14 +170,14 @@ export async function renderAdminLayanan(container, currentPath) {
         };
 
         window.deleteServiceItem = async (id) => {
-            if(!confirm("Hapus layanan ini secara permanen dari basis data? Tindakan ini tidak dapat dibatalkan.")) return;
+            if(!(await yariConfirm("Hapus Layanan?", "Hapus layanan ini secara permanen dari basis data? Tindakan ini tidak dapat dibatalkan."))) return;
             try {
                 const { error } = await supabase.from('yari_services').delete().eq('id', id);
                 if(error) throw error;
                 loadView(); 
             } catch (err) {
                 console.error(err);
-                alert('Gagal menghapus layanan: ' + err.message);
+                yariAlert('Gagal', 'Gagal menghapus layanan: ' + err.message, 'error');
             }
         };
 
@@ -217,7 +217,7 @@ export async function renderAdminLayanan(container, currentPath) {
                     loadView();
                 } catch (err) {
                     console.error(err);
-                    alert("Terjadi kesalahan saat menyimpan: " + err.message);
+                    yariAlert('Gagal Menyimpan', "Terjadi kesalahan saat menyimpan: " + err.message, 'error');
                     btn.innerText = originalText;
                     btn.disabled = false;
                     btn.classList.remove('opacity-50');

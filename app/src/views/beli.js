@@ -1,9 +1,11 @@
-import { supabase, fetchBrandName } from '../supabase.js';
+import { supabase, fetchCompanyInfo } from '../supabase.js';
 import { getNotificationBellHTML } from '../utils/notifications.js';
 import { getBottomNav } from './home.js';
 
 export async function renderBeli(container) {
-  const brandName = await fetchBrandName();
+  const companyInfo = await fetchCompanyInfo();
+  const brandName = companyInfo.nama;
+  const whatsappNumber = (companyInfo.whatsapp || '628123456789').replace(/\D/g, '');
 
   // Fetch user data for the avatar
   const { data: user } = await supabase
@@ -99,7 +101,10 @@ export async function renderBeli(container) {
       </div>
       <h4 class="headline text-xl md:text-2xl font-bold mb-2">Ingin Setoran Skala Besar?</h4>
       <p class="text-white/80 text-xs md:text-sm mb-4 md:mb-6 max-w-sm">Hubungi tim kurir khusus kami untuk penjemputan limbah industri di atas 100kg.</p>
-      <button class="bg-white text-tertiary font-bold px-5 py-2.5 md:px-6 md:py-3 rounded-xl text-xs md:text-sm self-start hover:scale-105 transition-transform">Hubungi Admin</button>
+      <button onclick="window.open('https://wa.me/${whatsappNumber}?text=Halo%20${brandName},%20saya%20ingin%20menanyakan%20tentang%20penjemputan%20sampah%20skala%20besar.', '_blank')" 
+              class="bg-white text-tertiary font-bold px-5 py-2.5 md:px-6 md:py-3 rounded-xl text-xs md:text-sm self-start hover:scale-105 transition-transform cursor-pointer">
+          Hubungi Admin
+      </button>
       </div>
     </section>
     </main>
@@ -205,7 +210,7 @@ export async function renderBeli(container) {
     const qty = parseFloat(qtyInput.value);
     
     if (!qty || qty <= 0) {
-        alert('Masukkan berat sampah yang valid!');
+        yariAlert('Perhatian', 'Masukkan berat sampah yang valid!', 'warning');
         return;
     }
 
@@ -220,11 +225,11 @@ export async function renderBeli(container) {
 
         if (error) throw error;
         
-        alert(`Berhasil! Pengajuan jual ${qty}kg sampah telah tercatat.`);
+        yariAlert('Berhasil!', `Pengajuan jual ${qty}kg sampah telah tercatat.`, 'success');
         window.closeModal();
     } catch(err) {
         console.error(err);
-        alert('Gagal memproses transaksi: ' + err.message);
+        yariAlert('Gagal!', 'Gagal memproses transaksi: ' + err.message, 'error');
     }
   };
 }

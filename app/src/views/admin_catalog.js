@@ -221,13 +221,13 @@ export async function renderAdminCatalog(container, currentPath) {
         };
 
         window.deleteCatalogItem = async (id) => {
-            if(!confirm("Yakin ingin menghapus item ini? Transaksi yang terhubung mungkin akan bermasalah.")) return;
+            if(!(await yariConfirm("Hapus Item?", "Yakin ingin menghapus item ini? Transaksi yang terhubung mungkin akan bermasalah."))) return;
             
             try {
                 await supabase.from('yari_waste_catalog').delete().eq('id', id);
                 loadView(); 
             } catch (err) {
-                alert('Gagal menghapus:' + err.message);
+                yariAlert('Gagal', 'Gagal menghapus: ' + err.message, 'error');
             }
         };
 
@@ -259,7 +259,7 @@ export async function renderAdminCatalog(container, currentPath) {
                 window.closeCatalogModal();
                 loadView();
             } catch (err) {
-                alert("Gagal: " + err.message);
+                yariAlert('Gagal', "Gagal: " + err.message, 'error');
                 btn.innerText = 'Simpan Item';
                 btn.disabled = false;
             }
@@ -283,19 +283,19 @@ export async function renderAdminCatalog(container, currentPath) {
                 await supabase.from('yari_waste_categories').insert({ name });
                 loadView();
             } catch (err) {
-                alert("Gagal: " + err.message);
+                yariAlert('Gagal', "Gagal: " + err.message, 'error');
                 btn.innerHTML = originalText;
                 btn.disabled = false;
             }
         });
 
         window.deleteCategory = async (id) => {
-            if(!confirm("Yakin ingin menghapus kategori ini? Item yang menggunakan kategori ini mungkin terpengaruh.")) return;
+            if(!(await yariConfirm("Hapus Kategori?", "Yakin ingin menghapus kategori ini? Item yang menggunakan kategori ini mungkin terpengaruh."))) return;
             try {
                 await supabase.from('yari_waste_categories').delete().eq('id', id);
                 loadView();
             } catch (err) {
-                alert('Gagal: ' + err.message);
+                yariAlert('Gagal', 'Gagal: ' + err.message, 'error');
             }
         };
     }

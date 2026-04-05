@@ -12,6 +12,9 @@ import { renderAdminMember } from './views/admin_member.js';
 import { renderAdminLayanan } from './views/admin_layanan.js';
 import { renderAdminCompany } from './views/admin_company.js';
 import { renderAdminOnboarding } from './views/admin_onboarding.js';
+import { renderAdminInventory } from './views/admin_inventory.js';
+import { initModals } from './utils/modals.js';
+initModals();
 import { initDynamicBranding } from './utils/branding.js';
 
 // Global Branding Store
@@ -35,6 +38,7 @@ const adminRoutes = {
   '/services': renderAdminLayanan,
   '/company': renderAdminCompany,
   '/onboarding': renderAdminOnboarding,
+  '/inventory': renderAdminInventory,
 };
 
 // Check if admin is authenticated
@@ -83,6 +87,7 @@ export function getAdminSidebar(currentPath) {
     { path: '/artikel', label: 'Artikel', icon: 'article' },
     { path: '/company', label: 'Profil Perusahaan', icon: 'business' },
     { path: '/onboarding', label: 'Onboarding', icon: 'auto_awesome' },
+    { path: '/inventory', label: 'Inventory', icon: 'shelves' },
   ];
 
   return `
@@ -198,7 +203,8 @@ async function adminRouter() {
 }
 
 // Global logout hook
-window.logoutAdmin = () => {
+window.logoutAdmin = async () => {
+    if (!(await yariConfirm('Konfirmasi Keluar', 'Yakin ingin keluar dari panel administrasi?'))) return;
     clearAdminSession();
     window.location.hash = '#/login';
 };

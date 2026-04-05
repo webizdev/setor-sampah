@@ -135,6 +135,23 @@ export async function renderAdminCompany(container, currentPath) {
                                     <span>Simpan Perubahan</span>
                                 </button>
                             </div>
+                            <!-- Advanced Policy -->
+                            <div class="col-span-2 pt-6 border-t border-slate-100 mt-4">
+                                <div class="flex items-center gap-3 mb-6">
+                                    <div class="w-8 h-8 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+                                        <span class="material-symbols-outlined text-xl">security</span>
+                                    </div>
+                                    <h5 class="text-xs font-black text-slate-400 uppercase tracking-[0.2em]">Otorisasi Tingkat Lanjut</h5>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                    <div class="group">
+                                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3 ml-1 group-focus-within:text-primary transition-colors">Password Reset Sistem (Hard Reset)</label>
+                                        <input type="password" id="form-reset-password" value="${profile?.reset_password || 'asiana'}" placeholder="Masukkan password untuk reset total" 
+                                               class="w-full bg-slate-50 border-2 border-slate-100 rounded-2xl px-6 py-4 text-sm font-bold focus:border-primary/30 focus:bg-white transition-all outline-none" />
+                                        <p class="mt-2 ml-1 text-[9px] text-slate-400 font-medium">Password ini diperlukan untuk menjalankan fitur penghapusan data masal di Danger Zone.</p>
+                                    </div>
+                                </div>
+                            </div>
                         </form>
                     </div>
 
@@ -154,6 +171,34 @@ export async function renderAdminCompany(container, currentPath) {
                                    <p class="text-sm text-slate-500 leading-relaxed font-medium opacity-70">Gunakan prefix internasional (62) tanpa karakter khusus agar tautan WhatsApp tetap fungsional.</p>
                               </div>
                          </div>
+                    </div>
+
+                    <!-- Danger Zone Section -->
+                    <div class="mt-16 pt-12 border-t-2 border-dashed border-red-100 max-w-4xl mx-auto pb-12">
+                        <div class="mb-8">
+                            <h3 class="text-xl font-black headline tracking-tight uppercase text-red-600 flex items-center gap-3">
+                                <span class="material-symbols-outlined font-variation-settings-fill">emergency_home</span>
+                                Danger <span class="text-slate-400">Zone</span>
+                            </h3>
+                            <p class="text-[11px] text-slate-400 mt-1 font-medium opacity-70 uppercase tracking-widest">Gunakan dengan sangat hati-hati. Tindakan di bawah ini tidak dapat dibatalkan.</p>
+                        </div>
+
+                        <div class="bg-red-50/50 border border-red-100 rounded-[2.5rem] p-10 flex flex-col md:flex-row items-center md:justify-between gap-8 group hover:bg-red-50 transition-all">
+                            <div class="flex gap-6 items-center md:items-start text-center md:text-left">
+                                <div class="w-16 h-16 rounded-2xl bg-white shadow-sm flex items-center justify-center text-red-500 group-hover:scale-110 transition-transform">
+                                    <span class="material-symbols-outlined text-4xl">restart_alt</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-black text-slate-800 mb-2 uppercase tracking-widest text-sm">Reset Total Kapasitas & Saldo</h4>
+                                    <p class="text-xs text-slate-500 leading-relaxed font-medium opacity-70 max-w-md">Menghapus SELURUH riwayat supply, penjualan, dan setoran member. <b>Dibutuhkan password otorisasi untuk melanjutkan.</b></p>
+                                </div>
+                            </div>
+                            <button onclick="window.clearInventoryLogs()" 
+                                    class="w-full md:w-auto px-10 py-5 bg-red-600 text-white font-black rounded-2xl hover:bg-red-700 transition-all shadow-xl shadow-red-600/20 active:scale-95 cursor-pointer text-xs uppercase tracking-widest flex items-center justify-center gap-3">
+                                <span class="material-symbols-outlined text-lg">dangerous</span>
+                                <span>RESET TOTAL SISTEM</span>
+                            </button>
+                        </div>
                     </div>
                 </main>
             </div>
@@ -218,6 +263,7 @@ export async function renderAdminCompany(container, currentPath) {
                         tier_prioritas_threshold: document.getElementById('form-tier-prioritas').value,
                         tier_gold_threshold: document.getElementById('form-tier-gold').value,
                         tier_silver_threshold: document.getElementById('form-tier-silver').value,
+                        reset_password: document.getElementById('form-reset-password').value,
                         logo_url: logoUrl
                     };
 
@@ -244,13 +290,85 @@ export async function renderAdminCompany(container, currentPath) {
 
                 } catch (err) {
                     console.error(err);
-                    alert("Gagal memperbarui profil: " + err.message);
+                    yariAlert('Gagal', "Gagal memperbarui profil: " + err.message, 'error');
                     btn.innerHTML = originalContent;
                     btn.disabled = false;
                     btn.classList.remove('opacity-50');
                 }
             });
         }
+
+        // Global Reset Action
+        window.clearInventoryLogs = async () => {
+            const firstConfirm = await yariConfirm(
+                'Konfirmasi Reset Total',
+                'Tindakan ini akan menghapus SELURUH riwayat inventaris dan setoran member. Lanjutkan?'
+            );
+
+            if (!firstConfirm) return;
+
+            const secondConfirm = await yariConfirm(
+                'PERINGATAN AKHIR',
+                'Seluruh SALDO user akan otomatis menjadi Rp 0. Apakah Anda benar-benar yakin ingin melakukan reset total sistem?'
+            );
+
+            if (secondConfirm) {
+                // Add a small delay to ensure modals don't collide
+                await new Promise(r => setTimeout(r, 400));
+                
+                const password = await yariPrompt(
+                    'Otorisasi Reset',
+                    'Masukkan password hard reset untuk mengonfirmasi pembersihan total sistem. Data yang dihapus TIDAK DAPAT dikembalikan.',
+                    'Password...',
+                    true
+                );
+
+                if (!password) return;
+
+                const currentPassword = profile?.reset_password || 'asiana';
+                if (password !== currentPassword) {
+                    await new Promise(r => setTimeout(r, 100));
+                    yariAlert('Otorisasi Gagal', 'Password yang Anda masukkan salah.', 'error');
+                    return;
+                }
+
+                try {
+                    // 1. Clear Inventory Logs (Manual supply/out)
+                    const { error: err1 } = await supabase
+                        .from('yari_inventory_log')
+                        .delete()
+                        .neq('id', '00000000-0000-0000-0000-000000000000');
+
+                    if (err1) throw err1;
+
+                    // 2. Clear Member Transactions
+                    const { error: err2 } = await supabase
+                        .from('yari_transactions')
+                        .delete()
+                        .neq('id', '00000000-0000-0000-0000-000000000000');
+                    
+                    if (err2) throw err2;
+
+                    // 3. Reset All Users (Balance & Contribution)
+                    const { error: err3 } = await supabase
+                        .from('yari_users')
+                        .update({
+                            saldo: 0,
+                            total_contribution_kg: 0,
+                            tier: 'Bronze'
+                        })
+                        .neq('id', '00000000-0000-0000-0000-000000000000');
+                    
+                    if (err3) throw err3;
+
+                    yariAlert('Reset Berhasil', 'Sistem telah dibersihkan secara total. Semua kuantitas dan saldo kembali ke 0.', 'success');
+                    loadView();
+                } catch (err) {
+                    console.error("Error resetting system", err);
+                    yariAlert('Gagal', 'Terjadi kesalahan saat reset sistem: ' + err.message, 'error');
+                }
+            }
+        };
     }
 
     await loadView();

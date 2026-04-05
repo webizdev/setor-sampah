@@ -8,6 +8,7 @@ export async function renderAdminTransactions(container, currentPath) {
         const { data: tx } = await supabase
             .from('yari_transactions')
             .select('*, yari_waste_catalog(name, price_per_kg), yari_users(full_name, whatsapp)')
+            .eq('status', 'pending')
             .order('created_at', { ascending: false });
 
         const { data: catalog } = await supabase
@@ -49,8 +50,8 @@ export async function renderAdminTransactions(container, currentPath) {
                 <main class="flex-1 overflow-y-auto pt-24 lg:pt-12 px-6 pb-12">
                     <header class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6 max-w-6xl mx-auto">
                         <div>
-                            <h2 class="text-3xl font-black headline tracking-tight uppercase">Daftar <span class="text-primary">Transaksi</span></h2>
-                            <p class="text-slate-500 mt-1 font-medium opacity-70">Kelola riwayat setoran sampah dari masyarakat</p>
+                            <h2 class="text-3xl font-black headline tracking-tight uppercase">Daftar <span class="text-primary">Setoran</span></h2>
+                            <p class="text-slate-500 mt-1 font-medium opacity-70">Kelola setoran sampah yang belum dikonfirmasi</p>
                         </div>
                         <div class="w-full md:w-80 relative group">
                             <span class="material-symbols-outlined absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors">search</span>
@@ -173,17 +174,17 @@ export async function renderAdminTransactions(container, currentPath) {
                 window.closeTxModal();
                 loadView();
             } catch (err) {
-                alert("Gagal update: " + err.message);
+                yariAlert('Gagal Update', "Gagal update: " + err.message, 'error');
             }
         });
 
         window.deleteTransaction = async (id) => {
-            if(!confirm("Yakin ingin menghapus jejak transaksi ini? Aksi tidak dapat dibatalkan.")) return;
+            if(!(await yariConfirm("Hapus Transaksi?", "Yakin ingin menghapus jejak transaksi ini? Aksi tidak dapat dibatalkan."))) return;
             try {
                 await supabase.from('yari_transactions').delete().eq('id', id);
                 loadView();
             } catch (err) {
-                alert("Gagal menghapus: " + err.message);
+                yariAlert('Gagal', "Gagal menghapus: " + err.message, 'error');
             }
         };
     }

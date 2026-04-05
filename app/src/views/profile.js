@@ -335,10 +335,10 @@ export async function renderProfile(container) {
         // Update Preview
         document.getElementById('profile-avatar-display').src = publicUrl;
         user.avatar_url = publicUrl;
-        alert('Foto profil berhasil diperbarui!');
+        yariAlert('Berhasil', 'Foto profil berhasil diperbarui!', 'success');
       } catch (err) {
         console.error(err);
-        alert('Gagal mengunggah foto: ' + err.message);
+        yariAlert('Gagal', 'Gagal mengunggah foto: ' + err.message, 'error');
       } finally {
         loader?.classList.add('hidden');
       }
@@ -416,7 +416,7 @@ export async function renderProfile(container) {
 
       if (error) throw error;
 
-      alert('Profil berhasil diperbarui!');
+      yariAlert('Berhasil', 'Profil berhasil diperbarui!', 'success');
       window.closeSettings();
       
       // Update local state and re-render
@@ -426,7 +426,7 @@ export async function renderProfile(container) {
       render();
     } catch (err) {
       console.error(err);
-      alert('Gagal menyimpan: ' + err.message);
+      yariAlert('Gagal', 'Gagal menyimpan: ' + err.message, 'error');
       btn.innerHTML = originalText;
       btn.disabled = false;
     }
@@ -444,7 +444,7 @@ export async function renderProfile(container) {
         await navigator.share(shareData);
       } else {
         await navigator.clipboard.writeText(window.location.origin);
-        alert('Link aplikasi berhasil disalin ke clipboard!');
+        yariAlert('Berhasil', 'Link aplikasi berhasil disalin ke clipboard!', 'success');
       }
     } catch (err) {
       console.log('Share error or cancelled', err);
@@ -582,7 +582,7 @@ export async function renderProfile(container) {
         pendingTxs = newData.pendingTxs;
         render();
       } catch (err) {
-        alert('Gagal menyimpan lokasi: ' + err.message);
+        yariAlert('Gagal', 'Gagal menyimpan lokasi: ' + err.message, 'error');
       } finally {
         btn.innerText = originalText;
         btn.disabled = false;
